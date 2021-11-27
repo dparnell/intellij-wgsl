@@ -19,5 +19,8 @@
 
         <lang.parserDefinition language="WGSL"
                                implementationClass="wgslplugin.language.WGSLParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory language="WGSL"
+                                       implementationClass="wgslplugin.language.WGSLSyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>
