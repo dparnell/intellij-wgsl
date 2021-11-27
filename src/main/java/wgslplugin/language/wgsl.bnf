@@ -4,12 +4,17 @@
 
   psiClassPrefix="WGSL"
   psiImplClassSuffix="Impl"
-  psiPackage="org.intellij.sdk.language.psi"
-  psiImplPackage="org.intellij.sdk.language.psi.impl"
+  psiPackage="wgslplugin.language.psi"
+  psiImplPackage="wgslplugin.language.psi.impl"
 
   elementTypeHolderClass="wgslplugin.language.psi.WGSLTypes"
   elementTypeClass="wgslplugin.language.psi.WGSLElementType"
   tokenTypeClass="wgslplugin.language.psi.WGSLTokenType"
+
+  tokens = [
+    LINE_COMMENT = 'LINE_COMMENT'
+    BLOCK_COMMENT = 'BLOCK_COMMENT'
+  ]
 }
 
 translation_unit ::=
@@ -353,7 +358,7 @@ function_decl ::=
       attribute_list * function_header compound_statement
 
 function_header ::=
-      FN IDENT PAREN_LEFT param_list ? PAREN_RIGHT ( arrow attribute_list * type_decl )?
+      FN IDENT PAREN_LEFT param_list ? PAREN_RIGHT ( ARROW attribute_list * type_decl )?
 
 param_list ::=
       ( param COMMA )* param COMMA?

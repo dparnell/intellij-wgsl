@@ -16,5 +16,8 @@
                   fieldName="INSTANCE"
                   language="WGSL"
                   extensions="wgsl"/>
+
+        <lang.parserDefinition language="WGSL"
+                               implementationClass="wgslplugin.language.WGSLParserDefinition"/>
     </extensions>
 </idea-plugin>

@@ -897,7 +897,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FN IDENT PAREN_LEFT param_list ? PAREN_RIGHT ( arrow attribute_list * type_decl )?
+  // FN IDENT PAREN_LEFT param_list ? PAREN_RIGHT ( ARROW attribute_list * type_decl )?
   public static boolean function_header(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header")) return false;
     if (!nextTokenIs(b, FN)) return false;
@@ -918,14 +918,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ( arrow attribute_list * type_decl )?
+  // ( ARROW attribute_list * type_decl )?
   private static boolean function_header_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header_5")) return false;
     function_header_5_0(b, l + 1);
     return true;
   }
 
-  // arrow attribute_list * type_decl
+  // ARROW attribute_list * type_decl
   private static boolean function_header_5_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header_5_0")) return false;
     boolean r;

@@ -4,7 +4,7 @@ package wgslplugin.language.psi;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
-import org.intellij.sdk.language.psi.impl.*;
+import wgslplugin.language.psi.impl.*;
 
 public interface WGSLTypes {
 
@@ -83,7 +83,7 @@ public interface WGSLTypes {
   IElementType AND = new WGSLTokenType("AND");
   IElementType AND_AND = new WGSLTokenType("AND_AND");
   IElementType ARRAY = new WGSLTokenType("ARRAY");
-  IElementType ARROW = new WGSLTokenType("arrow");
+  IElementType ARROW = new WGSLTokenType("ARROW");
   IElementType ATOMIC = new WGSLTokenType("ATOMIC");
   IElementType ATTR_LEFT = new WGSLTokenType("ATTR_LEFT");
   IElementType ATTR_RIGHT = new WGSLTokenType("ATTR_RIGHT");
@@ -91,6 +91,7 @@ public interface WGSLTypes {
   IElementType BGRA8UNORM = new WGSLTokenType("BGRA8UNORM");
   IElementType BGRA8UNORM_SRGB = new WGSLTokenType("BGRA8UNORM_SRGB");
   IElementType BITCAST = new WGSLTokenType("BITCAST");
+  IElementType BLOCK_COMMENT = new WGSLTokenType("BLOCK_COMMENT");
   IElementType BOOL = new WGSLTokenType("BOOL");
   IElementType BRACE_LEFT = new WGSLTokenType("BRACE_LEFT");
   IElementType BRACE_RIGHT = new WGSLTokenType("BRACE_RIGHT");
@@ -126,6 +127,7 @@ public interface WGSLTypes {
   IElementType LESS_THAN = new WGSLTokenType("LESS_THAN");
   IElementType LESS_THAN_EQUAL = new WGSLTokenType("LESS_THAN_EQUAL");
   IElementType LET = new WGSLTokenType("LET");
+  IElementType LINE_COMMENT = new WGSLTokenType("LINE_COMMENT");
   IElementType LOOP = new WGSLTokenType("LOOP");
   IElementType MAT2X2 = new WGSLTokenType("MAT2X2");
   IElementType MAT2X3 = new WGSLTokenType("MAT2X3");
