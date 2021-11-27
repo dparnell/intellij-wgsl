@@ -1,0 +1,374 @@
+{
+  parserClass="wgslplugin.language.parser.WgslParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="WGSL"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.intellij.sdk.language.psi"
+  psiImplPackage="org.intellij.sdk.language.psi.impl"
+
+  elementTypeHolderClass="wgslplugin.language.psi.WGSLTypes"
+  elementTypeClass="wgslplugin.language.psi.WGSLElementType"
+  tokenTypeClass="wgslplugin.language.psi.WGSLTokenType"
+}
+
+translation_unit ::=
+      global_directive* global_decl*
+
+const_literal ::=
+      INT_LITERAL
+    | UINT_LITERAL
+    | float_literal
+    | TRUE
+    | FALSE
+
+float_literal ::=
+      DECIMAL_FLOAT_LITERAL
+    | HEX_FLOAT_LITERAL
+
+attribute_list ::= ATTR_LEFT ( attribute COMMA )* attribute ATTR_RIGHT
+
+attribute ::=
+      IDENT PAREN_LEFT ( literal_or_ident COMMA )* literal_or_ident PAREN_RIGHT
+    | IDENT
+
+literal_or_ident ::=
+      float_literal
+    | INT_LITERAL
+    | UINT_LITERAL
+    | IDENT
+
+global_directive ::=
+     enable_directive
+
+array_type_decl ::=
+     attribute_list* ARRAY LESS_THAN type_decl ( COMMA element_count_expression )? GREATER_THAN
+
+element_count_expression ::=
+      INT_LITERAL
+    | UINT_LITERAL
+    | IDENT
+
+struct_decl ::=
+     attribute_list * STRUCT IDENT struct_body_decl
+
+struct_body_decl ::=
+      BRACE_LEFT struct_member* BRACE_RIGHT
+
+struct_member ::=
+      attribute_list * variable_ident_decl SEMICOLON
+
+access_mode ::=
+      READ
+    | WRITE
+    | READ_WRITE
+
+storage_class ::=
+      FUNCTION
+    | PRIVATE
+    | WORKGROUP
+    | UNIFORM
+    | STORAGE
+
+texture_sampler_types ::=
+      sampler_type
+    | depth_texture_type
+    | sampled_texture_type LESS_THAN type_decl GREATER_THAN
+    | multisampled_texture_type LESS_THAN type_decl GREATER_THAN
+    | storage_texture_type LESS_THAN texel_format COMMA access_mode GREATER_THAN
+
+sampler_type ::=
+      SAMPLER
+    | SAMPLER_COMPARISON
+
+sampled_texture_type ::=
+      TEXTURE_1D
+    | TEXTURE_2D
+    | TEXTURE_2D_ARRAY
+    | TEXTURE_3D
+    | TEXTURE_CUBE
+    | TEXTURE_CUBE_ARRAY
+
+multisampled_texture_type ::=
+      TEXTURE_MULTISAMPLED_2D
+
+storage_texture_type ::=
+      TEXTURE_STORAGE_1D
+    | TEXTURE_STORAGE_2D
+    | TEXTURE_STORAGE_2D_ARRAY
+    | TEXTURE_STORAGE_3D
+
+depth_texture_type ::=
+      TEXTURE_DEPTH_2D
+    | TEXTURE_DEPTH_2D_ARRAY
+    | TEXTURE_DEPTH_CUBE
+    | TEXTURE_DEPTH_CUBE_ARRAY
+    | TEXTURE_DEPTH_MULTISAMPLED_2D
+
+texel_format ::=
+      R8UNORM
+    | R8SNORM
+    | R8UINT
+    | R8SINT
+    | R16UINT
+    | R16SINT
+    | R16FLOAT
+    | RG8UNORM
+    | RG8SNORM
+    | RG8UINT
+    | RG8SINT
+    | R32UINT
+    | R32SINT
+    | R32FLOAT
+    | RG16UINT
+    | RG16SINT
+    | RG16FLOAT
+    | RGBA8UNORM
+    | RGBA8UNORM_SRGB
+    | RGBA8SNORM
+    | RGBA8UINT
+    | RGBA8SINT
+    | BGRA8UNORM
+    | BGRA8UNORM_SRGB
+    | RGB10A2UNORM
+    | RG11B10FLOAT
+    | RG32UINT
+    | RG32SINT
+    | RG32FLOAT
+    | RGBA16UINT
+    | RGBA16SINT
+    | RGBA16FLOAT
+    | RGBA32UINT
+    | RGBA32SINT
+    | RGBA32FLOAT
+
+type_alias_decl ::=
+      TYPE IDENT EQUAL type_decl
+
+type_decl ::=
+      IDENT
+    | BOOL
+    | FLOAT32
+    | INT32
+    | UINT32
+    | VEC2 LESS_THAN type_decl GREATER_THAN
+    | VEC3 LESS_THAN type_decl GREATER_THAN
+    | VEC4 LESS_THAN type_decl GREATER_THAN
+    | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode ) ? GREATER_THAN
+    | array_type_decl
+    | MAT2X2 LESS_THAN type_decl GREATER_THAN
+    | MAT2X3 LESS_THAN type_decl GREATER_THAN
+    | MAT2X4 LESS_THAN type_decl GREATER_THAN
+    | MAT3X2 LESS_THAN type_decl GREATER_THAN
+    | MAT3X3 LESS_THAN type_decl GREATER_THAN
+    | MAT3X4 LESS_THAN type_decl GREATER_THAN
+    | MAT4X2 LESS_THAN type_decl GREATER_THAN
+    | MAT4X3 LESS_THAN type_decl GREATER_THAN
+    | MAT4X4 LESS_THAN type_decl GREATER_THAN
+    | ATOMIC LESS_THAN type_decl GREATER_THAN
+    | texture_sampler_types
+
+variable_statement ::=
+      variable_decl
+    | variable_decl EQUAL expression
+    | LET ( IDENT | variable_ident_decl ) EQUAL expression
+
+variable_decl ::=
+      VAR variable_qualifier ? ( IDENT | variable_ident_decl )
+
+variable_ident_decl ::=
+      IDENT COLON type_decl
+
+variable_qualifier ::=
+     LESS_THAN storage_class ( COMMA access_mode ) ? GREATER_THAN
+
+global_variable_decl ::=
+     attribute_list * variable_decl ( EQUAL const_expression ) ?
+
+global_constant_decl ::=
+     attribute_list * LET ( IDENT | variable_ident_decl ) global_const_initializer ?
+
+global_const_initializer ::=
+     EQUAL const_expression
+
+const_expression ::=
+      type_decl PAREN_LEFT ( ( const_expression COMMA ) * const_expression COMMA ? ) ? PAREN_RIGHT
+    | const_literal
+
+primary_expression ::=
+      IDENT argument_expression_list ?
+    | type_decl argument_expression_list
+    | const_literal
+    | paren_expression
+    | BITCAST LESS_THAN type_decl GREATER_THAN paren_expression
+
+paren_expression ::=
+      PAREN_LEFT expression PAREN_RIGHT
+
+argument_expression_list ::=
+      PAREN_LEFT ( ( expression COMMA ) * expression COMMA ? ) ? PAREN_RIGHT
+
+postfix_expression ::=
+      BRACKET_LEFT expression BRACKET_RIGHT postfix_expression ?
+    | PERIOD IDENT postfix_expression ?
+
+unary_expression ::=
+      singular_expression
+    | MINUS unary_expression
+    | BANG unary_expression
+    | TILDE unary_expression
+    | STAR unary_expression
+    | AND unary_expression
+
+singular_expression ::=
+      primary_expression postfix_expression ?
+
+lhs_expression ::=
+      ( STAR | AND ) * core_lhs_expression postfix_expression ?
+
+core_lhs_expression ::=
+      IDENT
+    | PAREN_LEFT lhs_expression PAREN_RIGHT
+
+multiplicative_expression ::=
+      unary_expression
+    | multiplicative_expression STAR unary_expression
+    | multiplicative_expression FORWARD_SLASH unary_expression
+    | multiplicative_expression MODULO unary_expression
+
+additive_expression ::=
+      multiplicative_expression
+    | additive_expression PLUS multiplicative_expression
+    | additive_expression MINUS multiplicative_expression
+
+shift_expression ::=
+      additive_expression
+    | unary_expression SHIFT_LEFT unary_expression
+    | unary_expression SHIFT_RIGHT unary_expression
+
+relational_expression ::=
+      shift_expression
+    | shift_expression LESS_THAN shift_expression
+    | shift_expression GREATER_THAN shift_expression
+    | shift_expression LESS_THAN_EQUAL shift_expression
+    | shift_expression GREATER_THAN_EQUAL shift_expression
+    | shift_expression EQUAL_EQUAL shift_expression
+    | shift_expression NOT_EQUAL shift_expression
+
+short_circuit_and_expression ::=
+      relational_expression
+    | short_circuit_and_expression AND_AND relational_expression
+
+short_circuit_or_expression ::=
+      relational_expression
+    | short_circuit_or_expression OR_OR relational_expression
+
+binary_or_expression ::=
+      unary_expression
+    | binary_or_expression OR unary_expression
+
+binary_and_expression ::=
+      unary_expression
+    | binary_and_expression AND unary_expression
+
+binary_xor_expression ::=
+      unary_expression
+    | binary_xor_expression XOR unary_expression
+
+expression ::=
+      relational_expression
+    | short_circuit_or_expression OR_OR relational_expression
+    | short_circuit_and_expression AND_AND relational_expression
+    | binary_and_expression AND unary_expression
+    | binary_or_expression OR unary_expression
+    | binary_xor_expression XOR unary_expression
+
+compound_statement ::=
+     BRACE_LEFT statement * BRACE_RIGHT
+
+assignment_statement ::=
+      ( lhs_expression | UNDERSCORE ) EQUAL expression
+
+if_statement ::=
+     IF paren_expression compound_statement ( ELSE else_statement )?
+
+else_statement ::=
+      compound_statement
+    | if_statement
+
+switch_statement ::=
+      SWITCH paren_expression BRACE_LEFT switch_body+ BRACE_RIGHT
+
+switch_body ::=
+      CASE case_selectors COLON BRACE_LEFT case_body? BRACE_RIGHT
+    | DEFAULT COLON BRACE_LEFT case_body? BRACE_RIGHT
+
+case_selectors ::=
+      const_literal ( COMMA const_literal ) * COMMA?
+
+case_body ::=
+      statement case_body?
+    | FALLTHROUGH SEMICOLON
+
+loop_statement ::=
+      LOOP BRACE_LEFT statement * continuing_statement ? BRACE_RIGHT
+
+for_statement ::=
+      FOR PAREN_LEFT for_header PAREN_RIGHT compound_statement
+
+for_header ::=
+     ( variable_statement | assignment_statement | func_call_statement )? SEMICOLON expression? SEMICOLON ( assignment_statement | func_call_statement )?
+
+break_statement ::=
+      BREAK
+
+continue_statement ::=
+      CONTINUE
+
+continuing_statement ::=
+      CONTINUING compound_statement
+
+return_statement ::=
+      RETURN expression?
+
+func_call_statement ::=
+      IDENT argument_expression_list
+
+statement ::=
+      SEMICOLON
+    | return_statement SEMICOLON
+    | if_statement
+    | switch_statement
+    | loop_statement
+    | for_statement
+    | func_call_statement SEMICOLON
+    | variable_statement SEMICOLON
+    | break_statement SEMICOLON
+    | continue_statement SEMICOLON
+    | DISCARD SEMICOLON
+    | assignment_statement SEMICOLON
+    | compound_statement
+
+function_decl ::=
+      attribute_list * function_header compound_statement
+
+function_header ::=
+      FN IDENT PAREN_LEFT param_list ? PAREN_RIGHT ( arrow attribute_list * type_decl )?
+
+param_list ::=
+      ( param COMMA )* param COMMA?
+
+param ::=
+      attribute_list* variable_ident_decl
+
+enable_directive ::=
+      ENABLE IDENT SEMICOLON
+
+global_decl ::=
+      SEMICOLON
+    | global_variable_decl SEMICOLON
+    | global_constant_decl SEMICOLON
+    | type_alias_decl SEMICOLON
+    | struct_decl SEMICOLON
+    | function_decl
+

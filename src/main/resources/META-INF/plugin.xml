@@ -1,18 +1,20 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.dparnell.intellijwgsl</id>
-    <name>intellij-wgsl</name>
+    <id>WGSL</id>
+    <name>WGSL Support</name>
+    <description>Support for WGSL - the WebGPU Shading Language</description>
+
+    <category>Custom Languages</category>
     <vendor>dparnell</vendor>
 
-    <depends>com.intellij.modules.platform</depends>
+    <idea-version since-build="144"/>
+    <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.dparnell.intellijwgsl.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.dparnell.intellijwgsl.services.MyProjectService"/>
+        <fileType name="WGSL File"
+                  implementationClass="wgslplugin.language.WGSLFileType"
+                  fieldName="INSTANCE"
+                  language="WGSL"
+                  extensions="wgsl"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.dparnell.intellijwgsl.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
