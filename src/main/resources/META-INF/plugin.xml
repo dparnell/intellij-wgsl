@@ -22,5 +22,9 @@
 
         <lang.syntaxHighlighterFactory language="WGSL"
                                        implementationClass="wgslplugin.language.WGSLSyntaxHighlighterFactory"/>
+
+        <annotator language="WGSL" implementationClass="wgslplugin.language.WGSLAnnotator"/>
+
+        <colorSettingsPage implementation="wgslplugin.language.WGSLColourSettingsPage"/>
     </extensions>
 </idea-plugin>

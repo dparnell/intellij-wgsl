@@ -1,8 +1,6 @@
 package wgslplugin.language;
 
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
-import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
@@ -14,43 +12,19 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
-
-
 public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
 
-    public static final TextAttributesKey COMMENT =
-            createTextAttributesKey("WGSL_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
-    public static final TextAttributesKey BAD_CHARACTER =
-            createTextAttributesKey("WGSL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
-    public static final TextAttributesKey NUMBER =
-            createTextAttributesKey("WGSL_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
-    public static final TextAttributesKey IDENT =
-            createTextAttributesKey("WGSL_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
-    public static final TextAttributesKey STORAGE =
-            createTextAttributesKey("WGSL_STORAGE", DefaultLanguageHighlighterColors.IDENTIFIER);
-    public static final TextAttributesKey KEYWORD =
-            createTextAttributesKey("WGSL_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey TYPE =
-            createTextAttributesKey("WGSL_TYPE", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey PAREN =
-            createTextAttributesKey("WGSL_PAREN", DefaultLanguageHighlighterColors.PARENTHESES);
-    public static final TextAttributesKey BRACE =
-            createTextAttributesKey("WGSL_BRACE", DefaultLanguageHighlighterColors.BRACES);
-    public static final TextAttributesKey BRACKET =
-            createTextAttributesKey("WGSL_BRACKET", DefaultLanguageHighlighterColors.BRACKETS);
-
-
-    private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
-    private static final TextAttributesKey[] IDENTIFIER_KEYS = new TextAttributesKey[]{IDENT};
-    private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{KEYWORD};
-    private static final TextAttributesKey[] TYPE_KEYS = new TextAttributesKey[]{TYPE};
-    private static final TextAttributesKey[] STORAGE_KEYS = new TextAttributesKey[]{STORAGE};
-    private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
-    private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
-    private static final TextAttributesKey[] PAREN_KEYS = new TextAttributesKey[]{PAREN};
-    private static final TextAttributesKey[] BRACE_KEYS = new TextAttributesKey[]{BRACE};
-    private static final TextAttributesKey[] BRACKET_KEYS = new TextAttributesKey[]{BRACKET};
+    private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{WGSLColours.NUMBER.attributes()};
+    private static final TextAttributesKey[] IDENTIFIER_KEYS = new TextAttributesKey[]{WGSLColours.IDENTIFIER.attributes()};
+    private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{WGSLColours.KEYWORD.attributes()};
+    private static final TextAttributesKey[] TYPE_KEYS = new TextAttributesKey[]{WGSLColours.BUILTIN_TYPE.attributes()};
+    private static final TextAttributesKey[] STORAGE_KEYS = new TextAttributesKey[]{WGSLColours.STORAGE.attributes()};
+    private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{WGSLColours.BAD_CHARACTER.attributes()};
+    private static final TextAttributesKey[] LINE_COMMENT_KEYS = new TextAttributesKey[]{WGSLColours.LINE_COMMENT.attributes()};
+    private static final TextAttributesKey[] BLOCK_COMMENT_KEYS = new TextAttributesKey[]{WGSLColours.BLOCK_COMMENT.attributes()};
+    private static final TextAttributesKey[] PAREN_KEYS = new TextAttributesKey[]{WGSLColours.PARENTHESIS.attributes()};
+    private static final TextAttributesKey[] BRACE_KEYS = new TextAttributesKey[]{WGSLColours.BRACES.attributes()};
+    private static final TextAttributesKey[] BRACKET_KEYS = new TextAttributesKey[]{WGSLColours.BRACKETS.attributes()};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     private static final Set<IElementType> NUMBER_TOKENS = tokens(
@@ -88,14 +62,8 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
             WGSLTypes.STORAGE, WGSLTypes.UNIFORM, WGSLTypes.WORKGROUP, WGSLTypes.FUNCTION, WGSLTypes.PRIVATE,WGSLTypes.PUSH_CONSTANT
     );
 
-    private static final Set<String> TYPE_NAMES = names("");
-
     private static Set<IElementType> tokens(IElementType ... types) {
         return Arrays.stream(types).collect(Collectors.toSet());
-    }
-
-    private static Set<String> names(String ... names) {
-        return Arrays.stream(names).collect(Collectors.toSet());
     }
 
     @NotNull
@@ -126,12 +94,12 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
             return STORAGE_KEYS;
         }
 
-        if (tokenType.equals(WGSLTypes.LINE_COMMENT) || tokenType.equals(WGSLTypes.BLOCK_COMMENT)) {
-            return COMMENT_KEYS;
+        if (tokenType.equals(WGSLTypes.LINE_COMMENT)) {
+            return LINE_COMMENT_KEYS;
         }
 
-        if (tokenType.equals(TokenType.BAD_CHARACTER)) {
-            return BAD_CHAR_KEYS;
+        if (tokenType.equals(WGSLTypes.BLOCK_COMMENT)) {
+            return BLOCK_COMMENT_KEYS;
         }
 
         if (tokenType.equals(WGSLTypes.PAREN_LEFT) || tokenType.equals(WGSLTypes.PAREN_RIGHT)) {
@@ -143,6 +111,11 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
         if (tokenType.equals(WGSLTypes.BRACKET_LEFT) || tokenType.equals(WGSLTypes.BRACKET_RIGHT) || tokenType.equals(WGSLTypes.ATTR_LEFT) || tokenType.equals(WGSLTypes.ATTR_RIGHT)) {
             return BRACKET_KEYS;
         }
+
+        if (tokenType.equals(TokenType.BAD_CHARACTER)) {
+            return BAD_CHAR_KEYS;
+        }
+
         return EMPTY_KEYS;
     }
 }
