@@ -29,44 +29,14 @@ public class WGSLExpressionImpl extends ASTWrapperPsiElement implements WGSLExpr
 
   @Override
   @Nullable
-  public WGSLBinaryAndExpression getBinaryAndExpression() {
-    return findChildByClass(WGSLBinaryAndExpression.class);
+  public WGSLExpression getExpression() {
+    return findChildByClass(WGSLExpression.class);
   }
 
   @Override
-  @Nullable
-  public WGSLBinaryOrExpression getBinaryOrExpression() {
-    return findChildByClass(WGSLBinaryOrExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLBinaryXorExpression getBinaryXorExpression() {
-    return findChildByClass(WGSLBinaryXorExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLRelationalExpression getRelationalExpression() {
-    return findChildByClass(WGSLRelationalExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLShortCircuitAndExpression getShortCircuitAndExpression() {
-    return findChildByClass(WGSLShortCircuitAndExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLShortCircuitOrExpression getShortCircuitOrExpression() {
-    return findChildByClass(WGSLShortCircuitOrExpression.class);
-  }
-
-  @Override
-  @Nullable
+  @NotNull
   public WGSLUnaryExpression getUnaryExpression() {
-    return findChildByClass(WGSLUnaryExpression.class);
+    return findNotNullChildByClass(WGSLUnaryExpression.class);
   }
 
 }

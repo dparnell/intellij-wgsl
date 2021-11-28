@@ -8,24 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface WGSLExpression extends PsiElement {
 
   @Nullable
-  WGSLBinaryAndExpression getBinaryAndExpression();
+  WGSLExpression getExpression();
 
-  @Nullable
-  WGSLBinaryOrExpression getBinaryOrExpression();
-
-  @Nullable
-  WGSLBinaryXorExpression getBinaryXorExpression();
-
-  @Nullable
-  WGSLRelationalExpression getRelationalExpression();
-
-  @Nullable
-  WGSLShortCircuitAndExpression getShortCircuitAndExpression();
-
-  @Nullable
-  WGSLShortCircuitOrExpression getShortCircuitOrExpression();
-
-  @Nullable
+  @NotNull
   WGSLUnaryExpression getUnaryExpression();
 
 }

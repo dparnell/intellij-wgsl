@@ -175,8 +175,7 @@ type_decl ::=
     | texture_sampler_types
 
 variable_statement ::=
-      variable_decl
-    | variable_decl EQUAL expression
+      variable_decl (EQUAL expression)?
     | LET ( variable_ident_decl | IDENT ) EQUAL expression
 
 variable_decl ::=
@@ -236,48 +235,8 @@ core_lhs_expression ::=
       IDENT
     | PAREN_LEFT lhs_expression PAREN_RIGHT
 
-multiplicative_expression ::=
-      unary_expression ((STAR | FORWARD_SLASH | MODULO) unary_expression)?
-
-additive_expression ::=
-      multiplicative_expression  ((PLUS | MINUS) multiplicative_expression)?
-
-shift_expression ::=
-      additive_expression
-    | unary_expression SHIFT_LEFT unary_expression
-    | unary_expression SHIFT_RIGHT unary_expression
-
-relational_expression ::=
-      shift_expression
-    | shift_expression LESS_THAN shift_expression
-    | shift_expression GREATER_THAN shift_expression
-    | shift_expression LESS_THAN_EQUAL shift_expression
-    | shift_expression GREATER_THAN_EQUAL shift_expression
-    | shift_expression EQUAL_EQUAL shift_expression
-    | shift_expression NOT_EQUAL shift_expression
-
-short_circuit_and_expression ::=
-      relational_expression (AND_AND relational_expression)?
-
-short_circuit_or_expression ::=
-      relational_expression (OR_OR relational_expression)?
-
-binary_or_expression ::=
-      unary_expression (OR unary_expression)?
-
-binary_and_expression ::=
-      unary_expression (AND unary_expression)?
-
-binary_xor_expression ::=
-      unary_expression (XOR unary_expression)?
-
 expression ::=
-      relational_expression
-    | short_circuit_or_expression OR_OR relational_expression
-    | short_circuit_and_expression AND_AND relational_expression
-    | binary_and_expression AND unary_expression
-    | binary_or_expression OR unary_expression
-    | binary_xor_expression XOR unary_expression
+      unary_expression ((STAR | FORWARD_SLASH | MODULO | PLUS | MINUS | SHIFT_LEFT | SHIFT_RIGHT | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL | EQUAL_EQUAL | NOT_EQUAL | OR_OR | AND_AND | OR | AND | XOR) expression)?
 
 compound_statement ::=
      BRACE_LEFT statement* BRACE_RIGHT

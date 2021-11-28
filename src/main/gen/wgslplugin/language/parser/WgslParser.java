@@ -51,45 +51,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // multiplicative_expression  ((PLUS | MINUS) multiplicative_expression)?
-  public static boolean additive_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additive_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ADDITIVE_EXPRESSION, "<additive expression>");
-    r = multiplicative_expression(b, l + 1);
-    r = r && additive_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // ((PLUS | MINUS) multiplicative_expression)?
-  private static boolean additive_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additive_expression_1")) return false;
-    additive_expression_1_0(b, l + 1);
-    return true;
-  }
-
-  // (PLUS | MINUS) multiplicative_expression
-  private static boolean additive_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additive_expression_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = additive_expression_1_0_0(b, l + 1);
-    r = r && multiplicative_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // PLUS | MINUS
-  private static boolean additive_expression_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additive_expression_1_0_0")) return false;
-    boolean r;
-    r = consumeToken(b, PLUS);
-    if (!r) r = consumeToken(b, MINUS);
-    return r;
-  }
-
-  /* ********************************************************** */
   // PAREN_LEFT ( ( expression COMMA )* expression COMMA? )? PAREN_RIGHT
   public static boolean argument_expression_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list")) return false;
@@ -300,96 +261,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = attribute(b, l + 1);
     r = r && consumeToken(b, COMMA);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // unary_expression (AND unary_expression)?
-  public static boolean binary_and_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_and_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BINARY_AND_EXPRESSION, "<binary and expression>");
-    r = unary_expression(b, l + 1);
-    r = r && binary_and_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (AND unary_expression)?
-  private static boolean binary_and_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_and_expression_1")) return false;
-    binary_and_expression_1_0(b, l + 1);
-    return true;
-  }
-
-  // AND unary_expression
-  private static boolean binary_and_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_and_expression_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, AND);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // unary_expression (OR unary_expression)?
-  public static boolean binary_or_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_or_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BINARY_OR_EXPRESSION, "<binary or expression>");
-    r = unary_expression(b, l + 1);
-    r = r && binary_or_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (OR unary_expression)?
-  private static boolean binary_or_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_or_expression_1")) return false;
-    binary_or_expression_1_0(b, l + 1);
-    return true;
-  }
-
-  // OR unary_expression
-  private static boolean binary_or_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_or_expression_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OR);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // unary_expression (XOR unary_expression)?
-  public static boolean binary_xor_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_xor_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BINARY_XOR_EXPRESSION, "<binary xor expression>");
-    r = unary_expression(b, l + 1);
-    r = r && binary_xor_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (XOR unary_expression)?
-  private static boolean binary_xor_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_xor_expression_1")) return false;
-    binary_xor_expression_1_0(b, l + 1);
-    return true;
-  }
-
-  // XOR unary_expression
-  private static boolean binary_xor_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "binary_xor_expression_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, XOR);
-    r = r && unary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -709,83 +580,57 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // relational_expression
-  //     | short_circuit_or_expression OR_OR relational_expression
-  //     | short_circuit_and_expression AND_AND relational_expression
-  //     | binary_and_expression AND unary_expression
-  //     | binary_or_expression OR unary_expression
-  //     | binary_xor_expression XOR unary_expression
+  // unary_expression ((STAR | FORWARD_SLASH | MODULO | PLUS | MINUS | SHIFT_LEFT | SHIFT_RIGHT | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL | EQUAL_EQUAL | NOT_EQUAL | OR_OR | AND_AND | OR | AND | XOR) expression)?
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, EXPRESSION, "<expression>");
-    r = relational_expression(b, l + 1);
-    if (!r) r = expression_1(b, l + 1);
-    if (!r) r = expression_2(b, l + 1);
-    if (!r) r = expression_3(b, l + 1);
-    if (!r) r = expression_4(b, l + 1);
-    if (!r) r = expression_5(b, l + 1);
+    r = unary_expression(b, l + 1);
+    r = r && expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // short_circuit_or_expression OR_OR relational_expression
+  // ((STAR | FORWARD_SLASH | MODULO | PLUS | MINUS | SHIFT_LEFT | SHIFT_RIGHT | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL | EQUAL_EQUAL | NOT_EQUAL | OR_OR | AND_AND | OR | AND | XOR) expression)?
   private static boolean expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_1")) return false;
+    expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // (STAR | FORWARD_SLASH | MODULO | PLUS | MINUS | SHIFT_LEFT | SHIFT_RIGHT | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL | EQUAL_EQUAL | NOT_EQUAL | OR_OR | AND_AND | OR | AND | XOR) expression
+  private static boolean expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = short_circuit_or_expression(b, l + 1);
-    r = r && consumeToken(b, OR_OR);
-    r = r && relational_expression(b, l + 1);
+    r = expression_1_0_0(b, l + 1);
+    r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // short_circuit_and_expression AND_AND relational_expression
-  private static boolean expression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expression_2")) return false;
+  // STAR | FORWARD_SLASH | MODULO | PLUS | MINUS | SHIFT_LEFT | SHIFT_RIGHT | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL | EQUAL_EQUAL | NOT_EQUAL | OR_OR | AND_AND | OR | AND | XOR
+  private static boolean expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_1_0_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = short_circuit_and_expression(b, l + 1);
-    r = r && consumeToken(b, AND_AND);
-    r = r && relational_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // binary_and_expression AND unary_expression
-  private static boolean expression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expression_3")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = binary_and_expression(b, l + 1);
-    r = r && consumeToken(b, AND);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // binary_or_expression OR unary_expression
-  private static boolean expression_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expression_4")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = binary_or_expression(b, l + 1);
-    r = r && consumeToken(b, OR);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // binary_xor_expression XOR unary_expression
-  private static boolean expression_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expression_5")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = binary_xor_expression(b, l + 1);
-    r = r && consumeToken(b, XOR);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = consumeToken(b, STAR);
+    if (!r) r = consumeToken(b, FORWARD_SLASH);
+    if (!r) r = consumeToken(b, MODULO);
+    if (!r) r = consumeToken(b, PLUS);
+    if (!r) r = consumeToken(b, MINUS);
+    if (!r) r = consumeToken(b, SHIFT_LEFT);
+    if (!r) r = consumeToken(b, SHIFT_RIGHT);
+    if (!r) r = consumeToken(b, LESS_THAN);
+    if (!r) r = consumeToken(b, LESS_THAN_EQUAL);
+    if (!r) r = consumeToken(b, GREATER_THAN);
+    if (!r) r = consumeToken(b, GREATER_THAN_EQUAL);
+    if (!r) r = consumeToken(b, EQUAL_EQUAL);
+    if (!r) r = consumeToken(b, NOT_EQUAL);
+    if (!r) r = consumeToken(b, OR_OR);
+    if (!r) r = consumeToken(b, AND_AND);
+    if (!r) r = consumeToken(b, OR);
+    if (!r) r = consumeToken(b, AND);
+    if (!r) r = consumeToken(b, XOR);
     return r;
   }
 
@@ -1262,46 +1107,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // unary_expression ((STAR | FORWARD_SLASH | MODULO) unary_expression)?
-  public static boolean multiplicative_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, MULTIPLICATIVE_EXPRESSION, "<multiplicative expression>");
-    r = unary_expression(b, l + 1);
-    r = r && multiplicative_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // ((STAR | FORWARD_SLASH | MODULO) unary_expression)?
-  private static boolean multiplicative_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression_1")) return false;
-    multiplicative_expression_1_0(b, l + 1);
-    return true;
-  }
-
-  // (STAR | FORWARD_SLASH | MODULO) unary_expression
-  private static boolean multiplicative_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = multiplicative_expression_1_0_0(b, l + 1);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // STAR | FORWARD_SLASH | MODULO
-  private static boolean multiplicative_expression_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression_1_0_0")) return false;
-    boolean r;
-    r = consumeToken(b, STAR);
-    if (!r) r = consumeToken(b, FORWARD_SLASH);
-    if (!r) r = consumeToken(b, MODULO);
-    return r;
-  }
-
-  /* ********************************************************** */
   // TEXTURE_MULTISAMPLED_2D
   public static boolean multisampled_texture_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multisampled_texture_type")) return false;
@@ -1508,101 +1313,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // shift_expression
-  //     | shift_expression LESS_THAN shift_expression
-  //     | shift_expression GREATER_THAN shift_expression
-  //     | shift_expression LESS_THAN_EQUAL shift_expression
-  //     | shift_expression GREATER_THAN_EQUAL shift_expression
-  //     | shift_expression EQUAL_EQUAL shift_expression
-  //     | shift_expression NOT_EQUAL shift_expression
-  public static boolean relational_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relational_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, RELATIONAL_EXPRESSION, "<relational expression>");
-    r = shift_expression(b, l + 1);
-    if (!r) r = relational_expression_1(b, l + 1);
-    if (!r) r = relational_expression_2(b, l + 1);
-    if (!r) r = relational_expression_3(b, l + 1);
-    if (!r) r = relational_expression_4(b, l + 1);
-    if (!r) r = relational_expression_5(b, l + 1);
-    if (!r) r = relational_expression_6(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // shift_expression LESS_THAN shift_expression
-  private static boolean relational_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relational_expression_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shift_expression(b, l + 1);
-    r = r && consumeToken(b, LESS_THAN);
-    r = r && shift_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // shift_expression GREATER_THAN shift_expression
-  private static boolean relational_expression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relational_expression_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shift_expression(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    r = r && shift_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // shift_expression LESS_THAN_EQUAL shift_expression
-  private static boolean relational_expression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relational_expression_3")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shift_expression(b, l + 1);
-    r = r && consumeToken(b, LESS_THAN_EQUAL);
-    r = r && shift_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // shift_expression GREATER_THAN_EQUAL shift_expression
-  private static boolean relational_expression_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relational_expression_4")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shift_expression(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN_EQUAL);
-    r = r && shift_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // shift_expression EQUAL_EQUAL shift_expression
-  private static boolean relational_expression_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relational_expression_5")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shift_expression(b, l + 1);
-    r = r && consumeToken(b, EQUAL_EQUAL);
-    r = r && shift_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // shift_expression NOT_EQUAL shift_expression
-  private static boolean relational_expression_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relational_expression_6")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = shift_expression(b, l + 1);
-    r = r && consumeToken(b, NOT_EQUAL);
-    r = r && shift_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // RETURN expression?
   public static boolean return_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "return_statement")) return false;
@@ -1654,105 +1364,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, SAMPLER);
     if (!r) r = consumeToken(b, SAMPLER_COMPARISON);
     exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // additive_expression
-  //     | unary_expression SHIFT_LEFT unary_expression
-  //     | unary_expression SHIFT_RIGHT unary_expression
-  public static boolean shift_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shift_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SHIFT_EXPRESSION, "<shift expression>");
-    r = additive_expression(b, l + 1);
-    if (!r) r = shift_expression_1(b, l + 1);
-    if (!r) r = shift_expression_2(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // unary_expression SHIFT_LEFT unary_expression
-  private static boolean shift_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shift_expression_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = unary_expression(b, l + 1);
-    r = r && consumeToken(b, SHIFT_LEFT);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // unary_expression SHIFT_RIGHT unary_expression
-  private static boolean shift_expression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shift_expression_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = unary_expression(b, l + 1);
-    r = r && consumeToken(b, SHIFT_RIGHT);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // relational_expression (AND_AND relational_expression)?
-  public static boolean short_circuit_and_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "short_circuit_and_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SHORT_CIRCUIT_AND_EXPRESSION, "<short circuit and expression>");
-    r = relational_expression(b, l + 1);
-    r = r && short_circuit_and_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (AND_AND relational_expression)?
-  private static boolean short_circuit_and_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "short_circuit_and_expression_1")) return false;
-    short_circuit_and_expression_1_0(b, l + 1);
-    return true;
-  }
-
-  // AND_AND relational_expression
-  private static boolean short_circuit_and_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "short_circuit_and_expression_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, AND_AND);
-    r = r && relational_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // relational_expression (OR_OR relational_expression)?
-  public static boolean short_circuit_or_expression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "short_circuit_or_expression")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SHORT_CIRCUIT_OR_EXPRESSION, "<short circuit or expression>");
-    r = relational_expression(b, l + 1);
-    r = r && short_circuit_or_expression_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (OR_OR relational_expression)?
-  private static boolean short_circuit_or_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "short_circuit_or_expression_1")) return false;
-    short_circuit_or_expression_1_0(b, l + 1);
-    return true;
-  }
-
-  // OR_OR relational_expression
-  private static boolean short_circuit_or_expression_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "short_circuit_or_expression_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OR_OR);
-    r = r && relational_expression(b, l + 1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -2653,40 +2264,55 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // variable_decl
-  //     | variable_decl EQUAL expression
+  // variable_decl (EQUAL expression)?
   //     | LET ( variable_ident_decl | IDENT ) EQUAL expression
   public static boolean variable_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_statement")) return false;
     if (!nextTokenIs(b, "<variable statement>", LET, VAR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VARIABLE_STATEMENT, "<variable statement>");
-    r = variable_decl(b, l + 1);
+    r = variable_statement_0(b, l + 1);
     if (!r) r = variable_statement_1(b, l + 1);
-    if (!r) r = variable_statement_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // variable_decl EQUAL expression
-  private static boolean variable_statement_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_statement_1")) return false;
+  // variable_decl (EQUAL expression)?
+  private static boolean variable_statement_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_statement_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = variable_decl(b, l + 1);
-    r = r && consumeToken(b, EQUAL);
+    r = r && variable_statement_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (EQUAL expression)?
+  private static boolean variable_statement_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_statement_0_1")) return false;
+    variable_statement_0_1_0(b, l + 1);
+    return true;
+  }
+
+  // EQUAL expression
+  private static boolean variable_statement_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_statement_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EQUAL);
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // LET ( variable_ident_decl | IDENT ) EQUAL expression
-  private static boolean variable_statement_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_statement_2")) return false;
+  private static boolean variable_statement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_statement_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LET);
-    r = r && variable_statement_2_1(b, l + 1);
+    r = r && variable_statement_1_1(b, l + 1);
     r = r && consumeToken(b, EQUAL);
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
@@ -2694,8 +2320,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // variable_ident_decl | IDENT
-  private static boolean variable_statement_2_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_statement_2_1")) return false;
+  private static boolean variable_statement_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_statement_1_1")) return false;
     boolean r;
     r = variable_ident_decl(b, l + 1);
     if (!r) r = consumeToken(b, IDENT);

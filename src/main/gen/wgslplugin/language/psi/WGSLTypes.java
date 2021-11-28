@@ -9,15 +9,11 @@ import wgslplugin.language.psi.impl.*;
 public interface WGSLTypes {
 
   IElementType ACCESS_MODE = new WGSLElementType("ACCESS_MODE");
-  IElementType ADDITIVE_EXPRESSION = new WGSLElementType("ADDITIVE_EXPRESSION");
   IElementType ARGUMENT_EXPRESSION_LIST = new WGSLElementType("ARGUMENT_EXPRESSION_LIST");
   IElementType ARRAY_TYPE_DECL = new WGSLElementType("ARRAY_TYPE_DECL");
   IElementType ASSIGNMENT_STATEMENT = new WGSLElementType("ASSIGNMENT_STATEMENT");
   IElementType ATTRIBUTE = new WGSLElementType("ATTRIBUTE");
   IElementType ATTRIBUTE_LIST = new WGSLElementType("ATTRIBUTE_LIST");
-  IElementType BINARY_AND_EXPRESSION = new WGSLElementType("BINARY_AND_EXPRESSION");
-  IElementType BINARY_OR_EXPRESSION = new WGSLElementType("BINARY_OR_EXPRESSION");
-  IElementType BINARY_XOR_EXPRESSION = new WGSLElementType("BINARY_XOR_EXPRESSION");
   IElementType BREAK_STATEMENT = new WGSLElementType("BREAK_STATEMENT");
   IElementType CASE_BODY = new WGSLElementType("CASE_BODY");
   IElementType CASE_SELECTORS = new WGSLElementType("CASE_SELECTORS");
@@ -47,20 +43,15 @@ public interface WGSLTypes {
   IElementType LHS_EXPRESSION = new WGSLElementType("LHS_EXPRESSION");
   IElementType LITERAL_OR_IDENT = new WGSLElementType("LITERAL_OR_IDENT");
   IElementType LOOP_STATEMENT = new WGSLElementType("LOOP_STATEMENT");
-  IElementType MULTIPLICATIVE_EXPRESSION = new WGSLElementType("MULTIPLICATIVE_EXPRESSION");
   IElementType MULTISAMPLED_TEXTURE_TYPE = new WGSLElementType("MULTISAMPLED_TEXTURE_TYPE");
   IElementType PARAM = new WGSLElementType("PARAM");
   IElementType PARAM_LIST = new WGSLElementType("PARAM_LIST");
   IElementType PAREN_EXPRESSION = new WGSLElementType("PAREN_EXPRESSION");
   IElementType POSTFIX_EXPRESSION = new WGSLElementType("POSTFIX_EXPRESSION");
   IElementType PRIMARY_EXPRESSION = new WGSLElementType("PRIMARY_EXPRESSION");
-  IElementType RELATIONAL_EXPRESSION = new WGSLElementType("RELATIONAL_EXPRESSION");
   IElementType RETURN_STATEMENT = new WGSLElementType("RETURN_STATEMENT");
   IElementType SAMPLED_TEXTURE_TYPE = new WGSLElementType("SAMPLED_TEXTURE_TYPE");
   IElementType SAMPLER_TYPE = new WGSLElementType("SAMPLER_TYPE");
-  IElementType SHIFT_EXPRESSION = new WGSLElementType("SHIFT_EXPRESSION");
-  IElementType SHORT_CIRCUIT_AND_EXPRESSION = new WGSLElementType("SHORT_CIRCUIT_AND_EXPRESSION");
-  IElementType SHORT_CIRCUIT_OR_EXPRESSION = new WGSLElementType("SHORT_CIRCUIT_OR_EXPRESSION");
   IElementType SINGULAR_EXPRESSION = new WGSLElementType("SINGULAR_EXPRESSION");
   IElementType STATEMENT = new WGSLElementType("STATEMENT");
   IElementType STORAGE_CLASS = new WGSLElementType("STORAGE_CLASS");
@@ -232,9 +223,6 @@ public interface WGSLTypes {
       if (type == ACCESS_MODE) {
         return new WGSLAccessModeImpl(node);
       }
-      else if (type == ADDITIVE_EXPRESSION) {
-        return new WGSLAdditiveExpressionImpl(node);
-      }
       else if (type == ARGUMENT_EXPRESSION_LIST) {
         return new WGSLArgumentExpressionListImpl(node);
       }
@@ -249,15 +237,6 @@ public interface WGSLTypes {
       }
       else if (type == ATTRIBUTE_LIST) {
         return new WGSLAttributeListImpl(node);
-      }
-      else if (type == BINARY_AND_EXPRESSION) {
-        return new WGSLBinaryAndExpressionImpl(node);
-      }
-      else if (type == BINARY_OR_EXPRESSION) {
-        return new WGSLBinaryOrExpressionImpl(node);
-      }
-      else if (type == BINARY_XOR_EXPRESSION) {
-        return new WGSLBinaryXorExpressionImpl(node);
       }
       else if (type == BREAK_STATEMENT) {
         return new WGSLBreakStatementImpl(node);
@@ -346,9 +325,6 @@ public interface WGSLTypes {
       else if (type == LOOP_STATEMENT) {
         return new WGSLLoopStatementImpl(node);
       }
-      else if (type == MULTIPLICATIVE_EXPRESSION) {
-        return new WGSLMultiplicativeExpressionImpl(node);
-      }
       else if (type == MULTISAMPLED_TEXTURE_TYPE) {
         return new WGSLMultisampledTextureTypeImpl(node);
       }
@@ -367,9 +343,6 @@ public interface WGSLTypes {
       else if (type == PRIMARY_EXPRESSION) {
         return new WGSLPrimaryExpressionImpl(node);
       }
-      else if (type == RELATIONAL_EXPRESSION) {
-        return new WGSLRelationalExpressionImpl(node);
-      }
       else if (type == RETURN_STATEMENT) {
         return new WGSLReturnStatementImpl(node);
       }
@@ -378,15 +351,6 @@ public interface WGSLTypes {
       }
       else if (type == SAMPLER_TYPE) {
         return new WGSLSamplerTypeImpl(node);
-      }
-      else if (type == SHIFT_EXPRESSION) {
-        return new WGSLShiftExpressionImpl(node);
-      }
-      else if (type == SHORT_CIRCUIT_AND_EXPRESSION) {
-        return new WGSLShortCircuitAndExpressionImpl(node);
-      }
-      else if (type == SHORT_CIRCUIT_OR_EXPRESSION) {
-        return new WGSLShortCircuitOrExpressionImpl(node);
       }
       else if (type == SINGULAR_EXPRESSION) {
         return new WGSLSingularExpressionImpl(node);

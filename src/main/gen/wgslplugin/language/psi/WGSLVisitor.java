@@ -11,10 +11,6 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAdditiveExpression(@NotNull WGSLAdditiveExpression o) {
-    visitPsiElement(o);
-  }
-
   public void visitArgumentExpressionList(@NotNull WGSLArgumentExpressionList o) {
     visitPsiElement(o);
   }
@@ -32,18 +28,6 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitAttributeList(@NotNull WGSLAttributeList o) {
-    visitPsiElement(o);
-  }
-
-  public void visitBinaryAndExpression(@NotNull WGSLBinaryAndExpression o) {
-    visitPsiElement(o);
-  }
-
-  public void visitBinaryOrExpression(@NotNull WGSLBinaryOrExpression o) {
-    visitPsiElement(o);
-  }
-
-  public void visitBinaryXorExpression(@NotNull WGSLBinaryXorExpression o) {
     visitPsiElement(o);
   }
 
@@ -163,10 +147,6 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMultiplicativeExpression(@NotNull WGSLMultiplicativeExpression o) {
-    visitPsiElement(o);
-  }
-
   public void visitMultisampledTextureType(@NotNull WGSLMultisampledTextureType o) {
     visitPsiElement(o);
   }
@@ -191,10 +171,6 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitRelationalExpression(@NotNull WGSLRelationalExpression o) {
-    visitPsiElement(o);
-  }
-
   public void visitReturnStatement(@NotNull WGSLReturnStatement o) {
     visitPsiElement(o);
   }
@@ -204,18 +180,6 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitSamplerType(@NotNull WGSLSamplerType o) {
-    visitPsiElement(o);
-  }
-
-  public void visitShiftExpression(@NotNull WGSLShiftExpression o) {
-    visitPsiElement(o);
-  }
-
-  public void visitShortCircuitAndExpression(@NotNull WGSLShortCircuitAndExpression o) {
-    visitPsiElement(o);
-  }
-
-  public void visitShortCircuitOrExpression(@NotNull WGSLShortCircuitOrExpression o) {
     visitPsiElement(o);
   }
 
