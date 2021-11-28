@@ -2563,7 +2563,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // VAR variable_qualifier ? ( IDENT | variable_ident_decl )
+  // VAR variable_qualifier? ( variable_ident_decl | IDENT )
   public static boolean variable_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_decl")) return false;
     if (!nextTokenIs(b, VAR)) return false;
@@ -2576,19 +2576,19 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // variable_qualifier ?
+  // variable_qualifier?
   private static boolean variable_decl_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_decl_1")) return false;
     variable_qualifier(b, l + 1);
     return true;
   }
 
-  // IDENT | variable_ident_decl
+  // variable_ident_decl | IDENT
   private static boolean variable_decl_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_decl_2")) return false;
     boolean r;
-    r = consumeToken(b, IDENT);
-    if (!r) r = variable_ident_decl(b, l + 1);
+    r = variable_ident_decl(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 
@@ -2606,7 +2606,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LESS_THAN storage_class ( COMMA access_mode ) ? GREATER_THAN
+  // LESS_THAN storage_class ( COMMA access_mode )? GREATER_THAN
   public static boolean variable_qualifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_qualifier")) return false;
     if (!nextTokenIs(b, LESS_THAN)) return false;
@@ -2620,7 +2620,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( COMMA access_mode ) ?
+  // ( COMMA access_mode )?
   private static boolean variable_qualifier_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_qualifier_2")) return false;
     variable_qualifier_2_0(b, l + 1);

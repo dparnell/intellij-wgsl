@@ -181,6 +181,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "fn"                               { return FN; }
   "arrow"                            { return ARROW; }
   "->"                               { return ENABLE; }
+  "block"                            { return BLOCK; }
 
 {IDENT}                            { return IDENT; }
 

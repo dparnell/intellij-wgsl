@@ -91,6 +91,7 @@ public interface WGSLTypes {
   IElementType BGRA8UNORM = new WGSLTokenType("BGRA8UNORM");
   IElementType BGRA8UNORM_SRGB = new WGSLTokenType("BGRA8UNORM_SRGB");
   IElementType BITCAST = new WGSLTokenType("BITCAST");
+  IElementType BLOCK = new WGSLTokenType("BLOCK");
   IElementType BLOCK_COMMENT = new WGSLTokenType("BLOCK_COMMENT");
   IElementType BOOL = new WGSLTokenType("BOOL");
   IElementType BRACE_LEFT = new WGSLTokenType("BRACE_LEFT");

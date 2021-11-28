@@ -14,6 +14,7 @@
   tokens = [
     LINE_COMMENT = 'LINE_COMMENT'
     BLOCK_COMMENT = 'BLOCK_COMMENT'
+    BLOCK = 'BLOCK'
   ]
 }
 
@@ -179,13 +180,13 @@ variable_statement ::=
     | LET ( IDENT | variable_ident_decl ) EQUAL expression
 
 variable_decl ::=
-      VAR variable_qualifier ? ( IDENT | variable_ident_decl )
+      VAR variable_qualifier? ( variable_ident_decl | IDENT )
 
 variable_ident_decl ::=
       IDENT COLON type_decl
 
 variable_qualifier ::=
-     LESS_THAN storage_class ( COMMA access_mode ) ? GREATER_THAN
+     LESS_THAN storage_class ( COMMA access_mode )? GREATER_THAN
 
 global_variable_decl ::=
      attribute_list * variable_decl ( EQUAL const_expression ) ?
