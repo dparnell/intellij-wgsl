@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLAdditiveExpression extends PsiElement {
 
-  @Nullable
-  WGSLAdditiveExpression getAdditiveExpression();
-
   @NotNull
-  WGSLMultiplicativeExpression getMultiplicativeExpression();
+  List<WGSLMultiplicativeExpression> getMultiplicativeExpressionList();
 
 }

@@ -22,7 +22,6 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %type IElementType
 %unicode
 
-EOL=\R
 WHITE_SPACE=\s+
 
 LINE_COMMENT          = "//"[^\r\n]*
@@ -66,6 +65,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "workgroup"                        { return WORKGROUP; }
   "uniform"                          { return UNIFORM; }
   "storage"                          { return STORAGE; }
+  "push_constant"                    { return PUSH_CONSTANT; }
   "sampler"                          { return SAMPLER; }
   "sampler_comparison"               { return SAMPLER_COMPARISON; }
   "texture_1d"                       { return TEXTURE_1D; }
@@ -120,15 +120,15 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "rgba32sint"                       { return RGBA32SINT; }
   "rgba32float"                      { return RGBA32FLOAT; }
   "type"                             { return TYPE; }
-  "equal"                            { return EQUAL; }
+  "="                                { return EQUAL; }
   "bool"                             { return BOOL; }
-  "float32"                          { return FLOAT32; }
-  "int32"                            { return INT32; }
-  "uint32"                           { return UINT32; }
+  "f32"                              { return FLOAT32; }
+  "i32"                              { return INT32; }
+  "u32"                              { return UINT32; }
   "vec2"                             { return VEC2; }
   "vec3"                             { return VEC3; }
   "vec4"                             { return VEC4; }
-  "pointer"                          { return POINTER; }
+  "ptr"                              { return POINTER; }
   "mat2x2"                           { return MAT2X2; }
   "mat2x3"                           { return MAT2X3; }
   "mat2x4"                           { return MAT2X4; }
@@ -179,11 +179,10 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "return"                           { return RETURN; }
   "discard"                          { return DISCARD; }
   "fn"                               { return FN; }
-  "arrow"                            { return ARROW; }
-  "->"                               { return ENABLE; }
-  "block"                            { return BLOCK; }
+  "->"                               { return ARROW; }
+  "enable"                           { return ENABLE; }
 
-{IDENT}                            { return IDENT; }
+  {IDENT}                            { return IDENT; }
 
 }
 

@@ -28,15 +28,9 @@ public class WGSLBinaryXorExpressionImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @Nullable
-  public WGSLBinaryXorExpression getBinaryXorExpression() {
-    return findChildByClass(WGSLBinaryXorExpression.class);
-  }
-
-  @Override
   @NotNull
-  public WGSLUnaryExpression getUnaryExpression() {
-    return findNotNullChildByClass(WGSLUnaryExpression.class);
+  public List<WGSLUnaryExpression> getUnaryExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLUnaryExpression.class);
   }
 
 }

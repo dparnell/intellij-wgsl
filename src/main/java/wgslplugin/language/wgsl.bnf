@@ -14,7 +14,6 @@
   tokens = [
     LINE_COMMENT = 'LINE_COMMENT'
     BLOCK_COMMENT = 'BLOCK_COMMENT'
-    BLOCK = 'BLOCK'
   ]
 }
 
@@ -62,7 +61,7 @@ struct_body_decl ::=
       BRACE_LEFT struct_member* BRACE_RIGHT
 
 struct_member ::=
-      attribute_list * variable_ident_decl SEMICOLON
+      attribute_list* variable_ident_decl SEMICOLON
 
 access_mode ::=
       READ
@@ -75,6 +74,7 @@ storage_class ::=
     | WORKGROUP
     | UNIFORM
     | STORAGE
+    | PUSH_CONSTANT
 
 texture_sampler_types ::=
       sampler_type
@@ -160,7 +160,7 @@ type_decl ::=
     | VEC2 LESS_THAN type_decl GREATER_THAN
     | VEC3 LESS_THAN type_decl GREATER_THAN
     | VEC4 LESS_THAN type_decl GREATER_THAN
-    | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode ) ? GREATER_THAN
+    | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
     | array_type_decl
     | MAT2X2 LESS_THAN type_decl GREATER_THAN
     | MAT2X3 LESS_THAN type_decl GREATER_THAN
@@ -177,7 +177,7 @@ type_decl ::=
 variable_statement ::=
       variable_decl
     | variable_decl EQUAL expression
-    | LET ( IDENT | variable_ident_decl ) EQUAL expression
+    | LET ( variable_ident_decl | IDENT ) EQUAL expression
 
 variable_decl ::=
       VAR variable_qualifier? ( variable_ident_decl | IDENT )
@@ -189,20 +189,20 @@ variable_qualifier ::=
      LESS_THAN storage_class ( COMMA access_mode )? GREATER_THAN
 
 global_variable_decl ::=
-     attribute_list * variable_decl ( EQUAL const_expression ) ?
+     attribute_list* variable_decl ( EQUAL const_expression )?
 
 global_constant_decl ::=
-     attribute_list * LET ( IDENT | variable_ident_decl ) global_const_initializer ?
+     attribute_list* LET ( variable_ident_decl | IDENT ) global_const_initializer?
 
 global_const_initializer ::=
      EQUAL const_expression
 
 const_expression ::=
-      type_decl PAREN_LEFT ( ( const_expression COMMA ) * const_expression COMMA ? ) ? PAREN_RIGHT
+      type_decl PAREN_LEFT ( ( const_expression COMMA )* const_expression COMMA? )? PAREN_RIGHT
     | const_literal
 
 primary_expression ::=
-      IDENT argument_expression_list ?
+      IDENT argument_expression_list?
     | type_decl argument_expression_list
     | const_literal
     | paren_expression
@@ -212,11 +212,11 @@ paren_expression ::=
       PAREN_LEFT expression PAREN_RIGHT
 
 argument_expression_list ::=
-      PAREN_LEFT ( ( expression COMMA ) * expression COMMA ? ) ? PAREN_RIGHT
+      PAREN_LEFT ( ( expression COMMA )* expression COMMA? )? PAREN_RIGHT
 
 postfix_expression ::=
-      BRACKET_LEFT expression BRACKET_RIGHT postfix_expression ?
-    | PERIOD IDENT postfix_expression ?
+      BRACKET_LEFT expression BRACKET_RIGHT postfix_expression?
+    | PERIOD IDENT postfix_expression?
 
 unary_expression ::=
       singular_expression
@@ -227,25 +227,20 @@ unary_expression ::=
     | AND unary_expression
 
 singular_expression ::=
-      primary_expression postfix_expression ?
+      primary_expression postfix_expression?
 
 lhs_expression ::=
-      ( STAR | AND ) * core_lhs_expression postfix_expression ?
+      ( STAR | AND )* core_lhs_expression postfix_expression?
 
 core_lhs_expression ::=
       IDENT
     | PAREN_LEFT lhs_expression PAREN_RIGHT
 
 multiplicative_expression ::=
-      unary_expression
-    | multiplicative_expression STAR unary_expression
-    | multiplicative_expression FORWARD_SLASH unary_expression
-    | multiplicative_expression MODULO unary_expression
+      unary_expression ((STAR | FORWARD_SLASH | MODULO) unary_expression)?
 
 additive_expression ::=
-      multiplicative_expression
-    | additive_expression PLUS multiplicative_expression
-    | additive_expression MINUS multiplicative_expression
+      multiplicative_expression  ((PLUS | MINUS) multiplicative_expression)?
 
 shift_expression ::=
       additive_expression
@@ -262,24 +257,19 @@ relational_expression ::=
     | shift_expression NOT_EQUAL shift_expression
 
 short_circuit_and_expression ::=
-      relational_expression
-    | short_circuit_and_expression AND_AND relational_expression
+      relational_expression (AND_AND relational_expression)?
 
 short_circuit_or_expression ::=
-      relational_expression
-    | short_circuit_or_expression OR_OR relational_expression
+      relational_expression (OR_OR relational_expression)?
 
 binary_or_expression ::=
-      unary_expression
-    | binary_or_expression OR unary_expression
+      unary_expression (OR unary_expression)?
 
 binary_and_expression ::=
-      unary_expression
-    | binary_and_expression AND unary_expression
+      unary_expression (AND unary_expression)?
 
 binary_xor_expression ::=
-      unary_expression
-    | binary_xor_expression XOR unary_expression
+      unary_expression (XOR unary_expression)?
 
 expression ::=
       relational_expression
@@ -290,7 +280,7 @@ expression ::=
     | binary_xor_expression XOR unary_expression
 
 compound_statement ::=
-     BRACE_LEFT statement * BRACE_RIGHT
+     BRACE_LEFT statement* BRACE_RIGHT
 
 assignment_statement ::=
       ( lhs_expression | UNDERSCORE ) EQUAL expression
@@ -310,7 +300,7 @@ switch_body ::=
     | DEFAULT COLON BRACE_LEFT case_body? BRACE_RIGHT
 
 case_selectors ::=
-      const_literal ( COMMA const_literal ) * COMMA?
+      const_literal ( COMMA const_literal )* COMMA?
 
 case_body ::=
       statement case_body?
@@ -359,7 +349,7 @@ function_decl ::=
       attribute_list * function_header compound_statement
 
 function_header ::=
-      FN IDENT PAREN_LEFT param_list ? PAREN_RIGHT ( ARROW attribute_list * type_decl )?
+      FN IDENT PAREN_LEFT param_list? PAREN_RIGHT ( ARROW attribute_list* type_decl )?
 
 param_list ::=
       ( param COMMA )* param COMMA?

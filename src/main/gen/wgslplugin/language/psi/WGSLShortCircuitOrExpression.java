@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface WGSLShortCircuitOrExpression extends PsiElement {
 
   @NotNull
-  WGSLRelationalExpression getRelationalExpression();
-
-  @Nullable
-  WGSLShortCircuitOrExpression getShortCircuitOrExpression();
+  List<WGSLRelationalExpression> getRelationalExpressionList();
 
 }

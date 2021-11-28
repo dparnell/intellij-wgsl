@@ -28,15 +28,9 @@ public class WGSLAdditiveExpressionImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @Nullable
-  public WGSLAdditiveExpression getAdditiveExpression() {
-    return findChildByClass(WGSLAdditiveExpression.class);
-  }
-
-  @Override
   @NotNull
-  public WGSLMultiplicativeExpression getMultiplicativeExpression() {
-    return findNotNullChildByClass(WGSLMultiplicativeExpression.class);
+  public List<WGSLMultiplicativeExpression> getMultiplicativeExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLMultiplicativeExpression.class);
   }
 
 }

@@ -91,7 +91,6 @@ public interface WGSLTypes {
   IElementType BGRA8UNORM = new WGSLTokenType("BGRA8UNORM");
   IElementType BGRA8UNORM_SRGB = new WGSLTokenType("BGRA8UNORM_SRGB");
   IElementType BITCAST = new WGSLTokenType("BITCAST");
-  IElementType BLOCK = new WGSLTokenType("BLOCK");
   IElementType BLOCK_COMMENT = new WGSLTokenType("BLOCK_COMMENT");
   IElementType BOOL = new WGSLTokenType("BOOL");
   IElementType BRACE_LEFT = new WGSLTokenType("BRACE_LEFT");
@@ -150,6 +149,7 @@ public interface WGSLTypes {
   IElementType PLUS = new WGSLTokenType("PLUS");
   IElementType POINTER = new WGSLTokenType("POINTER");
   IElementType PRIVATE = new WGSLTokenType("PRIVATE");
+  IElementType PUSH_CONSTANT = new WGSLTokenType("PUSH_CONSTANT");
   IElementType R16FLOAT = new WGSLTokenType("R16FLOAT");
   IElementType R16SINT = new WGSLTokenType("R16SINT");
   IElementType R16UINT = new WGSLTokenType("R16UINT");

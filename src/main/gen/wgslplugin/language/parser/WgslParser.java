@@ -51,46 +51,46 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // multiplicative_expression
-  //     | additive_expression PLUS multiplicative_expression
-  //     | additive_expression MINUS multiplicative_expression
+  // multiplicative_expression  ((PLUS | MINUS) multiplicative_expression)?
   public static boolean additive_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ADDITIVE_EXPRESSION, "<additive expression>");
     r = multiplicative_expression(b, l + 1);
-    if (!r) r = additive_expression_1(b, l + 1);
-    if (!r) r = additive_expression_2(b, l + 1);
+    r = r && additive_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // additive_expression PLUS multiplicative_expression
+  // ((PLUS | MINUS) multiplicative_expression)?
   private static boolean additive_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_expression_1")) return false;
+    additive_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // (PLUS | MINUS) multiplicative_expression
+  private static boolean additive_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "additive_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = additive_expression(b, l + 1);
-    r = r && consumeToken(b, PLUS);
+    r = additive_expression_1_0_0(b, l + 1);
     r = r && multiplicative_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // additive_expression MINUS multiplicative_expression
-  private static boolean additive_expression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additive_expression_2")) return false;
+  // PLUS | MINUS
+  private static boolean additive_expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "additive_expression_1_0_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = additive_expression(b, l + 1);
-    r = r && consumeToken(b, MINUS);
-    r = r && multiplicative_expression(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = consumeToken(b, PLUS);
+    if (!r) r = consumeToken(b, MINUS);
     return r;
   }
 
   /* ********************************************************** */
-  // PAREN_LEFT ( ( expression COMMA ) * expression COMMA ? ) ? PAREN_RIGHT
+  // PAREN_LEFT ( ( expression COMMA )* expression COMMA? )? PAREN_RIGHT
   public static boolean argument_expression_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list")) return false;
     if (!nextTokenIs(b, PAREN_LEFT)) return false;
@@ -103,14 +103,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( ( expression COMMA ) * expression COMMA ? ) ?
+  // ( ( expression COMMA )* expression COMMA? )?
   private static boolean argument_expression_list_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list_1")) return false;
     argument_expression_list_1_0(b, l + 1);
     return true;
   }
 
-  // ( expression COMMA ) * expression COMMA ?
+  // ( expression COMMA )* expression COMMA?
   private static boolean argument_expression_list_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list_1_0")) return false;
     boolean r;
@@ -122,7 +122,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( expression COMMA ) *
+  // ( expression COMMA )*
   private static boolean argument_expression_list_1_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list_1_0_0")) return false;
     while (true) {
@@ -144,7 +144,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // COMMA ?
+  // COMMA?
   private static boolean argument_expression_list_1_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list_1_0_2")) return false;
     consumeToken(b, COMMA);
@@ -305,75 +305,90 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // unary_expression
-  //     | binary_and_expression AND unary_expression
+  // unary_expression (AND unary_expression)?
   public static boolean binary_and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binary_and_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BINARY_AND_EXPRESSION, "<binary and expression>");
     r = unary_expression(b, l + 1);
-    if (!r) r = binary_and_expression_1(b, l + 1);
+    r = r && binary_and_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // binary_and_expression AND unary_expression
+  // (AND unary_expression)?
   private static boolean binary_and_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binary_and_expression_1")) return false;
+    binary_and_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // AND unary_expression
+  private static boolean binary_and_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binary_and_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = binary_and_expression(b, l + 1);
-    r = r && consumeToken(b, AND);
+    r = consumeToken(b, AND);
     r = r && unary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // unary_expression
-  //     | binary_or_expression OR unary_expression
+  // unary_expression (OR unary_expression)?
   public static boolean binary_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binary_or_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BINARY_OR_EXPRESSION, "<binary or expression>");
     r = unary_expression(b, l + 1);
-    if (!r) r = binary_or_expression_1(b, l + 1);
+    r = r && binary_or_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // binary_or_expression OR unary_expression
+  // (OR unary_expression)?
   private static boolean binary_or_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binary_or_expression_1")) return false;
+    binary_or_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // OR unary_expression
+  private static boolean binary_or_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binary_or_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = binary_or_expression(b, l + 1);
-    r = r && consumeToken(b, OR);
+    r = consumeToken(b, OR);
     r = r && unary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // unary_expression
-  //     | binary_xor_expression XOR unary_expression
+  // unary_expression (XOR unary_expression)?
   public static boolean binary_xor_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binary_xor_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BINARY_XOR_EXPRESSION, "<binary xor expression>");
     r = unary_expression(b, l + 1);
-    if (!r) r = binary_xor_expression_1(b, l + 1);
+    r = r && binary_xor_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // binary_xor_expression XOR unary_expression
+  // (XOR unary_expression)?
   private static boolean binary_xor_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binary_xor_expression_1")) return false;
+    binary_xor_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // XOR unary_expression
+  private static boolean binary_xor_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "binary_xor_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = binary_xor_expression(b, l + 1);
-    r = r && consumeToken(b, XOR);
+    r = consumeToken(b, XOR);
     r = r && unary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -423,7 +438,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // const_literal ( COMMA const_literal ) * COMMA?
+  // const_literal ( COMMA const_literal )* COMMA?
   public static boolean case_selectors(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "case_selectors")) return false;
     boolean r;
@@ -435,7 +450,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( COMMA const_literal ) *
+  // ( COMMA const_literal )*
   private static boolean case_selectors_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "case_selectors_1")) return false;
     while (true) {
@@ -465,7 +480,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BRACE_LEFT statement * BRACE_RIGHT
+  // BRACE_LEFT statement* BRACE_RIGHT
   public static boolean compound_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "compound_statement")) return false;
     if (!nextTokenIs(b, BRACE_LEFT)) return false;
@@ -478,7 +493,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // statement *
+  // statement*
   private static boolean compound_statement_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "compound_statement_1")) return false;
     while (true) {
@@ -490,7 +505,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // type_decl PAREN_LEFT ( ( const_expression COMMA ) * const_expression COMMA ? ) ? PAREN_RIGHT
+  // type_decl PAREN_LEFT ( ( const_expression COMMA )* const_expression COMMA? )? PAREN_RIGHT
   //     | const_literal
   public static boolean const_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression")) return false;
@@ -502,7 +517,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // type_decl PAREN_LEFT ( ( const_expression COMMA ) * const_expression COMMA ? ) ? PAREN_RIGHT
+  // type_decl PAREN_LEFT ( ( const_expression COMMA )* const_expression COMMA? )? PAREN_RIGHT
   private static boolean const_expression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0")) return false;
     boolean r;
@@ -515,14 +530,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( ( const_expression COMMA ) * const_expression COMMA ? ) ?
+  // ( ( const_expression COMMA )* const_expression COMMA? )?
   private static boolean const_expression_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0_2")) return false;
     const_expression_0_2_0(b, l + 1);
     return true;
   }
 
-  // ( const_expression COMMA ) * const_expression COMMA ?
+  // ( const_expression COMMA )* const_expression COMMA?
   private static boolean const_expression_0_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0_2_0")) return false;
     boolean r;
@@ -534,7 +549,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( const_expression COMMA ) *
+  // ( const_expression COMMA )*
   private static boolean const_expression_0_2_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0_2_0_0")) return false;
     while (true) {
@@ -556,7 +571,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // COMMA ?
+  // COMMA?
   private static boolean const_expression_0_2_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0_2_0_2")) return false;
     consumeToken(b, COMMA);
@@ -897,7 +912,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FN IDENT PAREN_LEFT param_list ? PAREN_RIGHT ( ARROW attribute_list * type_decl )?
+  // FN IDENT PAREN_LEFT param_list? PAREN_RIGHT ( ARROW attribute_list* type_decl )?
   public static boolean function_header(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header")) return false;
     if (!nextTokenIs(b, FN)) return false;
@@ -911,21 +926,21 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // param_list ?
+  // param_list?
   private static boolean function_header_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header_3")) return false;
     param_list(b, l + 1);
     return true;
   }
 
-  // ( ARROW attribute_list * type_decl )?
+  // ( ARROW attribute_list* type_decl )?
   private static boolean function_header_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header_5")) return false;
     function_header_5_0(b, l + 1);
     return true;
   }
 
-  // ARROW attribute_list * type_decl
+  // ARROW attribute_list* type_decl
   private static boolean function_header_5_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header_5_0")) return false;
     boolean r;
@@ -937,7 +952,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // attribute_list *
+  // attribute_list*
   private static boolean function_header_5_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header_5_0_1")) return false;
     while (true) {
@@ -962,7 +977,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list * LET ( IDENT | variable_ident_decl ) global_const_initializer ?
+  // attribute_list* LET ( variable_ident_decl | IDENT ) global_const_initializer?
   public static boolean global_constant_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_constant_decl")) return false;
     if (!nextTokenIs(b, "<global constant decl>", ATTR_LEFT, LET)) return false;
@@ -976,7 +991,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // attribute_list *
+  // attribute_list*
   private static boolean global_constant_decl_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_constant_decl_0")) return false;
     while (true) {
@@ -987,16 +1002,16 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // IDENT | variable_ident_decl
+  // variable_ident_decl | IDENT
   private static boolean global_constant_decl_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_constant_decl_2")) return false;
     boolean r;
-    r = consumeToken(b, IDENT);
-    if (!r) r = variable_ident_decl(b, l + 1);
+    r = variable_ident_decl(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 
-  // global_const_initializer ?
+  // global_const_initializer?
   private static boolean global_constant_decl_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_constant_decl_3")) return false;
     global_const_initializer(b, l + 1);
@@ -1081,7 +1096,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list * variable_decl ( EQUAL const_expression ) ?
+  // attribute_list* variable_decl ( EQUAL const_expression )?
   public static boolean global_variable_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_variable_decl")) return false;
     if (!nextTokenIs(b, "<global variable decl>", ATTR_LEFT, VAR)) return false;
@@ -1094,7 +1109,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // attribute_list *
+  // attribute_list*
   private static boolean global_variable_decl_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_variable_decl_0")) return false;
     while (true) {
@@ -1105,7 +1120,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ( EQUAL const_expression ) ?
+  // ( EQUAL const_expression )?
   private static boolean global_variable_decl_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_variable_decl_2")) return false;
     global_variable_decl_2_0(b, l + 1);
@@ -1157,7 +1172,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( STAR | AND ) * core_lhs_expression postfix_expression ?
+  // ( STAR | AND )* core_lhs_expression postfix_expression?
   public static boolean lhs_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "lhs_expression")) return false;
     boolean r;
@@ -1169,7 +1184,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( STAR | AND ) *
+  // ( STAR | AND )*
   private static boolean lhs_expression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "lhs_expression_0")) return false;
     while (true) {
@@ -1189,7 +1204,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // postfix_expression ?
+  // postfix_expression?
   private static boolean lhs_expression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "lhs_expression_2")) return false;
     postfix_expression(b, l + 1);
@@ -1247,55 +1262,42 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // unary_expression
-  //     | multiplicative_expression STAR unary_expression
-  //     | multiplicative_expression FORWARD_SLASH unary_expression
-  //     | multiplicative_expression MODULO unary_expression
+  // unary_expression ((STAR | FORWARD_SLASH | MODULO) unary_expression)?
   public static boolean multiplicative_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, MULTIPLICATIVE_EXPRESSION, "<multiplicative expression>");
     r = unary_expression(b, l + 1);
-    if (!r) r = multiplicative_expression_1(b, l + 1);
-    if (!r) r = multiplicative_expression_2(b, l + 1);
-    if (!r) r = multiplicative_expression_3(b, l + 1);
+    r = r && multiplicative_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // multiplicative_expression STAR unary_expression
+  // ((STAR | FORWARD_SLASH | MODULO) unary_expression)?
   private static boolean multiplicative_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_expression_1")) return false;
+    multiplicative_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // (STAR | FORWARD_SLASH | MODULO) unary_expression
+  private static boolean multiplicative_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "multiplicative_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = multiplicative_expression(b, l + 1);
-    r = r && consumeToken(b, STAR);
+    r = multiplicative_expression_1_0_0(b, l + 1);
     r = r && unary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // multiplicative_expression FORWARD_SLASH unary_expression
-  private static boolean multiplicative_expression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression_2")) return false;
+  // STAR | FORWARD_SLASH | MODULO
+  private static boolean multiplicative_expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "multiplicative_expression_1_0_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = multiplicative_expression(b, l + 1);
-    r = r && consumeToken(b, FORWARD_SLASH);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // multiplicative_expression MODULO unary_expression
-  private static boolean multiplicative_expression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicative_expression_3")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = multiplicative_expression(b, l + 1);
-    r = r && consumeToken(b, MODULO);
-    r = r && unary_expression(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = consumeToken(b, STAR);
+    if (!r) r = consumeToken(b, FORWARD_SLASH);
+    if (!r) r = consumeToken(b, MODULO);
     return r;
   }
 
@@ -1393,8 +1395,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BRACKET_LEFT expression BRACKET_RIGHT postfix_expression ?
-  //     | PERIOD IDENT postfix_expression ?
+  // BRACKET_LEFT expression BRACKET_RIGHT postfix_expression?
+  //     | PERIOD IDENT postfix_expression?
   public static boolean postfix_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_expression")) return false;
     if (!nextTokenIs(b, "<postfix expression>", BRACKET_LEFT, PERIOD)) return false;
@@ -1406,7 +1408,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // BRACKET_LEFT expression BRACKET_RIGHT postfix_expression ?
+  // BRACKET_LEFT expression BRACKET_RIGHT postfix_expression?
   private static boolean postfix_expression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_expression_0")) return false;
     boolean r;
@@ -1419,14 +1421,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // postfix_expression ?
+  // postfix_expression?
   private static boolean postfix_expression_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_expression_0_3")) return false;
     postfix_expression(b, l + 1);
     return true;
   }
 
-  // PERIOD IDENT postfix_expression ?
+  // PERIOD IDENT postfix_expression?
   private static boolean postfix_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_expression_1")) return false;
     boolean r;
@@ -1437,7 +1439,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // postfix_expression ?
+  // postfix_expression?
   private static boolean postfix_expression_1_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "postfix_expression_1_2")) return false;
     postfix_expression(b, l + 1);
@@ -1445,7 +1447,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT argument_expression_list ?
+  // IDENT argument_expression_list?
   //     | type_decl argument_expression_list
   //     | const_literal
   //     | paren_expression
@@ -1463,7 +1465,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // IDENT argument_expression_list ?
+  // IDENT argument_expression_list?
   private static boolean primary_expression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression_0")) return false;
     boolean r;
@@ -1474,7 +1476,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // argument_expression_list ?
+  // argument_expression_list?
   private static boolean primary_expression_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression_0_1")) return false;
     argument_expression_list(b, l + 1);
@@ -1695,57 +1697,67 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // relational_expression
-  //     | short_circuit_and_expression AND_AND relational_expression
+  // relational_expression (AND_AND relational_expression)?
   public static boolean short_circuit_and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "short_circuit_and_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, SHORT_CIRCUIT_AND_EXPRESSION, "<short circuit and expression>");
     r = relational_expression(b, l + 1);
-    if (!r) r = short_circuit_and_expression_1(b, l + 1);
+    r = r && short_circuit_and_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // short_circuit_and_expression AND_AND relational_expression
+  // (AND_AND relational_expression)?
   private static boolean short_circuit_and_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "short_circuit_and_expression_1")) return false;
+    short_circuit_and_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // AND_AND relational_expression
+  private static boolean short_circuit_and_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "short_circuit_and_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = short_circuit_and_expression(b, l + 1);
-    r = r && consumeToken(b, AND_AND);
+    r = consumeToken(b, AND_AND);
     r = r && relational_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // relational_expression
-  //     | short_circuit_or_expression OR_OR relational_expression
+  // relational_expression (OR_OR relational_expression)?
   public static boolean short_circuit_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "short_circuit_or_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, SHORT_CIRCUIT_OR_EXPRESSION, "<short circuit or expression>");
     r = relational_expression(b, l + 1);
-    if (!r) r = short_circuit_or_expression_1(b, l + 1);
+    r = r && short_circuit_or_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // short_circuit_or_expression OR_OR relational_expression
+  // (OR_OR relational_expression)?
   private static boolean short_circuit_or_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "short_circuit_or_expression_1")) return false;
+    short_circuit_or_expression_1_0(b, l + 1);
+    return true;
+  }
+
+  // OR_OR relational_expression
+  private static boolean short_circuit_or_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "short_circuit_or_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = short_circuit_or_expression(b, l + 1);
-    r = r && consumeToken(b, OR_OR);
+    r = consumeToken(b, OR_OR);
     r = r && relational_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // primary_expression postfix_expression ?
+  // primary_expression postfix_expression?
   public static boolean singular_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "singular_expression")) return false;
     boolean r;
@@ -1756,7 +1768,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // postfix_expression ?
+  // postfix_expression?
   private static boolean singular_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "singular_expression_1")) return false;
     postfix_expression(b, l + 1);
@@ -1870,6 +1882,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | WORKGROUP
   //     | UNIFORM
   //     | STORAGE
+  //     | PUSH_CONSTANT
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
@@ -1879,6 +1892,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, WORKGROUP);
     if (!r) r = consumeToken(b, UNIFORM);
     if (!r) r = consumeToken(b, STORAGE);
+    if (!r) r = consumeToken(b, PUSH_CONSTANT);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1951,7 +1965,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list * variable_ident_decl SEMICOLON
+  // attribute_list* variable_ident_decl SEMICOLON
   public static boolean struct_member(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_member")) return false;
     if (!nextTokenIs(b, "<struct member>", ATTR_LEFT, IDENT)) return false;
@@ -1964,7 +1978,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // attribute_list *
+  // attribute_list*
   private static boolean struct_member_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_member_0")) return false;
     while (true) {
@@ -2255,7 +2269,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | VEC2 LESS_THAN type_decl GREATER_THAN
   //     | VEC3 LESS_THAN type_decl GREATER_THAN
   //     | VEC4 LESS_THAN type_decl GREATER_THAN
-  //     | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode ) ? GREATER_THAN
+  //     | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
   //     | array_type_decl
   //     | MAT2X2 LESS_THAN type_decl GREATER_THAN
   //     | MAT2X3 LESS_THAN type_decl GREATER_THAN
@@ -2333,7 +2347,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode ) ? GREATER_THAN
+  // POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
   private static boolean type_decl_8(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_8")) return false;
     boolean r;
@@ -2348,7 +2362,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( COMMA access_mode ) ?
+  // ( COMMA access_mode )?
   private static boolean type_decl_8_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_8_5")) return false;
     type_decl_8_5_0(b, l + 1);
@@ -2641,7 +2655,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // variable_decl
   //     | variable_decl EQUAL expression
-  //     | LET ( IDENT | variable_ident_decl ) EQUAL expression
+  //     | LET ( variable_ident_decl | IDENT ) EQUAL expression
   public static boolean variable_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_statement")) return false;
     if (!nextTokenIs(b, "<variable statement>", LET, VAR)) return false;
@@ -2666,7 +2680,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // LET ( IDENT | variable_ident_decl ) EQUAL expression
+  // LET ( variable_ident_decl | IDENT ) EQUAL expression
   private static boolean variable_statement_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_statement_2")) return false;
     boolean r;
@@ -2679,12 +2693,12 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // IDENT | variable_ident_decl
+  // variable_ident_decl | IDENT
   private static boolean variable_statement_2_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_statement_2_1")) return false;
     boolean r;
-    r = consumeToken(b, IDENT);
-    if (!r) r = variable_ident_decl(b, l + 1);
+    r = variable_ident_decl(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 

@@ -29,14 +29,8 @@ public class WGSLShortCircuitAndExpressionImpl extends ASTWrapperPsiElement impl
 
   @Override
   @NotNull
-  public WGSLRelationalExpression getRelationalExpression() {
-    return findNotNullChildByClass(WGSLRelationalExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLShortCircuitAndExpression getShortCircuitAndExpression() {
-    return findChildByClass(WGSLShortCircuitAndExpression.class);
+  public List<WGSLRelationalExpression> getRelationalExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLRelationalExpression.class);
   }
 
 }

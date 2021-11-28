@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLBinaryAndExpression extends PsiElement {
 
-  @Nullable
-  WGSLBinaryAndExpression getBinaryAndExpression();
-
   @NotNull
-  WGSLUnaryExpression getUnaryExpression();
+  List<WGSLUnaryExpression> getUnaryExpressionList();
 
 }
