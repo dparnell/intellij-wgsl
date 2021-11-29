@@ -2,7 +2,7 @@
 
 # wgsl plugin Changelog
 
-## [Unreleased] - first cut
+## [Unreleased]
 ### Added
 - Colour settings page
 - Syntax highlighting using the output from the parser
