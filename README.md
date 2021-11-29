@@ -13,7 +13,7 @@ This IntelliJ Platform Plugin adds syntax highlighting support for the WebGPU sh
 
 - Using IDE built-in plugin system:
   
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "intellij-wgsl"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "WGSL Support"</kbd> >
   <kbd>Install Plugin</kbd>
   
 - Manually:
