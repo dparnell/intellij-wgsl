@@ -37,7 +37,7 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
             , WGSLTypes.INT32 , WGSLTypes.MAT2X2 , WGSLTypes.MAT2X3 , WGSLTypes.MAT2X4
             , WGSLTypes.MAT3X2 , WGSLTypes.MAT3X3 , WGSLTypes.MAT3X4 , WGSLTypes.MAT4X2
             , WGSLTypes.MAT4X3 , WGSLTypes.MAT4X4 , WGSLTypes.POINTER , WGSLTypes.SAMPLER
-            , WGSLTypes.SAMPLER_COMPARISON , WGSLTypes.STRUCT , WGSLTypes.TEXTURE_1D , WGSLTypes.TEXTURE_2D
+            , WGSLTypes.SAMPLER_COMPARISON , WGSLTypes.TEXTURE_1D , WGSLTypes.TEXTURE_2D
             , WGSLTypes.TEXTURE_3D , WGSLTypes.TEXTURE_CUBE , WGSLTypes.TEXTURE_CUBE_ARRAY , WGSLTypes.TEXTURE_MULTISAMPLED_2D
             , WGSLTypes.TEXTURE_STORAGE_1D , WGSLTypes.TEXTURE_STORAGE_2D , WGSLTypes.TEXTURE_STORAGE_2D_ARRAY
             , WGSLTypes.TEXTURE_STORAGE_3D , WGSLTypes.TEXTURE_DEPTH_2D , WGSLTypes.TEXTURE_DEPTH_CUBE
@@ -53,7 +53,7 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
             , WGSLTypes.FN , WGSLTypes.FOR
             , WGSLTypes.IF , WGSLTypes.LET , WGSLTypes.LOOP
             , WGSLTypes.READ , WGSLTypes.READ_WRITE , WGSLTypes.RETURN
-            , WGSLTypes.SWITCH , WGSLTypes.TRUE
+            , WGSLTypes.STRUCT , WGSLTypes.SWITCH , WGSLTypes.TRUE
             , WGSLTypes.TYPE , WGSLTypes.VAR
             , WGSLTypes.WRITE
     );
