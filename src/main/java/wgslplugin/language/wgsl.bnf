@@ -201,7 +201,8 @@ const_expression ::=
     | const_literal
 
 primary_expression ::=
-      IDENT argument_expression_list?
+      func_call_statement
+    | IDENT
     | type_decl argument_expression_list
     | const_literal
     | paren_expression

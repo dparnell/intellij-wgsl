@@ -41,6 +41,12 @@ public class WGSLPrimaryExpressionImpl extends ASTWrapperPsiElement implements W
 
   @Override
   @Nullable
+  public WGSLFuncCallStatement getFuncCallStatement() {
+    return findChildByClass(WGSLFuncCallStatement.class);
+  }
+
+  @Override
+  @Nullable
   public WGSLParenExpression getParenExpression() {
     return findChildByClass(WGSLParenExpression.class);
   }

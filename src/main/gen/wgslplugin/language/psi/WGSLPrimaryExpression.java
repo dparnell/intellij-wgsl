@@ -14,6 +14,9 @@ public interface WGSLPrimaryExpression extends PsiElement {
   WGSLConstLiteral getConstLiteral();
 
   @Nullable
+  WGSLFuncCallStatement getFuncCallStatement();
+
+  @Nullable
   WGSLParenExpression getParenExpression();
 
   @Nullable

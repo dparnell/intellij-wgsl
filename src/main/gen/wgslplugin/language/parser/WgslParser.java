@@ -1252,7 +1252,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT argument_expression_list?
+  // func_call_statement
+  //     | IDENT
   //     | type_decl argument_expression_list
   //     | const_literal
   //     | paren_expression
@@ -1261,36 +1262,19 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "primary_expression")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PRIMARY_EXPRESSION, "<primary expression>");
-    r = primary_expression_0(b, l + 1);
-    if (!r) r = primary_expression_1(b, l + 1);
+    r = func_call_statement(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
+    if (!r) r = primary_expression_2(b, l + 1);
     if (!r) r = const_literal(b, l + 1);
     if (!r) r = paren_expression(b, l + 1);
-    if (!r) r = primary_expression_4(b, l + 1);
+    if (!r) r = primary_expression_5(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // IDENT argument_expression_list?
-  private static boolean primary_expression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_expression_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    r = r && primary_expression_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // argument_expression_list?
-  private static boolean primary_expression_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_expression_0_1")) return false;
-    argument_expression_list(b, l + 1);
-    return true;
-  }
-
   // type_decl argument_expression_list
-  private static boolean primary_expression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_expression_1")) return false;
+  private static boolean primary_expression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "primary_expression_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = type_decl(b, l + 1);
@@ -1300,8 +1284,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // BITCAST LESS_THAN type_decl GREATER_THAN paren_expression
-  private static boolean primary_expression_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_expression_4")) return false;
+  private static boolean primary_expression_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "primary_expression_5")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, BITCAST, LESS_THAN);

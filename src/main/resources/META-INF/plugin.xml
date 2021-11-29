@@ -2,7 +2,12 @@
 <idea-plugin>
     <id>WGSL</id>
     <name>WGSL Support</name>
-    <description>Support for WGSL - the WebGPU Shading Language</description>
+    <description>
+        <![CDATA[
+        This plugin adds syntax highlighting support for WGSL - the WebGPU Shading Language.<br/>
+        Open a wgsl file and marvel at the pretty colours.
+        ]]>
+    </description>
 
     <category>Custom Languages</category>
     <vendor>dparnell</vendor>
