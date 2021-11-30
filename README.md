@@ -6,7 +6,9 @@
 
 
 <!-- Plugin description -->
-This IntelliJ Platform Plugin adds syntax highlighting support for the WebGPU shader language or WGSL.
+This plugin adds syntax highlighting support for WGSL - the WebGPU Shading Language.
+
+Open a wgsl file and marvel at the pretty colours.
 <!-- Plugin description end -->
 
 ## Installation
