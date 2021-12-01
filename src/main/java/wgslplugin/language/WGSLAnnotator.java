@@ -18,7 +18,7 @@ public class WGSLAnnotator implements Annotator {
 
     public static final Set<String> BUILT_IN_FUNCTION_NAMES = names(
             // logical builtins
-             "all", "any", "select"
+              "all", "any", "select"
             // array builtins
             , "arrayLength"
             // float builtins
@@ -32,7 +32,7 @@ public class WGSLAnnotator implements Annotator {
             // matrix builtins
             , "determinant", "transpose"
             // vector builtins
-            , "doc"
+            , "dot"
             // texture builtins
             , "textureDimensions", "textureLoad", "textureNumLayers", "textureNumLevels", "textureNumSamples"
             , "textureSample", "textureSampleBias", "textureSampleCompare", "textureSampleCompareLevel"
