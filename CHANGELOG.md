@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 ### Added
+- added increment `++` and  decrement `--` syntax support
+
+## 0.0.1
+### Added
 - Colour settings page
 - Syntax highlighting using the output from the parser
 - Lexer and parser for WGSL
