@@ -53,6 +53,12 @@ public class WGSLStatementImpl extends ASTWrapperPsiElement implements WGSLState
 
   @Override
   @Nullable
+  public WGSLDecrementStatement getDecrementStatement() {
+    return findChildByClass(WGSLDecrementStatement.class);
+  }
+
+  @Override
+  @Nullable
   public WGSLForStatement getForStatement() {
     return findChildByClass(WGSLForStatement.class);
   }
@@ -67,6 +73,12 @@ public class WGSLStatementImpl extends ASTWrapperPsiElement implements WGSLState
   @Nullable
   public WGSLIfStatement getIfStatement() {
     return findChildByClass(WGSLIfStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public WGSLIncrementStatement getIncrementStatement() {
+    return findChildByClass(WGSLIncrementStatement.class);
   }
 
   @Override

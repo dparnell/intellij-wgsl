@@ -40,9 +40,9 @@ public class WGSLGlobalConstantDeclImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @Nullable
+  @NotNull
   public WGSLVariableIdentDecl getVariableIdentDecl() {
-    return findChildByClass(WGSLVariableIdentDecl.class);
+    return findNotNullChildByClass(WGSLVariableIdentDecl.class);
   }
 
 }

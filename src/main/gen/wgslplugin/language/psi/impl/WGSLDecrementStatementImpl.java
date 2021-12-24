@@ -11,14 +11,14 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLVariableDeclImpl extends ASTWrapperPsiElement implements WGSLVariableDecl {
+public class WGSLDecrementStatementImpl extends ASTWrapperPsiElement implements WGSLDecrementStatement {
 
-  public WGSLVariableDeclImpl(@NotNull ASTNode node) {
+  public WGSLDecrementStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitVariableDecl(this);
+    visitor.visitDecrementStatement(this);
   }
 
   @Override
@@ -29,14 +29,8 @@ public class WGSLVariableDeclImpl extends ASTWrapperPsiElement implements WGSLVa
 
   @Override
   @NotNull
-  public WGSLVariableIdentDecl getVariableIdentDecl() {
-    return findNotNullChildByClass(WGSLVariableIdentDecl.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLVariableQualifier getVariableQualifier() {
-    return findChildByClass(WGSLVariableQualifier.class);
+  public WGSLLhsExpression getLhsExpression() {
+    return findNotNullChildByClass(WGSLLhsExpression.class);
   }
 
 }

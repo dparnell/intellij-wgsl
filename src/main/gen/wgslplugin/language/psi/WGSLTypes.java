@@ -23,6 +23,7 @@ public interface WGSLTypes {
   IElementType CONTINUE_STATEMENT = new WGSLElementType("CONTINUE_STATEMENT");
   IElementType CONTINUING_STATEMENT = new WGSLElementType("CONTINUING_STATEMENT");
   IElementType CORE_LHS_EXPRESSION = new WGSLElementType("CORE_LHS_EXPRESSION");
+  IElementType DECREMENT_STATEMENT = new WGSLElementType("DECREMENT_STATEMENT");
   IElementType DEPTH_TEXTURE_TYPE = new WGSLElementType("DEPTH_TEXTURE_TYPE");
   IElementType ELEMENT_COUNT_EXPRESSION = new WGSLElementType("ELEMENT_COUNT_EXPRESSION");
   IElementType ELSE_STATEMENT = new WGSLElementType("ELSE_STATEMENT");
@@ -30,7 +31,9 @@ public interface WGSLTypes {
   IElementType EXPRESSION = new WGSLElementType("EXPRESSION");
   IElementType FLOAT_LITERAL = new WGSLElementType("FLOAT_LITERAL");
   IElementType FOR_HEADER = new WGSLElementType("FOR_HEADER");
+  IElementType FOR_INIT = new WGSLElementType("FOR_INIT");
   IElementType FOR_STATEMENT = new WGSLElementType("FOR_STATEMENT");
+  IElementType FOR_UPDATE = new WGSLElementType("FOR_UPDATE");
   IElementType FUNCTION_DECL = new WGSLElementType("FUNCTION_DECL");
   IElementType FUNCTION_HEADER = new WGSLElementType("FUNCTION_HEADER");
   IElementType FUNC_CALL_STATEMENT = new WGSLElementType("FUNC_CALL_STATEMENT");
@@ -40,6 +43,7 @@ public interface WGSLTypes {
   IElementType GLOBAL_DIRECTIVE = new WGSLElementType("GLOBAL_DIRECTIVE");
   IElementType GLOBAL_VARIABLE_DECL = new WGSLElementType("GLOBAL_VARIABLE_DECL");
   IElementType IF_STATEMENT = new WGSLElementType("IF_STATEMENT");
+  IElementType INCREMENT_STATEMENT = new WGSLElementType("INCREMENT_STATEMENT");
   IElementType LHS_EXPRESSION = new WGSLElementType("LHS_EXPRESSION");
   IElementType LITERAL_OR_IDENT = new WGSLElementType("LITERAL_OR_IDENT");
   IElementType LOOP_STATEMENT = new WGSLElementType("LOOP_STATEMENT");
@@ -265,6 +269,9 @@ public interface WGSLTypes {
       else if (type == CORE_LHS_EXPRESSION) {
         return new WGSLCoreLhsExpressionImpl(node);
       }
+      else if (type == DECREMENT_STATEMENT) {
+        return new WGSLDecrementStatementImpl(node);
+      }
       else if (type == DEPTH_TEXTURE_TYPE) {
         return new WGSLDepthTextureTypeImpl(node);
       }
@@ -286,8 +293,14 @@ public interface WGSLTypes {
       else if (type == FOR_HEADER) {
         return new WGSLForHeaderImpl(node);
       }
+      else if (type == FOR_INIT) {
+        return new WGSLForInitImpl(node);
+      }
       else if (type == FOR_STATEMENT) {
         return new WGSLForStatementImpl(node);
+      }
+      else if (type == FOR_UPDATE) {
+        return new WGSLForUpdateImpl(node);
       }
       else if (type == FUNCTION_DECL) {
         return new WGSLFunctionDeclImpl(node);
@@ -315,6 +328,9 @@ public interface WGSLTypes {
       }
       else if (type == IF_STATEMENT) {
         return new WGSLIfStatementImpl(node);
+      }
+      else if (type == INCREMENT_STATEMENT) {
+        return new WGSLIncrementStatementImpl(node);
       }
       else if (type == LHS_EXPRESSION) {
         return new WGSLLhsExpressionImpl(node);

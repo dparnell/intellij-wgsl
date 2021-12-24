@@ -5,9 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface WGSLVariableIdentDecl extends PsiElement {
+public interface WGSLVariableIdentDecl extends WGSLNamedElement {
 
-  @NotNull
+  @Nullable
   WGSLTypeDecl getTypeDecl();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

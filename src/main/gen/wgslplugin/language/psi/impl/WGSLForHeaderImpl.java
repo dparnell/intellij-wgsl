@@ -28,27 +28,21 @@ public class WGSLForHeaderImpl extends ASTWrapperPsiElement implements WGSLForHe
   }
 
   @Override
-  @NotNull
-  public List<WGSLAssignmentStatement> getAssignmentStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLAssignmentStatement.class);
-  }
-
-  @Override
   @Nullable
   public WGSLExpression getExpression() {
     return findChildByClass(WGSLExpression.class);
   }
 
   @Override
-  @NotNull
-  public List<WGSLFuncCallStatement> getFuncCallStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLFuncCallStatement.class);
+  @Nullable
+  public WGSLForInit getForInit() {
+    return findChildByClass(WGSLForInit.class);
   }
 
   @Override
   @Nullable
-  public WGSLVariableStatement getVariableStatement() {
-    return findChildByClass(WGSLVariableStatement.class);
+  public WGSLForUpdate getForUpdate() {
+    return findChildByClass(WGSLForUpdate.class);
   }
 
 }

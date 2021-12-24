@@ -11,6 +11,8 @@
   elementTypeClass="wgslplugin.language.psi.WGSLElementType"
   tokenTypeClass="wgslplugin.language.psi.WGSLTokenType"
 
+  psiImplUtilClass="wgslplugin.language.psi.impl.WGSLPsiImplUtil"
+
   tokens = [
     LINE_COMMENT = 'LINE_COMMENT'
     BLOCK_COMMENT = 'BLOCK_COMMENT'
@@ -176,13 +178,17 @@ type_decl ::=
 
 variable_statement ::=
       variable_decl (EQUAL expression)?
-    | LET ( variable_ident_decl | IDENT ) EQUAL expression
+    | LET variable_ident_decl EQUAL expression
 
 variable_decl ::=
-      VAR variable_qualifier? ( variable_ident_decl | IDENT )
+      VAR variable_qualifier? variable_ident_decl
 
 variable_ident_decl ::=
-      IDENT COLON type_decl
+      IDENT (COLON type_decl)? {
+                              mixin="wgslplugin.language.psi.impl.WGSLNamedElementImpl"
+                              implements="wgslplugin.language.psi.WGSLNamedElement"
+                              methods=[getName setName getNameIdentifier]
+                            }
 
 variable_qualifier ::=
      LESS_THAN storage_class ( COMMA access_mode )? GREATER_THAN
@@ -191,7 +197,7 @@ global_variable_decl ::=
      attribute_list* variable_decl ( EQUAL const_expression )?
 
 global_constant_decl ::=
-     attribute_list* LET ( variable_ident_decl | IDENT ) global_const_initializer?
+     attribute_list* LET variable_ident_decl global_const_initializer?
 
 global_const_initializer ::=
      EQUAL const_expression
@@ -273,7 +279,19 @@ for_statement ::=
       FOR PAREN_LEFT for_header PAREN_RIGHT compound_statement
 
 for_header ::=
-     ( variable_statement | assignment_statement | func_call_statement )? SEMICOLON expression? SEMICOLON ( assignment_statement | func_call_statement )?
+    for_init ? SEMICOLON expression ? SEMICOLON for_update ?
+
+for_init ::=
+    variable_statement | assignment_statement | func_call_statement
+
+for_update ::=
+    increment_statement | decrement_statement | assignment_statement | func_call_statement
+
+increment_statement ::=
+    lhs_expression PLUS PLUS
+
+decrement_statement ::=
+    lhs_expression MINUS MINUS
 
 break_statement ::=
       BREAK
@@ -304,6 +322,8 @@ statement ::=
     | DISCARD SEMICOLON
     | assignment_statement SEMICOLON
     | compound_statement
+    | increment_statement SEMICOLON
+    | decrement_statement SEMICOLON
 
 function_decl ::=
       attribute_list * function_header compound_statement

@@ -11,14 +11,14 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLVariableDeclImpl extends ASTWrapperPsiElement implements WGSLVariableDecl {
+public class WGSLForUpdateImpl extends ASTWrapperPsiElement implements WGSLForUpdate {
 
-  public WGSLVariableDeclImpl(@NotNull ASTNode node) {
+  public WGSLForUpdateImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitVariableDecl(this);
+    visitor.visitForUpdate(this);
   }
 
   @Override
@@ -28,15 +28,27 @@ public class WGSLVariableDeclImpl extends ASTWrapperPsiElement implements WGSLVa
   }
 
   @Override
-  @NotNull
-  public WGSLVariableIdentDecl getVariableIdentDecl() {
-    return findNotNullChildByClass(WGSLVariableIdentDecl.class);
+  @Nullable
+  public WGSLAssignmentStatement getAssignmentStatement() {
+    return findChildByClass(WGSLAssignmentStatement.class);
   }
 
   @Override
   @Nullable
-  public WGSLVariableQualifier getVariableQualifier() {
-    return findChildByClass(WGSLVariableQualifier.class);
+  public WGSLDecrementStatement getDecrementStatement() {
+    return findChildByClass(WGSLDecrementStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public WGSLFuncCallStatement getFuncCallStatement() {
+    return findChildByClass(WGSLFuncCallStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public WGSLIncrementStatement getIncrementStatement() {
+    return findChildByClass(WGSLIncrementStatement.class);
   }
 
 }

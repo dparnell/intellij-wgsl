@@ -13,7 +13,7 @@ public interface WGSLGlobalConstantDecl extends PsiElement {
   @Nullable
   WGSLGlobalConstInitializer getGlobalConstInitializer();
 
-  @Nullable
+  @NotNull
   WGSLVariableIdentDecl getVariableIdentDecl();
 
 }

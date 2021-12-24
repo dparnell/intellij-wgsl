@@ -5,15 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface WGSLForHeader extends PsiElement {
+public interface WGSLForInit extends PsiElement {
 
   @Nullable
-  WGSLExpression getExpression();
+  WGSLAssignmentStatement getAssignmentStatement();
 
   @Nullable
-  WGSLForInit getForInit();
+  WGSLFuncCallStatement getFuncCallStatement();
 
   @Nullable
-  WGSLForUpdate getForUpdate();
+  WGSLVariableStatement getVariableStatement();
 
 }

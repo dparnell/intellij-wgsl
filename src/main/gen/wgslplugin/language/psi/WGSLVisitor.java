@@ -67,6 +67,10 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDecrementStatement(@NotNull WGSLDecrementStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitDepthTextureType(@NotNull WGSLDepthTextureType o) {
     visitPsiElement(o);
   }
@@ -95,7 +99,15 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitForInit(@NotNull WGSLForInit o) {
+    visitPsiElement(o);
+  }
+
   public void visitForStatement(@NotNull WGSLForStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForUpdate(@NotNull WGSLForUpdate o) {
     visitPsiElement(o);
   }
 
@@ -132,6 +144,10 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitIfStatement(@NotNull WGSLIfStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIncrementStatement(@NotNull WGSLIncrementStatement o) {
     visitPsiElement(o);
   }
 
@@ -244,7 +260,7 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitVariableIdentDecl(@NotNull WGSLVariableIdentDecl o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitVariableQualifier(@NotNull WGSLVariableQualifier o) {
@@ -252,6 +268,10 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitVariableStatement(@NotNull WGSLVariableStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamedElement(@NotNull WGSLNamedElement o) {
     visitPsiElement(o);
   }
 

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLVariableDecl extends PsiElement {
 
-  @Nullable
+  @NotNull
   WGSLVariableIdentDecl getVariableIdentDecl();
 
   @Nullable

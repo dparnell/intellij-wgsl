@@ -20,6 +20,9 @@ public interface WGSLStatement extends PsiElement {
   WGSLContinueStatement getContinueStatement();
 
   @Nullable
+  WGSLDecrementStatement getDecrementStatement();
+
+  @Nullable
   WGSLForStatement getForStatement();
 
   @Nullable
@@ -27,6 +30,9 @@ public interface WGSLStatement extends PsiElement {
 
   @Nullable
   WGSLIfStatement getIfStatement();
+
+  @Nullable
+  WGSLIncrementStatement getIncrementStatement();
 
   @Nullable
   WGSLLoopStatement getLoopStatement();

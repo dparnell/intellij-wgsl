@@ -520,6 +520,18 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // lhs_expression MINUS MINUS
+  public static boolean decrement_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "decrement_statement")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, DECREMENT_STATEMENT, "<decrement statement>");
+    r = lhs_expression(b, l + 1);
+    r = r && consumeTokens(b, 0, MINUS, MINUS);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // TEXTURE_DEPTH_2D
   //     | TEXTURE_DEPTH_2D_ARRAY
   //     | TEXTURE_DEPTH_CUBE
@@ -649,7 +661,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( variable_statement | assignment_statement | func_call_statement )? SEMICOLON expression? SEMICOLON ( assignment_statement | func_call_statement )?
+  // for_init ? SEMICOLON expression ? SEMICOLON for_update ?
   public static boolean for_header(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "for_header")) return false;
     boolean r;
@@ -663,43 +675,37 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( variable_statement | assignment_statement | func_call_statement )?
+  // for_init ?
   private static boolean for_header_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "for_header_0")) return false;
-    for_header_0_0(b, l + 1);
+    for_init(b, l + 1);
     return true;
   }
 
-  // variable_statement | assignment_statement | func_call_statement
-  private static boolean for_header_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "for_header_0_0")) return false;
-    boolean r;
-    r = variable_statement(b, l + 1);
-    if (!r) r = assignment_statement(b, l + 1);
-    if (!r) r = func_call_statement(b, l + 1);
-    return r;
-  }
-
-  // expression?
+  // expression ?
   private static boolean for_header_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "for_header_2")) return false;
     expression(b, l + 1);
     return true;
   }
 
-  // ( assignment_statement | func_call_statement )?
+  // for_update ?
   private static boolean for_header_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "for_header_4")) return false;
-    for_header_4_0(b, l + 1);
+    for_update(b, l + 1);
     return true;
   }
 
-  // assignment_statement | func_call_statement
-  private static boolean for_header_4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "for_header_4_0")) return false;
+  /* ********************************************************** */
+  // variable_statement | assignment_statement | func_call_statement
+  public static boolean for_init(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_init")) return false;
     boolean r;
-    r = assignment_statement(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, FOR_INIT, "<for init>");
+    r = variable_statement(b, l + 1);
+    if (!r) r = assignment_statement(b, l + 1);
     if (!r) r = func_call_statement(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -715,6 +721,20 @@ public class WgslParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, PAREN_RIGHT);
     r = r && compound_statement(b, l + 1);
     exit_section_(b, m, FOR_STATEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // increment_statement | decrement_statement | assignment_statement | func_call_statement
+  public static boolean for_update(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_update")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, FOR_UPDATE, "<for update>");
+    r = increment_statement(b, l + 1);
+    if (!r) r = decrement_statement(b, l + 1);
+    if (!r) r = assignment_statement(b, l + 1);
+    if (!r) r = func_call_statement(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -822,7 +842,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list* LET ( variable_ident_decl | IDENT ) global_const_initializer?
+  // attribute_list* LET variable_ident_decl global_const_initializer?
   public static boolean global_constant_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_constant_decl")) return false;
     if (!nextTokenIs(b, "<global constant decl>", ATTR_LEFT, LET)) return false;
@@ -830,7 +850,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, GLOBAL_CONSTANT_DECL, "<global constant decl>");
     r = global_constant_decl_0(b, l + 1);
     r = r && consumeToken(b, LET);
-    r = r && global_constant_decl_2(b, l + 1);
+    r = r && variable_ident_decl(b, l + 1);
     r = r && global_constant_decl_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -845,15 +865,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "global_constant_decl_0", c)) break;
     }
     return true;
-  }
-
-  // variable_ident_decl | IDENT
-  private static boolean global_constant_decl_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "global_constant_decl_2")) return false;
-    boolean r;
-    r = variable_ident_decl(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
-    return r;
   }
 
   // global_const_initializer?
@@ -1013,6 +1024,18 @@ public class WgslParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, ELSE);
     r = r && else_statement(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // lhs_expression PLUS PLUS
+  public static boolean increment_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "increment_statement")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, INCREMENT_STATEMENT, "<increment statement>");
+    r = lhs_expression(b, l + 1);
+    r = r && consumeTokens(b, 0, PLUS, PLUS);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1384,6 +1407,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | DISCARD SEMICOLON
   //     | assignment_statement SEMICOLON
   //     | compound_statement
+  //     | increment_statement SEMICOLON
+  //     | decrement_statement SEMICOLON
   public static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
@@ -1401,6 +1426,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = parseTokens(b, 0, DISCARD, SEMICOLON);
     if (!r) r = statement_11(b, l + 1);
     if (!r) r = compound_statement(b, l + 1);
+    if (!r) r = statement_13(b, l + 1);
+    if (!r) r = statement_14(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1466,6 +1493,28 @@ public class WgslParser implements PsiParser, LightPsiParser {
     boolean r;
     Marker m = enter_section_(b);
     r = assignment_statement(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // increment_statement SEMICOLON
+  private static boolean statement_13(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_13")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = increment_statement(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // decrement_statement SEMICOLON
+  private static boolean statement_14(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_14")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = decrement_statement(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, null, r);
     return r;
@@ -2172,7 +2221,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // VAR variable_qualifier? ( variable_ident_decl | IDENT )
+  // VAR variable_qualifier? variable_ident_decl
   public static boolean variable_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_decl")) return false;
     if (!nextTokenIs(b, VAR)) return false;
@@ -2180,7 +2229,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, VAR);
     r = r && variable_decl_1(b, l + 1);
-    r = r && variable_decl_2(b, l + 1);
+    r = r && variable_ident_decl(b, l + 1);
     exit_section_(b, m, VARIABLE_DECL, r);
     return r;
   }
@@ -2192,25 +2241,34 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // variable_ident_decl | IDENT
-  private static boolean variable_decl_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_decl_2")) return false;
-    boolean r;
-    r = variable_ident_decl(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
-    return r;
-  }
-
   /* ********************************************************** */
-  // IDENT COLON type_decl
+  // IDENT (COLON type_decl)?
   public static boolean variable_ident_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_ident_decl")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENT, COLON);
-    r = r && type_decl(b, l + 1);
+    r = consumeToken(b, IDENT);
+    r = r && variable_ident_decl_1(b, l + 1);
     exit_section_(b, m, VARIABLE_IDENT_DECL, r);
+    return r;
+  }
+
+  // (COLON type_decl)?
+  private static boolean variable_ident_decl_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_ident_decl_1")) return false;
+    variable_ident_decl_1_0(b, l + 1);
+    return true;
+  }
+
+  // COLON type_decl
+  private static boolean variable_ident_decl_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_ident_decl_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COLON);
+    r = r && type_decl(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -2249,7 +2307,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // variable_decl (EQUAL expression)?
-  //     | LET ( variable_ident_decl | IDENT ) EQUAL expression
+  //     | LET variable_ident_decl EQUAL expression
   public static boolean variable_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_statement")) return false;
     if (!nextTokenIs(b, "<variable statement>", LET, VAR)) return false;
@@ -2290,25 +2348,16 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // LET ( variable_ident_decl | IDENT ) EQUAL expression
+  // LET variable_ident_decl EQUAL expression
   private static boolean variable_statement_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_statement_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LET);
-    r = r && variable_statement_1_1(b, l + 1);
+    r = r && variable_ident_decl(b, l + 1);
     r = r && consumeToken(b, EQUAL);
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // variable_ident_decl | IDENT
-  private static boolean variable_statement_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "variable_statement_1_1")) return false;
-    boolean r;
-    r = variable_ident_decl(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 

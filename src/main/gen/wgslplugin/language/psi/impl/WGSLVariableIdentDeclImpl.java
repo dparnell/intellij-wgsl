@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static wgslplugin.language.psi.WGSLTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLVariableIdentDeclImpl extends ASTWrapperPsiElement implements WGSLVariableIdentDecl {
+public class WGSLVariableIdentDeclImpl extends WGSLNamedElementImpl implements WGSLVariableIdentDecl {
 
   public WGSLVariableIdentDeclImpl(@NotNull ASTNode node) {
     super(node);
@@ -28,9 +27,24 @@ public class WGSLVariableIdentDeclImpl extends ASTWrapperPsiElement implements W
   }
 
   @Override
-  @NotNull
+  @Nullable
   public WGSLTypeDecl getTypeDecl() {
-    return findNotNullChildByClass(WGSLTypeDecl.class);
+    return findChildByClass(WGSLTypeDecl.class);
+  }
+
+  @Override
+  public String getName() {
+    return WGSLPsiImplUtil.getName(this);
+  }
+
+  @Override
+  public PsiElement setName(String newName) {
+    return WGSLPsiImplUtil.setName(this, newName);
+  }
+
+  @Override
+  public PsiElement getNameIdentifier() {
+    return WGSLPsiImplUtil.getNameIdentifier(this);
   }
 
 }
