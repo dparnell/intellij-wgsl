@@ -288,10 +288,10 @@ for_update ::=
     increment_statement | decrement_statement | assignment_statement | func_call_statement
 
 increment_statement ::=
-    lhs_expression PLUS PLUS
+    lhs_expression PLUS_PLUS
 
 decrement_statement ::=
-    lhs_expression MINUS MINUS
+    lhs_expression MINUS_MINUS
 
 break_statement ::=
       BREAK

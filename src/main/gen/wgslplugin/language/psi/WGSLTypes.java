@@ -134,6 +134,7 @@ public interface WGSLTypes {
   IElementType MAT4X3 = new WGSLTokenType("MAT4X3");
   IElementType MAT4X4 = new WGSLTokenType("MAT4X4");
   IElementType MINUS = new WGSLTokenType("MINUS");
+  IElementType MINUS_MINUS = new WGSLTokenType("MINUS_MINUS");
   IElementType MODULO = new WGSLTokenType("MODULO");
   IElementType NOT_EQUAL = new WGSLTokenType("NOT_EQUAL");
   IElementType OR = new WGSLTokenType("OR");
@@ -142,6 +143,7 @@ public interface WGSLTypes {
   IElementType PAREN_RIGHT = new WGSLTokenType("PAREN_RIGHT");
   IElementType PERIOD = new WGSLTokenType("PERIOD");
   IElementType PLUS = new WGSLTokenType("PLUS");
+  IElementType PLUS_PLUS = new WGSLTokenType("PLUS_PLUS");
   IElementType POINTER = new WGSLTokenType("POINTER");
   IElementType PRIVATE = new WGSLTokenType("PRIVATE");
   IElementType PUSH_CONSTANT = new WGSLTokenType("PUSH_CONSTANT");

@@ -520,13 +520,13 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // lhs_expression MINUS MINUS
+  // lhs_expression MINUS_MINUS
   public static boolean decrement_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "decrement_statement")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DECREMENT_STATEMENT, "<decrement statement>");
     r = lhs_expression(b, l + 1);
-    r = r && consumeTokens(b, 0, MINUS, MINUS);
+    r = r && consumeToken(b, MINUS_MINUS);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1028,13 +1028,13 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // lhs_expression PLUS PLUS
+  // lhs_expression PLUS_PLUS
   public static boolean increment_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "increment_statement")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, INCREMENT_STATEMENT, "<increment statement>");
     r = lhs_expression(b, l + 1);
-    r = r && consumeTokens(b, 0, PLUS, PLUS);
+    r = r && consumeToken(b, PLUS_PLUS);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

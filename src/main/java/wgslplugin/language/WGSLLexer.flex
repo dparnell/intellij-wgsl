@@ -146,6 +146,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "["                                { return BRACKET_LEFT; }
   "]"                                { return BRACKET_RIGHT; }
   "."                                { return PERIOD; }
+  "--"                               { return MINUS_MINUS; }
   "-"                                { return MINUS; }
   "!"                                { return BANG; }
   "~"                                { return TILDE; }
@@ -153,6 +154,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "&"                                { return AND; }
   "/"                                { return FORWARD_SLASH; }
   "%"                                { return MODULO; }
+  "++"                               { return PLUS_PLUS; }
   "+"                                { return PLUS; }
   "<<"                               { return SHIFT_LEFT; }
   ">>"                               { return SHIFT_RIGHT; }
