@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.2]
 ### Added
 - added increment `++` and  decrement `--` syntax support
 
