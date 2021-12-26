@@ -96,7 +96,7 @@ fn distance(e1: T, e2: T) -> f32 {
 }
 
 /**
-Returns the natural exponentiation of e1 (e.g. `e^e1`). Component-wise when T is a vector. (GLSLstd450Exp)
+Returns the natural exponentiation of e1 (e.g. e<sup>e1</sup>). Component-wise when T is a vector. (GLSLstd450Exp)
 
 * T is `f32` or `vecN<f32>`
 */
@@ -104,7 +104,7 @@ fn exp(e1: T) -> T {
 }
 
 /**
-Returns 2 raised to the power e (e.g. `2^e`). Component-wise when T is a vector. (GLSLstd450Exp2)
+Returns 2 raised to the power e (e.g. 2<sup>e</sup>). Component-wise when T is a vector. (GLSLstd450Exp2)
 
 * T is `f32` or `vecN<f32>`
 */
@@ -112,7 +112,7 @@ fn exp2(e: T) -> T {
 }
 
 /**
-Returns e1 if dot(e2,e3) is negative, and -e1 otherwise. (GLSLstd450FaceForward)
+Returns e1 if `dot(e2,e3)` is negative, and -e1 otherwise. (GLSLstd450FaceForward)
 
 * T is `vecN<f32>`
 */
@@ -144,7 +144,7 @@ fn fract(e: T) -> T {
 }
 
 /**
-Splits e into a significand and exponent of the form `significand * 2^exponent`. Returns the `__frexp_result` built-in structure, defined as if as follows:
+Splits e into a significand and exponent of the form significand * 2<sup>exponent</sup>. Returns the `__frexp_result` built-in structure, defined as if as follows:
 
 ```wgsl
 struct __frexp_result {
@@ -173,7 +173,7 @@ fn frexp(e:T) -> __frexp_result {
 }
 
 /**
-Splits the components of e into a significand and exponent of the form `significand * 2^exponent`. Returns the `__frexp_result_vecN` built-in structure, defined as if as follows:
+Splits the components of e into a significand and exponent of the form significand * 2<sup>exponent</sup>. Returns the `__frexp_result_vecN` built-in structure, defined as if as follows:
 
 ```wgsl
 struct __frexp_result_vecN {
@@ -200,7 +200,7 @@ fn inverseSqrt(e: T) -> T {
 }
 
 /**
-Returns e1 * 2^e2. Component-wise when T is a vector. (GLSLstd450Ldexp)
+Returns e1 * 2<sup>e2</sup>. Component-wise when T is a vector. (GLSLstd450Ldexp)
 
 * T is `f32` or `vecN<f32>`
 * I is `i32` or `vecN<i32>`, where I is a scalar if T is a scalar, or a vector when T is a vector
@@ -209,7 +209,7 @@ fn ldexp(e1: T, e2: I) -> T {
 }
 
 /**
-Returns the length of e (e.g. abs(e) if T is a scalar, or sqrt(e[0]^2 + e[1]^2 + ...) if T is a vector). (GLSLstd450Length)
+Returns the length of e (e.g. abs(e) if T is a scalar, or sqrt(e[0]<sup>2</sup> + e[1]<sup>2</sup> + ...) if T is a vector). (GLSLstd450Length)
 
 * T is `f32` or `vecN<f32>`
 */
