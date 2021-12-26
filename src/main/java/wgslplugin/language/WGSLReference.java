@@ -5,10 +5,11 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wgslplugin.language.psi.WGSLNamedElement;
-import wgslplugin.language.psi.WGSLVariableIdentDecl;
+import wgslplugin.language.psi.impl.WGSLPsiImplUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,5 +58,10 @@ public class WGSLReference extends PsiReferenceBase<PsiElement> implements PsiPo
         }
 
         return variants.toArray();
+    }
+
+    @Override
+    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+        return WGSLPsiImplUtil.setName(myElement, newElementName);
     }
 }

@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+- implemented rename for variables and references
+- better `++` and `--` in the parser
 
 ## [0.0.2]
 ### Added

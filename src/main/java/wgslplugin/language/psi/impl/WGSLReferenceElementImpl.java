@@ -29,4 +29,5 @@ public abstract class WGSLReferenceElementImpl extends ASTWrapperPsiElement impl
 
         return new WGSLReference(this);
     }
+
 }

@@ -31,5 +31,9 @@
         <annotator language="WGSL" implementationClass="wgslplugin.language.WGSLAnnotator"/>
 
         <colorSettingsPage implementation="wgslplugin.language.WGSLColourSettingsPage"/>
+
+        <lang.refactoringSupport language="WGSL"
+                                 implementationClass="wgslplugin.language.WGSLRefactoringSupportProvider"/>
+
     </extensions>
 </idea-plugin>

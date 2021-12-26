@@ -2,22 +2,15 @@ package wgslplugin.language.psi;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.psi.util.PsiTreeUtil;
 import wgslplugin.language.WGSLFileType;
 
 public class WGSLElementFactory {
     public static WGSLVariableIdentDecl createVariable(Project project, String name) {
         final WGSLFile file = createFile(project, "var " + name + ";");
-        final WGSLVariableIdentDecl[] result = new WGSLVariableIdentDecl[1];
-        file.getFirstChild().accept(new WGSLVisitor() {
-            @Override
-            public void visitVariableIdentDecl(@NotNull WGSLVariableIdentDecl o) {
-                result[0] = o;
-                super.visitVariableIdentDecl(o);
-            }
-        });
+        PsiElement[] idents = PsiTreeUtil.collectElements(file, e -> e instanceof WGSLVariableIdentDecl);
 
-        return result[0];
+        return (WGSLVariableIdentDecl) idents[0];
     }
 
     public static WGSLFile createFile(Project project, String text) {
