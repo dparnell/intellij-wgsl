@@ -4,7 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
 import wgslplugin.language.WGSLReference;
-import wgslplugin.language.psi.BuiltInFunctions;
+import wgslplugin.language.BuiltInFunctions;
 import wgslplugin.language.psi.WGSLFunctionCallElement;
 import wgslplugin.language.psi.WGSLFunctionDecl;
 

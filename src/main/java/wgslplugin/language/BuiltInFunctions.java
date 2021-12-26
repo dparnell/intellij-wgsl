@@ -1,9 +1,11 @@
-package wgslplugin.language.psi;
+package wgslplugin.language;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import org.jetbrains.annotations.NotNull;
+import wgslplugin.language.psi.WGSLElementFactory;
+import wgslplugin.language.psi.WGSLFunctionCallElement;
+import wgslplugin.language.psi.WGSLFunctionDecl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

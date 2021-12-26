@@ -14,6 +14,7 @@
 
     <idea-version since-build="144"/>
     <depends>com.intellij.modules.lang</depends>
+    <depends>org.intellij.plugins.markdown</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="WGSL File"
