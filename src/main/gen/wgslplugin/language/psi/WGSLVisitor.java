@@ -267,11 +267,19 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitVariableReference(@NotNull WGSLVariableReference o) {
+    visitReferenceElement(o);
+  }
+
   public void visitVariableStatement(@NotNull WGSLVariableStatement o) {
     visitPsiElement(o);
   }
 
   public void visitNamedElement(@NotNull WGSLNamedElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReferenceElement(@NotNull WGSLReferenceElement o) {
     visitPsiElement(o);
   }
 

@@ -22,4 +22,7 @@ public interface WGSLPrimaryExpression extends PsiElement {
   @Nullable
   WGSLTypeDecl getTypeDecl();
 
+  @Nullable
+  WGSLVariableReference getVariableReference();
+
 }

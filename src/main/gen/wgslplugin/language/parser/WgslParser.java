@@ -494,14 +494,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT
+  // variable_reference
   //     | PAREN_LEFT lhs_expression PAREN_RIGHT
   public static boolean core_lhs_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "core_lhs_expression")) return false;
     if (!nextTokenIs(b, "<core lhs expression>", IDENT, PAREN_LEFT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, CORE_LHS_EXPRESSION, "<core lhs expression>");
-    r = consumeToken(b, IDENT);
+    r = variable_reference(b, l + 1);
     if (!r) r = core_lhs_expression_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -1276,7 +1276,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // func_call_statement
-  //     | IDENT
+  //     | variable_reference
   //     | type_decl argument_expression_list
   //     | const_literal
   //     | paren_expression
@@ -1286,7 +1286,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PRIMARY_EXPRESSION, "<primary expression>");
     r = func_call_statement(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
+    if (!r) r = variable_reference(b, l + 1);
     if (!r) r = primary_expression_2(b, l + 1);
     if (!r) r = const_literal(b, l + 1);
     if (!r) r = paren_expression(b, l + 1);
@@ -2302,6 +2302,18 @@ public class WgslParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, COMMA);
     r = r && access_mode(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  public static boolean variable_reference(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_reference")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, VARIABLE_REFERENCE, r);
     return r;
   }
 

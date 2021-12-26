@@ -10,7 +10,7 @@ import wgslplugin.language.psi.WGSLTypes;
 import wgslplugin.language.psi.WGSLVariableIdentDecl;
 
 public class WGSLPsiImplUtil {
-    public static String getName(WGSLNamedElement element) {
+    public static String getName(PsiElement element) {
         ASTNode identNode = element.getNode().findChildByType(WGSLTypes.IDENT);
         if(identNode != null) {
             return identNode.getText();
@@ -19,7 +19,7 @@ public class WGSLPsiImplUtil {
         return null;
     }
 
-    public static PsiElement setName(WGSLNamedElement element, String newName) {
+    public static PsiElement setName(PsiElement element, String newName) {
         ASTNode identNode = element.getNode().findChildByType(WGSLTypes.IDENT);
         if (identNode != null) {
             WGSLVariableIdentDecl variable = WGSLElementFactory.createVariable(element.getProject(), newName);
@@ -52,4 +52,5 @@ public class WGSLPsiImplUtil {
             return null;
         }
     }
+
 }

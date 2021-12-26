@@ -5,12 +5,10 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface WGSLCoreLhsExpression extends PsiElement {
+public interface WGSLVariableReference extends WGSLReferenceElement {
 
-  @Nullable
-  WGSLLhsExpression getLhsExpression();
+  String getName();
 
-  @Nullable
-  WGSLVariableReference getVariableReference();
+  PsiElement setName(String newName);
 
 }

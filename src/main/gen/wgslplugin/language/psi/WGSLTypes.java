@@ -73,6 +73,7 @@ public interface WGSLTypes {
   IElementType VARIABLE_DECL = new WGSLElementType("VARIABLE_DECL");
   IElementType VARIABLE_IDENT_DECL = new WGSLElementType("VARIABLE_IDENT_DECL");
   IElementType VARIABLE_QUALIFIER = new WGSLElementType("VARIABLE_QUALIFIER");
+  IElementType VARIABLE_REFERENCE = new WGSLElementType("VARIABLE_REFERENCE");
   IElementType VARIABLE_STATEMENT = new WGSLElementType("VARIABLE_STATEMENT");
 
   IElementType AND = new WGSLTokenType("AND");
@@ -420,6 +421,9 @@ public interface WGSLTypes {
       }
       else if (type == VARIABLE_QUALIFIER) {
         return new WGSLVariableQualifierImpl(node);
+      }
+      else if (type == VARIABLE_REFERENCE) {
+        return new WGSLVariableReferenceImpl(node);
       }
       else if (type == VARIABLE_STATEMENT) {
         return new WGSLVariableStatementImpl(node);

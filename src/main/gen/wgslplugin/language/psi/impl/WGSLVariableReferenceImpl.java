@@ -8,17 +8,16 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static wgslplugin.language.psi.WGSLTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLCoreLhsExpressionImpl extends ASTWrapperPsiElement implements WGSLCoreLhsExpression {
+public class WGSLVariableReferenceImpl extends WGSLReferenceElementImpl implements WGSLVariableReference {
 
-  public WGSLCoreLhsExpressionImpl(@NotNull ASTNode node) {
+  public WGSLVariableReferenceImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitCoreLhsExpression(this);
+    visitor.visitVariableReference(this);
   }
 
   @Override
@@ -28,15 +27,13 @@ public class WGSLCoreLhsExpressionImpl extends ASTWrapperPsiElement implements W
   }
 
   @Override
-  @Nullable
-  public WGSLLhsExpression getLhsExpression() {
-    return findChildByClass(WGSLLhsExpression.class);
+  public String getName() {
+    return WGSLPsiImplUtil.getName(this);
   }
 
   @Override
-  @Nullable
-  public WGSLVariableReference getVariableReference() {
-    return findChildByClass(WGSLVariableReference.class);
+  public PsiElement setName(String newName) {
+    return WGSLPsiImplUtil.setName(this, newName);
   }
 
 }

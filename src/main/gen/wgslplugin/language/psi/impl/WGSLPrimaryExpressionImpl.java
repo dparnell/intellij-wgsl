@@ -57,4 +57,10 @@ public class WGSLPrimaryExpressionImpl extends ASTWrapperPsiElement implements W
     return findChildByClass(WGSLTypeDecl.class);
   }
 
+  @Override
+  @Nullable
+  public WGSLVariableReference getVariableReference() {
+    return findChildByClass(WGSLVariableReference.class);
+  }
+
 }

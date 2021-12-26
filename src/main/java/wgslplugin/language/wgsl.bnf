@@ -208,11 +208,18 @@ const_expression ::=
 
 primary_expression ::=
       func_call_statement
-    | IDENT
+    | variable_reference
     | type_decl argument_expression_list
     | const_literal
     | paren_expression
     | BITCAST LESS_THAN type_decl GREATER_THAN paren_expression
+
+variable_reference ::=
+    IDENT {
+            mixin="wgslplugin.language.psi.impl.WGSLReferenceElementImpl"
+            implements="wgslplugin.language.psi.WGSLReferenceElement"
+            methods=[getName setName]
+          }
 
 paren_expression ::=
       PAREN_LEFT expression PAREN_RIGHT
@@ -239,7 +246,7 @@ lhs_expression ::=
       ( STAR | AND )* core_lhs_expression postfix_expression?
 
 core_lhs_expression ::=
-      IDENT
+      variable_reference
     | PAREN_LEFT lhs_expression PAREN_RIGHT
 
 expression ::=

@@ -7,19 +7,18 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wgslplugin.language.psi.WGSLNamedElement;
 import wgslplugin.language.psi.WGSLVariableIdentDecl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class WGSLReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
-    private final String key;
-
-    public WGSLReference(@NotNull PsiElement element, TextRange textRange) {
-        super(element, textRange);
-        key = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
+    public WGSLReference(@NotNull PsiElement element) {
+        super(element, new TextRange(0, element.getTextLength()));
     }
 
     @Override
@@ -27,8 +26,10 @@ public class WGSLReference extends PsiReferenceBase<PsiElement> implements PsiPo
         PsiFile file = myElement.getContainingFile();
         List<ResolveResult> results = new ArrayList<>();
         if(file != null) {
-            @NotNull Collection<WGSLVariableIdentDecl> variables = PsiTreeUtil.findChildrenOfType(file, WGSLVariableIdentDecl.class);
-            results.addAll(variables.stream().map(v -> new PsiElementResolveResult(v)).collect(Collectors.toList()));
+            String name = getValue();
+            PsiElement[] names = PsiTreeUtil.collectElements(file, e -> e instanceof WGSLNamedElement ? name.equals(((WGSLNamedElement) e).getName()) : false);
+
+            results.addAll(Arrays.stream(names).map(v -> new PsiElementResolveResult(v)).collect(Collectors.toList()));
         }
 
         return results.toArray(new ResolveResult[results.size()]);
@@ -46,8 +47,8 @@ public class WGSLReference extends PsiReferenceBase<PsiElement> implements PsiPo
         List<LookupElement> variants = new ArrayList<>();
         PsiFile file = myElement.getContainingFile();
         if(file != null) {
-            @NotNull Collection<WGSLVariableIdentDecl> variables = PsiTreeUtil.findChildrenOfType(file, WGSLVariableIdentDecl.class);
-            for(WGSLVariableIdentDecl variable : variables) {
+            @NotNull Collection<WGSLNamedElement> variables = PsiTreeUtil.findChildrenOfType(file, WGSLNamedElement.class);
+            for(WGSLNamedElement variable : variables) {
                 String n = variable.getName();
                 if(n != null && !n.isEmpty()) {
                     variants.add(LookupElementBuilder.create(variable).withIcon(WGSLIcons.FILE).withTypeText(file.getName()));
