@@ -28,15 +28,21 @@ public class WGSLFunctionDeclImpl extends ASTWrapperPsiElement implements WGSLFu
   }
 
   @Override
-  @NotNull
-  public List<WGSLAttributeList> getAttributeListList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLAttributeList.class);
+  @Nullable
+  public WGSLAttributeList getAttributeList() {
+    return findChildByClass(WGSLAttributeList.class);
   }
 
   @Override
   @NotNull
   public WGSLCompoundStatement getCompoundStatement() {
     return findNotNullChildByClass(WGSLCompoundStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public WGSLDocs getDocs() {
+    return findChildByClass(WGSLDocs.class);
   }
 
   @Override

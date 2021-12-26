@@ -11,32 +11,20 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLParamImpl extends ASTWrapperPsiElement implements WGSLParam {
+public class WGSLDocsImpl extends ASTWrapperPsiElement implements WGSLDocs {
 
-  public WGSLParamImpl(@NotNull ASTNode node) {
+  public WGSLDocsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitParam(this);
+    visitor.visitDocs(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof WGSLVisitor) accept((WGSLVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public WGSLAttributeList getAttributeList() {
-    return findChildByClass(WGSLAttributeList.class);
-  }
-
-  @Override
-  @NotNull
-  public WGSLVariableIdentDecl getVariableIdentDecl() {
-    return findNotNullChildByClass(WGSLVariableIdentDecl.class);
   }
 
 }

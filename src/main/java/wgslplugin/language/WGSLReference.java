@@ -18,22 +18,33 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class WGSLReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+    private final PsiElement resolvesTo;
+
     public WGSLReference(@NotNull PsiElement element) {
         super(element, new TextRange(0, element.getTextLength()));
+        resolvesTo = null;
+    }
+    public WGSLReference(@NotNull PsiElement element, PsiElement resolvesTo) {
+        super(element, new TextRange(0, element.getTextLength()));
+        this.resolvesTo = resolvesTo;
     }
 
     @Override
     public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
-        PsiFile file = myElement.getContainingFile();
-        List<ResolveResult> results = new ArrayList<>();
-        if(file != null) {
-            String name = getValue();
-            PsiElement[] names = PsiTreeUtil.collectElements(file, e -> e instanceof WGSLNamedElement ? name.equals(((WGSLNamedElement) e).getName()) : false);
+        if(resolvesTo == null) {
+            PsiFile file = myElement.getContainingFile();
+            List<ResolveResult> results = new ArrayList<>();
+            if (file != null) {
+                String name = getValue();
+                PsiElement[] names = PsiTreeUtil.collectElements(file, e -> e instanceof WGSLNamedElement ? name.equals(((WGSLNamedElement) e).getName()) : false);
 
-            results.addAll(Arrays.stream(names).map(v -> new PsiElementResolveResult(v)).collect(Collectors.toList()));
+                results.addAll(Arrays.stream(names).map(v -> new PsiElementResolveResult(v)).collect(Collectors.toList()));
+            }
+
+            return results.toArray(new ResolveResult[results.size()]);
         }
 
-        return results.toArray(new ResolveResult[results.size()]);
+        return new ResolveResult[] { new PsiElementResolveResult(resolvesTo)};
     }
 
     @Nullable

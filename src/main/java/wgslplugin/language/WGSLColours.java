@@ -13,6 +13,7 @@ public enum WGSLColours {
     STORAGE("Storage", createTextAttributesKey("WGSL_STORAGE", DefaultLanguageHighlighterColors.CLASS_NAME)),
     LINE_COMMENT("Line comment", createTextAttributesKey("WGSL_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)),
     BLOCK_COMMENT("Block comment", createTextAttributesKey("WGSL_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT)),
+    DOC_COMMENT("Documentation comment", createTextAttributesKey("WGSL_DOC_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT)),
     BUILTIN_FUNCTION("Built-in function", DefaultLanguageHighlighterColors.STATIC_METHOD),
     BUILTIN_TYPE("Built-in type", createTextAttributesKey("WGSL_TYPE", DefaultLanguageHighlighterColors.CLASS_NAME)),
     TEXEL_FORMAT("Texel format", createTextAttributesKey("WGSL_TEXEL_FORMAT", DefaultLanguageHighlighterColors.CLASS_NAME)),

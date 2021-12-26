@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface WGSLParam extends PsiElement {
+public interface WGSLFunctionName extends WGSLFunctionElement {
 
-  @Nullable
-  WGSLAttributeList getAttributeList();
+  String getName();
 
-  @NotNull
-  WGSLVariableIdentDecl getVariableIdentDecl();
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

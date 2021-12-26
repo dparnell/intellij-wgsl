@@ -22,6 +22,7 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{WGSLColours.BAD_CHARACTER.attributes()};
     private static final TextAttributesKey[] LINE_COMMENT_KEYS = new TextAttributesKey[]{WGSLColours.LINE_COMMENT.attributes()};
     private static final TextAttributesKey[] BLOCK_COMMENT_KEYS = new TextAttributesKey[]{WGSLColours.BLOCK_COMMENT.attributes()};
+    private static final TextAttributesKey[] DOC_COMMENT_KEYS = new TextAttributesKey[]{WGSLColours.DOC_COMMENT.attributes()};
     private static final TextAttributesKey[] PAREN_KEYS = new TextAttributesKey[]{WGSLColours.PARENTHESIS.attributes()};
     private static final TextAttributesKey[] BRACE_KEYS = new TextAttributesKey[]{WGSLColours.BRACES.attributes()};
     private static final TextAttributesKey[] BRACKET_KEYS = new TextAttributesKey[]{WGSLColours.BRACKETS.attributes()};
@@ -100,6 +101,10 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
 
         if (tokenType.equals(WGSLTypes.BLOCK_COMMENT)) {
             return BLOCK_COMMENT_KEYS;
+        }
+
+        if(tokenType.equals(WGSLTypes.DOC_COMMENT)) {
+            return DOC_COMMENT_KEYS;
         }
 
         if (tokenType.equals(WGSLTypes.PAREN_LEFT) || tokenType.equals(WGSLTypes.PAREN_RIGHT)) {

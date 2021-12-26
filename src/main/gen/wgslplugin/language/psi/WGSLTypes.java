@@ -25,6 +25,7 @@ public interface WGSLTypes {
   IElementType CORE_LHS_EXPRESSION = new WGSLElementType("CORE_LHS_EXPRESSION");
   IElementType DECREMENT_STATEMENT = new WGSLElementType("DECREMENT_STATEMENT");
   IElementType DEPTH_TEXTURE_TYPE = new WGSLElementType("DEPTH_TEXTURE_TYPE");
+  IElementType DOCS = new WGSLElementType("DOCS");
   IElementType ELEMENT_COUNT_EXPRESSION = new WGSLElementType("ELEMENT_COUNT_EXPRESSION");
   IElementType ELSE_STATEMENT = new WGSLElementType("ELSE_STATEMENT");
   IElementType ENABLE_DIRECTIVE = new WGSLElementType("ENABLE_DIRECTIVE");
@@ -36,6 +37,8 @@ public interface WGSLTypes {
   IElementType FOR_UPDATE = new WGSLElementType("FOR_UPDATE");
   IElementType FUNCTION_DECL = new WGSLElementType("FUNCTION_DECL");
   IElementType FUNCTION_HEADER = new WGSLElementType("FUNCTION_HEADER");
+  IElementType FUNCTION_NAME = new WGSLElementType("FUNCTION_NAME");
+  IElementType FUNC_CALL_NAME = new WGSLElementType("FUNC_CALL_NAME");
   IElementType FUNC_CALL_STATEMENT = new WGSLElementType("FUNC_CALL_STATEMENT");
   IElementType GLOBAL_CONSTANT_DECL = new WGSLElementType("GLOBAL_CONSTANT_DECL");
   IElementType GLOBAL_CONST_INITIALIZER = new WGSLElementType("GLOBAL_CONST_INITIALIZER");
@@ -102,6 +105,7 @@ public interface WGSLTypes {
   IElementType DECIMAL_FLOAT_LITERAL = new WGSLTokenType("DECIMAL_FLOAT_LITERAL");
   IElementType DEFAULT = new WGSLTokenType("DEFAULT");
   IElementType DISCARD = new WGSLTokenType("DISCARD");
+  IElementType DOC_COMMENT = new WGSLTokenType("DOC_COMMENT");
   IElementType ELSE = new WGSLTokenType("ELSE");
   IElementType ENABLE = new WGSLTokenType("ENABLE");
   IElementType EQUAL = new WGSLTokenType("EQUAL");
@@ -278,6 +282,9 @@ public interface WGSLTypes {
       else if (type == DEPTH_TEXTURE_TYPE) {
         return new WGSLDepthTextureTypeImpl(node);
       }
+      else if (type == DOCS) {
+        return new WGSLDocsImpl(node);
+      }
       else if (type == ELEMENT_COUNT_EXPRESSION) {
         return new WGSLElementCountExpressionImpl(node);
       }
@@ -310,6 +317,12 @@ public interface WGSLTypes {
       }
       else if (type == FUNCTION_HEADER) {
         return new WGSLFunctionHeaderImpl(node);
+      }
+      else if (type == FUNCTION_NAME) {
+        return new WGSLFunctionNameImpl(node);
+      }
+      else if (type == FUNC_CALL_NAME) {
+        return new WGSLFuncCallNameImpl(node);
       }
       else if (type == FUNC_CALL_STATEMENT) {
         return new WGSLFuncCallStatementImpl(node);

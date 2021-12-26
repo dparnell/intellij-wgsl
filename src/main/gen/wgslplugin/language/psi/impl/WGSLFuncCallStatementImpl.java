@@ -33,4 +33,10 @@ public class WGSLFuncCallStatementImpl extends ASTWrapperPsiElement implements W
     return findNotNullChildByClass(WGSLArgumentExpressionList.class);
   }
 
+  @Override
+  @NotNull
+  public WGSLFuncCallName getFuncCallName() {
+    return findNotNullChildByClass(WGSLFuncCallName.class);
+  }
+
 }

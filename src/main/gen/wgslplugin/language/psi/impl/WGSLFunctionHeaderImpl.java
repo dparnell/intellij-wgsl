@@ -34,6 +34,12 @@ public class WGSLFunctionHeaderImpl extends ASTWrapperPsiElement implements WGSL
   }
 
   @Override
+  @NotNull
+  public WGSLFunctionName getFunctionName() {
+    return findNotNullChildByClass(WGSLFunctionName.class);
+  }
+
+  @Override
   @Nullable
   public WGSLParamList getParamList() {
     return findChildByClass(WGSLParamList.class);

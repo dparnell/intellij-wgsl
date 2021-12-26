@@ -75,6 +75,10 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDocs(@NotNull WGSLDocs o) {
+    visitPsiElement(o);
+  }
+
   public void visitElementCountExpression(@NotNull WGSLElementCountExpression o) {
     visitPsiElement(o);
   }
@@ -111,6 +115,10 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFuncCallName(@NotNull WGSLFuncCallName o) {
+    visitFunctionCallElement(o);
+  }
+
   public void visitFuncCallStatement(@NotNull WGSLFuncCallStatement o) {
     visitPsiElement(o);
   }
@@ -121,6 +129,10 @@ public class WGSLVisitor extends PsiElementVisitor {
 
   public void visitFunctionHeader(@NotNull WGSLFunctionHeader o) {
     visitPsiElement(o);
+  }
+
+  public void visitFunctionName(@NotNull WGSLFunctionName o) {
+    visitFunctionElement(o);
   }
 
   public void visitGlobalConstInitializer(@NotNull WGSLGlobalConstInitializer o) {
@@ -272,6 +284,14 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitVariableStatement(@NotNull WGSLVariableStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFunctionCallElement(@NotNull WGSLFunctionCallElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFunctionElement(@NotNull WGSLFunctionElement o) {
     visitPsiElement(o);
   }
 

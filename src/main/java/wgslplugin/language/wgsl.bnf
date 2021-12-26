@@ -313,7 +313,14 @@ return_statement ::=
       RETURN expression?
 
 func_call_statement ::=
-      IDENT argument_expression_list
+      func_call_name argument_expression_list
+
+func_call_name ::=
+    IDENT {
+              mixin="wgslplugin.language.psi.impl.WGSLFunctionCallElementImpl"
+              implements="wgslplugin.language.psi.WGSLFunctionCallElement"
+              methods=[getName setName]
+          }
 
 statement ::=
       SEMICOLON
@@ -332,17 +339,28 @@ statement ::=
     | increment_statement SEMICOLON
     | decrement_statement SEMICOLON
 
+
+docs ::=
+    DOC_COMMENT
+
 function_decl ::=
-      attribute_list * function_header compound_statement
+      docs? attribute_list? function_header compound_statement
 
 function_header ::=
-      FN IDENT PAREN_LEFT param_list? PAREN_RIGHT ( ARROW attribute_list* type_decl )?
+      FN function_name PAREN_LEFT param_list? PAREN_RIGHT ( ARROW attribute_list* type_decl )?
+
+function_name ::=
+    IDENT {
+            mixin="wgslplugin.language.psi.impl.WGSLFunctionElementImpl"
+            implements="wgslplugin.language.psi.WGSLFunctionElement"
+            methods=[getName setName getNameIdentifier]
+          }
 
 param_list ::=
       ( param COMMA )* param COMMA?
 
 param ::=
-      attribute_list* variable_ident_decl
+      attribute_list? variable_ident_decl
 
 enable_directive ::=
       ENABLE IDENT SEMICOLON

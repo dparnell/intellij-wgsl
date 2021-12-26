@@ -10,6 +10,9 @@ public interface WGSLFunctionHeader extends PsiElement {
   @NotNull
   List<WGSLAttributeList> getAttributeListList();
 
+  @NotNull
+  WGSLFunctionName getFunctionName();
+
   @Nullable
   WGSLParamList getParamList();
 

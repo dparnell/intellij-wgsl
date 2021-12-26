@@ -551,6 +551,18 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // DOC_COMMENT
+  public static boolean docs(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docs")) return false;
+    if (!nextTokenIs(b, DOC_COMMENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DOC_COMMENT);
+    exit_section_(b, m, DOCS, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // INT_LITERAL
   //     | UINT_LITERAL
   //     | IDENT
@@ -739,51 +751,68 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT argument_expression_list
+  // IDENT
+  public static boolean func_call_name(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "func_call_name")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, FUNC_CALL_NAME, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // func_call_name argument_expression_list
   public static boolean func_call_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "func_call_statement")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
+    r = func_call_name(b, l + 1);
     r = r && argument_expression_list(b, l + 1);
     exit_section_(b, m, FUNC_CALL_STATEMENT, r);
     return r;
   }
 
   /* ********************************************************** */
-  // attribute_list * function_header compound_statement
+  // docs? attribute_list? function_header compound_statement
   public static boolean function_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_decl")) return false;
-    if (!nextTokenIs(b, "<function decl>", ATTR_LEFT, FN)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_DECL, "<function decl>");
     r = function_decl_0(b, l + 1);
+    r = r && function_decl_1(b, l + 1);
     r = r && function_header(b, l + 1);
     r = r && compound_statement(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // attribute_list *
+  // docs?
   private static boolean function_decl_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_decl_0")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!attribute_list(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "function_decl_0", c)) break;
-    }
+    docs(b, l + 1);
+    return true;
+  }
+
+  // attribute_list?
+  private static boolean function_decl_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_decl_1")) return false;
+    attribute_list(b, l + 1);
     return true;
   }
 
   /* ********************************************************** */
-  // FN IDENT PAREN_LEFT param_list? PAREN_RIGHT ( ARROW attribute_list* type_decl )?
+  // FN function_name PAREN_LEFT param_list? PAREN_RIGHT ( ARROW attribute_list* type_decl )?
   public static boolean function_header(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_header")) return false;
     if (!nextTokenIs(b, FN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, FN, IDENT, PAREN_LEFT);
+    r = consumeToken(b, FN);
+    r = r && function_name(b, l + 1);
+    r = r && consumeToken(b, PAREN_LEFT);
     r = r && function_header_3(b, l + 1);
     r = r && consumeToken(b, PAREN_RIGHT);
     r = r && function_header_5(b, l + 1);
@@ -826,6 +855,18 @@ public class WgslParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "function_header_5_0_1", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  public static boolean function_name(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_name")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, FUNCTION_NAME, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -1142,7 +1183,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list* variable_ident_decl
+  // attribute_list? variable_ident_decl
   public static boolean param(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param")) return false;
     if (!nextTokenIs(b, "<param>", ATTR_LEFT, IDENT)) return false;
@@ -1154,14 +1195,10 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // attribute_list*
+  // attribute_list?
   private static boolean param_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param_0")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!attribute_list(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "param_0", c)) break;
-    }
+    attribute_list(b, l + 1);
     return true;
   }
 

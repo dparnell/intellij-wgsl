@@ -7,11 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLFunctionDecl extends PsiElement {
 
-  @NotNull
-  List<WGSLAttributeList> getAttributeListList();
+  @Nullable
+  WGSLAttributeList getAttributeList();
 
   @NotNull
   WGSLCompoundStatement getCompoundStatement();
+
+  @Nullable
+  WGSLDocs getDocs();
 
   @NotNull
   WGSLFunctionHeader getFunctionHeader();

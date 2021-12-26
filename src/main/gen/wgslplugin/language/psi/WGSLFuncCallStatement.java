@@ -10,4 +10,7 @@ public interface WGSLFuncCallStatement extends PsiElement {
   @NotNull
   WGSLArgumentExpressionList getArgumentExpressionList();
 
+  @NotNull
+  WGSLFuncCallName getFuncCallName();
+
 }

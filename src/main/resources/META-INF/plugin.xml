@@ -35,5 +35,8 @@
         <lang.refactoringSupport language="WGSL"
                                  implementationClass="wgslplugin.language.WGSLRefactoringSupportProvider"/>
 
+
+        <lang.documentationProvider language="WGSL"
+                                    implementationClass="wgslplugin.language.WGSLDocumentationProvider"/>
     </extensions>
 </idea-plugin>
