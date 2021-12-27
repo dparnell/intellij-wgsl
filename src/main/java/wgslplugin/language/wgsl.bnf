@@ -114,6 +114,8 @@ depth_texture_type ::=
     | TEXTURE_DEPTH_MULTISAMPLED_2D
 
 texel_format ::=
+    IDENT
+/*
       R8UNORM
     | R8SNORM
     | R8UINT
@@ -149,6 +151,7 @@ texel_format ::=
     | RGBA32UINT
     | RGBA32SINT
     | RGBA32FLOAT
+*/
 
 type_alias_decl ::=
       TYPE IDENT EQUAL type_decl
@@ -338,7 +341,6 @@ statement ::=
     | compound_statement
     | increment_statement SEMICOLON
     | decrement_statement SEMICOLON
-
 
 docs ::=
     DOC_COMMENT

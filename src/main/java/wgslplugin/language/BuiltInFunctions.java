@@ -18,6 +18,7 @@ public class BuiltInFunctions {
 
     private PsiFile builtInFunctionsFile = null;
     private Map<String, WGSLFunctionDecl> functions = new HashMap<>();
+    private PsiElement[] allBuiltinFunctions;
 
     public synchronized WGSLFunctionDecl get(WGSLFunctionCallElement element) {
         if(builtInFunctionsFile == null) {
@@ -32,11 +33,13 @@ public class BuiltInFunctions {
                 }
                 builtInFunctionsFile = WGSLElementFactory.createFile(element.getProject(), bos.toString("UTF-8"));
 
-                PsiElement[] funcs = PsiTreeUtil.collectElements(builtInFunctionsFile, e -> e instanceof WGSLFunctionDecl);
-                for(PsiElement func : funcs) {
+                allBuiltinFunctions = PsiTreeUtil.collectElements(builtInFunctionsFile, e -> e instanceof WGSLFunctionDecl);
+                for(PsiElement func : allBuiltinFunctions) {
                     WGSLFunctionDecl f = (WGSLFunctionDecl) func;
-                    String name = f.getFunctionHeader().getFunctionName().getName();
-                    functions.put(name, f);
+                    if(f.getDocs() != null) {
+                        String name = f.getFunctionHeader().getFunctionName().getName();
+                        functions.put(name, f);
+                    }
                 }
             } catch (IOException e) {
                 // something went wrong trying to read in the builtin functions

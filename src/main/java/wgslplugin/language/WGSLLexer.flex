@@ -85,6 +85,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "texture_depth_cube"               { return TEXTURE_DEPTH_CUBE; }
   "texture_depth_cube_array"         { return TEXTURE_DEPTH_CUBE_ARRAY; }
   "texture_depth_multisampled_2d"    { return TEXTURE_DEPTH_MULTISAMPLED_2D; }
+/*
   "r8unorm"                          { return R8UNORM; }
   "r8snorm"                          { return R8SNORM; }
   "r8uint"                           { return R8UINT; }
@@ -120,6 +121,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "rgba32uint"                       { return RGBA32UINT; }
   "rgba32sint"                       { return RGBA32SINT; }
   "rgba32float"                      { return RGBA32FLOAT; }
+ */
   "type"                             { return TYPE; }
   "="                                { return EQUAL; }
   "bool"                             { return BOOL; }

@@ -1,7 +1,10 @@
+
+// numeric functions
+
 /**
 Returns the absolute value of e (e.g. e with a positive sign bit). Component-wise when T is a vector. (GLSLstd450Fabs)
 
-* T is `f32` or `vecN<f32>`
+* T is `i32`, `f32`, `u32`, `vecN<i32>`, `vecN<f32>` or `vecN<u32>`
 */
 fn abs(e: T) -> T {
 }
@@ -49,7 +52,7 @@ fn ceil(e: T) -> T {
 /**
 Returns `min(max(e1,e2),e3)`. Component-wise when T is a vector. (GLSLstd450NClamp)
 
-* T is `f32` or `vecN<f32>`
+* T is `i32`, `f32`, `u32`, `vecN<i32>`, `vecN<f32>` or `vecN<u32>`
 */
 fn clamp(e1: T, e2: T, e3: T) -> T {
 }
@@ -168,8 +171,9 @@ let fraction_direct = frexp(1.5).sig;
 (GLSLstd450FrexpStruct)
 
 * T is `f32`
+* R is `__frexp_result`
 */
-fn frexp(e:T) -> __frexp_result {
+fn frexp(e:T) -> R {
 }
 
 /**
@@ -187,8 +191,9 @@ Note: A value cannot be explicitly declared with the type `__frexp_result_vecN`,
 (GLSLstd450FrexpStruct)
 
 * T is `vecN<f32>`
+* R is `__frexp_result_vecN`
 */
-fn frexp(e:T) -> __frexp_result_vecN {
+fn frexp(e:T) -> R {
 }
 
 /**
@@ -235,7 +240,7 @@ fn log2(e: T) -> T {
 /**
 Returns e2 if e1 is less than e2, and e1 otherwise. If one operand is a NaN, the other is returned. If both operands are NaNs, a NaN is returned. Component-wise when T is a vector. (GLSLstd450NMax)
 
-* T is `f32` or `vecN<f32>`
+* T is `i32`, `f32`, `u32`, `vecN<i32>`, `vecN<f32>` or `vecN<u32>`
 */
 fn max(e1: T, e2: T) -> T {
 }
@@ -243,7 +248,7 @@ fn max(e1: T, e2: T) -> T {
 /**
 Returns e2 if e2 is less than e1, and e1 otherwise. If one operand is a NaN, the other is returned. If both operands are NaNs, a NaN is returned. Component-wise when T is a vector. (GLSLstd450NMin)
 
-* T is `f32` or `vecN<f32>`
+* T is `i32`, `f32`, `u32`, `vecN<i32>`, `vecN<f32>` or `vecN<u32>`
 */
 fn min(e1: T, e2: T) -> T {
 }
@@ -290,8 +295,9 @@ let fract_direct = modf(1.5).fract;
 (GLSLstd450ModfStruct)
 
 * T is `f32`
+* R is `__modf_result`
 */
-fn modf(e:T) -> __modf_result {
+fn modf(e:T) -> R {
 }
 
 /**
@@ -309,16 +315,17 @@ Note: A value cannot be explicitly declared with the type __modf_result_vecN, bu
 (GLSLstd450ModfStruct)
 
 * T is `vecN<f32>`
+* R is `__modf_result_vecN`
 */
-fn modf(e:T) -> __modf_result_vecN {
+fn modf(e:T) -> R {
 }
 
 /**
 Returns a unit vector in the same direction as e. (GLSLstd450Normalize)
 
-* T is `f32`
+* T is `vec2<f32>`, `vec3<f32>` or `vec4<f32>`
 */
-fn normalize(e: vecN<T>) -> vecN<T> {
+fn normalize(e: T) -> T {
 }
 
 /**
@@ -449,3 +456,172 @@ Returns the nearest whole number whose absolute value is less than or equal to e
 */
 fn trunc(e: T) -> T {
 }
+
+// integer functions
+
+/**
+The number of 1 bits in the representation of e.
+Also known as "population count".
+Component-wise when T is a vector. (SPIR-V OpBitCount)
+
+* T is i32, u32, vecN<i32>, or vecN<u32>
+*/
+fn countOneBits(e: T) -> T {
+}
+
+/**
+Reverses the bits in e: The bit at position k of the result equals the bit at position 31-k of e.
+Component-wise when T is a vector. (SPIR-V OpBitReverse)
+
+* T is i32, u32, vecN<i32>, or vecN<u32>
+*/
+fn reverseBits(e: T) -> T {
+}
+
+// matrix functions
+
+/**
+Returns the determinant of e. (GLSLstd450Determinant)
+
+* M is matMxN<T>
+* T is f32
+*/
+fn determinant(e: M) -> T {
+}
+
+/**
+Returns the transpose of e. (OpTranspose)
+
+* M is matMxN<T>
+* T is f32
+* R if matNxM<T>
+*/
+fn transpose(e: M) -> R {
+}
+
+// vector functions
+
+/**
+Returns the dot product of e1 and e2. (OpDot, SPV_KHR_integer_dot_product OpSDotKHR, SPV_KHR_integer_dot_product OpUDotKHR)
+
+* V is vecN<T>
+* T is i32, f32 or u32
+*/
+fn dot(e1: V, e2: V) -> T {
+}
+
+// derivative functions
+
+/**
+Partial derivative of e with respect to window x coordinates. The result is the same as either dpdxFine(e) or dpdxCoarse(e). (OpDPdx)
+
+* T is f32 or vecN<f32>
+*/
+fn dpdx(e: T) -> T {
+}
+
+/**
+Returns the partial derivative of e with respect to window x coordinates using local differences. This may result in fewer unique positions that dpdxFine(e). (OpDPdxCoarse)
+
+* T is f32 or vecN<f32>
+*/
+fn dpdxCoarse(e: T) -> T {
+}
+
+/**
+Returns the partial derivative of e with respect to window x coordinates. (OpDPdxFine)
+
+* T is f32 or vecN<f32>
+*/
+fn dpdxFine(e: T) -> T {
+}
+
+/**
+Partial derivative of e with respect to window y coordinates. The result is the same as either dpdyFine(e) or dpdyCoarse(e). (OpDPdy)
+
+* T is f32 or vecN<f32>
+*/
+fn dpdy(e: T) -> T {
+}
+
+/**
+Returns the partial derivative of e with respect to window y coordinates using local differences. This may result in fewer unique positions that dpdyFine(e). (OpDPdyCoarse)
+
+* T is f32 or vecN<f32>
+*/
+fn dpdyCoarse(e: T) -> T {
+}
+
+/**
+Returns the partial derivative of e with respect to window y coordinates. (OpDPdyFine)
+
+* T is f32 or vecN<f32>
+*/
+fn dpdyFine(e: T) -> T {
+}
+
+/**
+Returns abs(dpdx(e)) + abs(dpdy(e)). (OpFwidth)
+
+* T is f32 or vecN<f32>
+*/
+fn fwidth(e: T) -> T {
+}
+
+/**
+Returns abs(dpdxCoarse(e)) + abs(dpdyCoarse(e)). (OpFwidthCoarse)
+
+* T is f32 or vecN<f32>
+*/
+fn fwidthCoarse(e: T) -> T {
+}
+
+/**
+Returns abs(dpdxFine(e)) + abs(dpdyFine(e)). (OpFwidthFine)
+
+* T is f32 or vecN<f32>
+*/
+fn fwidthFine(e: T) -> T {
+}
+
+/**
+Returns the dimensions of a texture, or texture’s mip level in texels.
+
+|*parameter*|*description*|
+|t|The sampled, multisampled, depth, storage, or external texture.|
+|level|The mip level, with level 0 containing a full size version of the texture. If omitted, the dimensions of level 0 are returned.|
+
+* P is texture_1d<T>, texture_2d<T>, texture_2d_array<T>, texture_3d<T>, texture_cube<T>, texture_cube_array<T>, texture_multisampled_2d<T>, texture_depth_2d, texture_depth_2d_array, texture_depth_cube, texture_depth_cube_array, texture_depth_multisampled_2d, texture_storage_1d<F,A>, texture_storage_2d<F,A>, texture_storage_2d_array<F,A>, texture_storage_3d<F,A> or texture_external
+* T is a sampled type.
+* F is a texel format.
+* A is an access mode.
+* X is i32, vec2<i32> or vec3<i32>
+*/
+fn textureDimensions(t: P, level: i32) -> X { }
+fn textureDimensions(t: texture_1d<T>) -> i32 { }
+fn textureDimensions(t: texture_1d<T>, level: i32) -> i32 {}
+fn textureDimensions(t: texture_2d<T>) -> vec2<i32> {}
+fn textureDimensions(t: texture_2d<T>, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_2d_array<T>) -> vec2<i32> {}
+fn textureDimensions(t: texture_2d_array<T>, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_3d<T>) -> vec3<i32> {}
+fn textureDimensions(t: texture_3d<T>, level: i32) -> vec3<i32> {}
+fn textureDimensions(t: texture_cube<T>) -> vec2<i32> {}
+fn textureDimensions(t: texture_cube<T>, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_cube_array<T>) -> vec2<i32> {}
+fn textureDimensions(t: texture_cube_array<T>, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_multisampled_2d<T>)-> vec2<i32> {}
+fn textureDimensions(t: texture_depth_2d) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_2d, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_2d_array) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_2d_array, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_cube) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_cube, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_cube_array) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_cube_array, level: i32) -> vec2<i32> {}
+fn textureDimensions(t: texture_depth_multisampled_2d)-> vec2<i32> {}
+fn textureDimensions(t: texture_storage_1d<F,A>) -> i32 {}
+fn textureDimensions(t: texture_storage_2d<F,A>) -> vec2<i32> {}
+fn textureDimensions(t: texture_storage_2d_array<F,A>) -> vec2<i32> {}
+fn textureDimensions(t: texture_storage_3d<F,A>) -> vec3<i32> {}
+fn textureDimensions(t: texture_external) -> vec2<i32> {}

@@ -1756,81 +1756,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // R8UNORM
-  //     | R8SNORM
-  //     | R8UINT
-  //     | R8SINT
-  //     | R16UINT
-  //     | R16SINT
-  //     | R16FLOAT
-  //     | RG8UNORM
-  //     | RG8SNORM
-  //     | RG8UINT
-  //     | RG8SINT
-  //     | R32UINT
-  //     | R32SINT
-  //     | R32FLOAT
-  //     | RG16UINT
-  //     | RG16SINT
-  //     | RG16FLOAT
-  //     | RGBA8UNORM
-  //     | RGBA8UNORM_SRGB
-  //     | RGBA8SNORM
-  //     | RGBA8UINT
-  //     | RGBA8SINT
-  //     | BGRA8UNORM
-  //     | BGRA8UNORM_SRGB
-  //     | RGB10A2UNORM
-  //     | RG11B10FLOAT
-  //     | RG32UINT
-  //     | RG32SINT
-  //     | RG32FLOAT
-  //     | RGBA16UINT
-  //     | RGBA16SINT
-  //     | RGBA16FLOAT
-  //     | RGBA32UINT
-  //     | RGBA32SINT
-  //     | RGBA32FLOAT
+  // IDENT
   public static boolean texel_format(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texel_format")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, TEXEL_FORMAT, "<texel format>");
-    r = consumeToken(b, R8UNORM);
-    if (!r) r = consumeToken(b, R8SNORM);
-    if (!r) r = consumeToken(b, R8UINT);
-    if (!r) r = consumeToken(b, R8SINT);
-    if (!r) r = consumeToken(b, R16UINT);
-    if (!r) r = consumeToken(b, R16SINT);
-    if (!r) r = consumeToken(b, R16FLOAT);
-    if (!r) r = consumeToken(b, RG8UNORM);
-    if (!r) r = consumeToken(b, RG8SNORM);
-    if (!r) r = consumeToken(b, RG8UINT);
-    if (!r) r = consumeToken(b, RG8SINT);
-    if (!r) r = consumeToken(b, R32UINT);
-    if (!r) r = consumeToken(b, R32SINT);
-    if (!r) r = consumeToken(b, R32FLOAT);
-    if (!r) r = consumeToken(b, RG16UINT);
-    if (!r) r = consumeToken(b, RG16SINT);
-    if (!r) r = consumeToken(b, RG16FLOAT);
-    if (!r) r = consumeToken(b, RGBA8UNORM);
-    if (!r) r = consumeToken(b, RGBA8UNORM_SRGB);
-    if (!r) r = consumeToken(b, RGBA8SNORM);
-    if (!r) r = consumeToken(b, RGBA8UINT);
-    if (!r) r = consumeToken(b, RGBA8SINT);
-    if (!r) r = consumeToken(b, BGRA8UNORM);
-    if (!r) r = consumeToken(b, BGRA8UNORM_SRGB);
-    if (!r) r = consumeToken(b, RGB10A2UNORM);
-    if (!r) r = consumeToken(b, RG11B10FLOAT);
-    if (!r) r = consumeToken(b, RG32UINT);
-    if (!r) r = consumeToken(b, RG32SINT);
-    if (!r) r = consumeToken(b, RG32FLOAT);
-    if (!r) r = consumeToken(b, RGBA16UINT);
-    if (!r) r = consumeToken(b, RGBA16SINT);
-    if (!r) r = consumeToken(b, RGBA16FLOAT);
-    if (!r) r = consumeToken(b, RGBA32UINT);
-    if (!r) r = consumeToken(b, RGBA32SINT);
-    if (!r) r = consumeToken(b, RGBA32FLOAT);
-    exit_section_(b, l, m, r, false, null);
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, TEXEL_FORMAT, r);
     return r;
   }
 
