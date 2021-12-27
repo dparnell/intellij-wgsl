@@ -41,7 +41,7 @@ public class BuiltInFunctions {
                         functions.put(name, f);
                     }
                 }
-            } catch (IOException e) {
+            } catch (Throwable e) {
                 // something went wrong trying to read in the builtin functions
                 e.printStackTrace();
                 builtInFunctionsFile = WGSLElementFactory.createFile(element.getProject(), "var dummy;");

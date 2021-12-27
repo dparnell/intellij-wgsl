@@ -587,10 +587,11 @@ fn fwidthFine(e: T) -> T {
 /**
 Returns the dimensions of a texture, or texture’s mip level in texels.
 
-|*parameter*|*description*|
-|t|The sampled, multisampled, depth, storage, or external texture.|
-|level|The mip level, with level 0 containing a full size version of the texture. If omitted, the dimensions of level 0 are returned.|
+## Parameters
+* t - The sampled, multisampled, depth, storage, or external texture.
+* level - The mip level, with level 0 containing a full size version of the texture. If omitted, the dimensions of level 0 are returned.
 
+## Types
 * P is texture_1d<T>, texture_2d<T>, texture_2d_array<T>, texture_3d<T>, texture_cube<T>, texture_cube_array<T>, texture_multisampled_2d<T>, texture_depth_2d, texture_depth_2d_array, texture_depth_cube, texture_depth_cube_array, texture_depth_multisampled_2d, texture_storage_1d<F,A>, texture_storage_2d<F,A>, texture_storage_2d_array<F,A>, texture_storage_3d<F,A> or texture_external
 * T is a sampled type.
 * F is a texel format.
