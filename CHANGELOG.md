@@ -3,6 +3,10 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+## Added
+
+## [0.0.3]
+### Added
 - added hover documentation for functions and some help for the builtin functions
 - added doc comment support for functions
 - implemented rename refactor for variables and references
