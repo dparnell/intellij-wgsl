@@ -5,7 +5,7 @@
 ## [Unreleased]
 - added hover documentation for functions and some help for the builtin functions
 - added doc comment support for functions
-- implemented rename for variables and references
+- implemented rename refactor for variables and references
 - better `++` and `--` in the parser
 
 ## [0.0.2]

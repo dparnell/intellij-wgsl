@@ -31,14 +31,15 @@ public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
             StringBuilder b = new StringBuilder();
             PsiElement e = originalElement == null ? element : originalElement;
 
-            b.append(DocumentationMarkup.DEFINITION_START);
+            b.append(DocumentationMarkup.CONTENT_START);
             String fn = "```wgsl\n";
             if (atts != null) {
                 fn = fn + atts.getText() + " ";
             }
             fn = fn + header.getText() + "\n```";
             b.append(generateHTML(e, fn));
-            b.append(DocumentationMarkup.DEFINITION_END);
+            b.append(DocumentationMarkup.CONTENT_END);
+            b.append("<hr/>");
 
             @Nullable WGSLDocs docs = func.getDocs();
             if (docs != null) {

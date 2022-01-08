@@ -19,7 +19,7 @@ public class BuiltInFunctions {
     private Map<String, WGSLFunctionDecl> functions = new HashMap<>();
     private PsiElement[] allBuiltinFunctions;
 
-    public synchronized WGSLFunctionDecl get(WGSLFunctionCallElement element) {
+    public synchronized WGSLFunctionDecl get(PsiElement element) {
         if(builtInFunctionsFile == null) {
             InputStream s = BuiltInFunctions.class.getClassLoader().getResourceAsStream("/doc/builtInFunctions.wgsl");
             try {
