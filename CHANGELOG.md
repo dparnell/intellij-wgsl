@@ -3,8 +3,9 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
-## Added
-
+### Added
+- nothing as yet
+- 
 ## [0.0.3]
 ### Added
 - added hover documentation for functions and some help for the builtin functions
