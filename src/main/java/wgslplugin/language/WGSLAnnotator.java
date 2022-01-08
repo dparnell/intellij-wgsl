@@ -7,6 +7,7 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wgslplugin.language.psi.WGSLAccessMode;
 import wgslplugin.language.psi.WGSLFuncCallStatement;
 import wgslplugin.language.psi.WGSLTexelFormat;
 import wgslplugin.language.psi.WGSLTypes;
@@ -60,6 +61,8 @@ public class WGSLAnnotator implements Annotator {
             "rgba8snorm", "rgba8uint", "rgba8sint", "bgra8unorm", "bgra8unorm_srgb", "rgb10a2unorm", "rg11b10float", "rg32uint",
             "rg32sint", "rg32float", "rgba16uint", "rgba16sint", "rgba16float", "rgba32uint", "rgba32sint", "rgba32float");
 
+    public static final Set<String> ACCESS_MODES = names("read", "write", "read_write");
+
     private static Set<String> names(String ... names) {
         return Arrays.stream(names).collect(Collectors.toSet());
     }
@@ -80,8 +83,17 @@ public class WGSLAnnotator implements Annotator {
             }
         } else if(element instanceof WGSLTexelFormat) {
             String name = WGSLPsiImplUtil.getName(element);
-            if(!TEXEL_FORMATS.contains(name)) {
+            if(TEXEL_FORMATS.contains(name)) {
+                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.TEXEL_FORMAT.attributes()).create();
+            } else {
                 holder.newAnnotation(HighlightSeverity.ERROR, "Invalid texel format").range(element).create();
+            }
+        } else if(element instanceof WGSLAccessMode) {
+            String name = WGSLPsiImplUtil.getName(element);
+            if(ACCESS_MODES.contains(name)) {
+                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.KEYWORD.attributes()).create();
+            } else {
+                holder.newAnnotation(HighlightSeverity.ERROR, "Invalid access mode").range(element).create();
             }
         }
     }

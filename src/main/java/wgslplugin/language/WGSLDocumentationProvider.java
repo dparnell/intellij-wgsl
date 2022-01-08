@@ -32,11 +32,12 @@ public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
             PsiElement e = originalElement == null ? element : originalElement;
 
             b.append(DocumentationMarkup.DEFINITION_START);
+            String fn = "```wgsl\n";
             if (atts != null) {
-                b.append(safe(atts.getText()));
-                b.append(" ");
+                fn = fn + atts.getText() + " ";
             }
-            b.append(safe(header.getText()));
+            fn = fn + header.getText() + "\n```";
+            b.append(generateHTML(e, fn));
             b.append(DocumentationMarkup.DEFINITION_END);
 
             @Nullable WGSLDocs docs = func.getDocs();

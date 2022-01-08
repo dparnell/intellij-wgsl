@@ -66,9 +66,12 @@ struct_member ::=
       attribute_list* variable_ident_decl SEMICOLON
 
 access_mode ::=
+    IDENT
+/*
       READ
     | WRITE
     | READ_WRITE
+*/
 
 storage_class ::=
       FUNCTION

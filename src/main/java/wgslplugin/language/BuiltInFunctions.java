@@ -8,7 +8,6 @@ import wgslplugin.language.psi.WGSLFunctionCallElement;
 import wgslplugin.language.psi.WGSLFunctionDecl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,12 +42,10 @@ public class BuiltInFunctions {
                 }
             } catch (Throwable e) {
                 // something went wrong trying to read in the builtin functions
-                e.printStackTrace();
-                builtInFunctionsFile = WGSLElementFactory.createFile(element.getProject(), "var dummy;");
+                return null;
             }
 
         }
-
 
         return functions.get(element.getText());
     }

@@ -36,17 +36,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // READ
-  //     | WRITE
-  //     | READ_WRITE
+  // IDENT
   public static boolean access_mode(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "access_mode")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ACCESS_MODE, "<access mode>");
-    r = consumeToken(b, READ);
-    if (!r) r = consumeToken(b, WRITE);
-    if (!r) r = consumeToken(b, READ_WRITE);
-    exit_section_(b, l, m, r, false, null);
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, ACCESS_MODE, r);
     return r;
   }
 

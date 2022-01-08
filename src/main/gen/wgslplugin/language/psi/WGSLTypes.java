@@ -150,8 +150,6 @@ public interface WGSLTypes {
   IElementType POINTER = new WGSLTokenType("POINTER");
   IElementType PRIVATE = new WGSLTokenType("PRIVATE");
   IElementType PUSH_CONSTANT = new WGSLTokenType("PUSH_CONSTANT");
-  IElementType READ = new WGSLTokenType("READ");
-  IElementType READ_WRITE = new WGSLTokenType("READ_WRITE");
   IElementType RETURN = new WGSLTokenType("RETURN");
   IElementType SAMPLER = new WGSLTokenType("SAMPLER");
   IElementType SAMPLER_COMPARISON = new WGSLTokenType("SAMPLER_COMPARISON");
@@ -190,7 +188,6 @@ public interface WGSLTypes {
   IElementType VEC3 = new WGSLTokenType("VEC3");
   IElementType VEC4 = new WGSLTokenType("VEC4");
   IElementType WORKGROUP = new WGSLTokenType("WORKGROUP");
-  IElementType WRITE = new WGSLTokenType("WRITE");
   IElementType XOR = new WGSLTokenType("XOR");
 
   class Factory {
