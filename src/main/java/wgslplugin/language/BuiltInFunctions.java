@@ -4,7 +4,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import wgslplugin.language.psi.WGSLElementFactory;
-import wgslplugin.language.psi.WGSLFunctionCallElement;
 import wgslplugin.language.psi.WGSLFunctionDecl;
 
 import java.io.ByteArrayOutputStream;
@@ -21,7 +20,7 @@ public class BuiltInFunctions {
 
     public synchronized WGSLFunctionDecl get(PsiElement element) {
         if(builtInFunctionsFile == null) {
-            InputStream s = BuiltInFunctions.class.getClassLoader().getResourceAsStream("/doc/builtInFunctions.wgsl");
+            InputStream s = BuiltInFunctions.class.getClassLoader().getResourceAsStream("doc/builtInFunctions.wgsl");
             try {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 byte[] buf = new byte[16384];

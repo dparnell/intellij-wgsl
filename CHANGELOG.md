@@ -4,8 +4,8 @@
 
 ## [Unreleased]
 ### Added
-- nothing as yet
-- 
+- fixed hover doc code. Weird that it works in dev mode but not in the real thing
+
 ## [0.0.3]
 ### Added
 - added hover documentation for functions and some help for the builtin functions
