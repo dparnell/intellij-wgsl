@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 ### Added
+- another attempt at fixing the hover docs in a production build
+
+## [0.0.4]
+### Added
 - fixed hover doc code. Weird that it works in dev mode but not in the real thing
 
 ## [0.0.3]
