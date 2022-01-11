@@ -20,7 +20,8 @@ public class BuiltInFunctions {
 
     public synchronized WGSLFunctionDecl get(PsiElement element) {
         if(builtInFunctionsFile == null) {
-            InputStream s = BuiltInFunctions.class.getClassLoader().getResourceAsStream("doc/builtInFunctions.wgsl");
+            InputStream s = BuiltInFunctions.class.getResourceAsStream("BuiltInFunctions.wgsl");
+
             try {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 byte[] buf = new byte[16384];
