@@ -42,6 +42,7 @@ public class BuiltInFunctions {
                 }
             } catch (Throwable e) {
                 // something went wrong trying to read in the builtin functions
+                e.printStackTrace();
                 return null;
             }
 
