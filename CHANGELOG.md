@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.5]
 ### Added
 - another attempt at fixing the hover docs in a production build
 
