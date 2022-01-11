@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.4]
 ### Added
 - fixed hover doc code. Weird that it works in dev mode but not in the real thing
 
