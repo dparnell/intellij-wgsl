@@ -2,8 +2,6 @@
 
 # wgsl plugin Changelog
 
-## [Unreleased]
-
 ## [0.0.6]
 ### Added
 - updated max build number
