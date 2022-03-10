@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 ### Added
+- nothing as yet
+
+## [0.6.0]
+### Added
 - updated max build number
 
 ## [0.0.5]
