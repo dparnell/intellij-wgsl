@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [0.0.6]
+### Added
+- updated max build number
+
 ## [0.0.5]
 ### Added
 - another attempt at fixing the hover docs in a production build
