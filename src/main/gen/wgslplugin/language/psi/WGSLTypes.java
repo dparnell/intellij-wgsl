@@ -14,6 +14,7 @@ public interface WGSLTypes {
   IElementType ASSIGNMENT_STATEMENT = new WGSLElementType("ASSIGNMENT_STATEMENT");
   IElementType ATTRIBUTE = new WGSLElementType("ATTRIBUTE");
   IElementType ATTRIBUTE_LIST = new WGSLElementType("ATTRIBUTE_LIST");
+  IElementType ATTRIBUTE_NAME = new WGSLElementType("ATTRIBUTE_NAME");
   IElementType BREAK_STATEMENT = new WGSLElementType("BREAK_STATEMENT");
   IElementType CASE_BODY = new WGSLElementType("CASE_BODY");
   IElementType CASE_SELECTORS = new WGSLElementType("CASE_SELECTORS");
@@ -83,6 +84,7 @@ public interface WGSLTypes {
   IElementType AND_AND = new WGSLTokenType("AND_AND");
   IElementType ARRAY = new WGSLTokenType("ARRAY");
   IElementType ARROW = new WGSLTokenType("ARROW");
+  IElementType AT = new WGSLTokenType("AT");
   IElementType ATOMIC = new WGSLTokenType("ATOMIC");
   IElementType ATTR_LEFT = new WGSLTokenType("ATTR_LEFT");
   IElementType ATTR_RIGHT = new WGSLTokenType("ATTR_RIGHT");
@@ -210,6 +212,9 @@ public interface WGSLTypes {
       }
       else if (type == ATTRIBUTE_LIST) {
         return new WGSLAttributeListImpl(node);
+      }
+      else if (type == ATTRIBUTE_NAME) {
+        return new WGSLAttributeNameImpl(node);
       }
       else if (type == BREAK_STATEMENT) {
         return new WGSLBreakStatementImpl(node);

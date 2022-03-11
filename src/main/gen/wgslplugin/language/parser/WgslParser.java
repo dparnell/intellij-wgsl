@@ -113,7 +113,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // attribute_list* ARRAY LESS_THAN type_decl ( COMMA element_count_expression )? GREATER_THAN
   public static boolean array_type_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "array_type_decl")) return false;
-    if (!nextTokenIs(b, "<array type decl>", ARRAY, ATTR_LEFT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARRAY_TYPE_DECL, "<array type decl>");
     r = array_type_decl_0(b, l + 1);
@@ -177,25 +176,26 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT PAREN_LEFT ( literal_or_ident COMMA )* literal_or_ident PAREN_RIGHT
-  //     | IDENT
+  // attribute_name PAREN_LEFT ( literal_or_ident COMMA )* literal_or_ident PAREN_RIGHT
+  //     | attribute_name
   public static boolean attribute(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "attribute")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = attribute_0(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
+    if (!r) r = attribute_name(b, l + 1);
     exit_section_(b, m, ATTRIBUTE, r);
     return r;
   }
 
-  // IDENT PAREN_LEFT ( literal_or_ident COMMA )* literal_or_ident PAREN_RIGHT
+  // attribute_name PAREN_LEFT ( literal_or_ident COMMA )* literal_or_ident PAREN_RIGHT
   private static boolean attribute_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "attribute_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENT, PAREN_LEFT);
+    r = attribute_name(b, l + 1);
+    r = r && consumeToken(b, PAREN_LEFT);
     r = r && attribute_0_2(b, l + 1);
     r = r && literal_or_ident(b, l + 1);
     r = r && consumeToken(b, PAREN_RIGHT);
@@ -227,38 +227,88 @@ public class WgslParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // ATTR_LEFT ( attribute COMMA )* attribute ATTR_RIGHT
+  //     | ( AT attribute )+
   public static boolean attribute_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "attribute_list")) return false;
-    if (!nextTokenIs(b, ATTR_LEFT)) return false;
+    if (!nextTokenIs(b, "<attribute list>", AT, ATTR_LEFT)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ATTRIBUTE_LIST, "<attribute list>");
+    r = attribute_list_0(b, l + 1);
+    if (!r) r = attribute_list_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ATTR_LEFT ( attribute COMMA )* attribute ATTR_RIGHT
+  private static boolean attribute_list_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "attribute_list_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ATTR_LEFT);
-    r = r && attribute_list_1(b, l + 1);
+    r = r && attribute_list_0_1(b, l + 1);
     r = r && attribute(b, l + 1);
     r = r && consumeToken(b, ATTR_RIGHT);
-    exit_section_(b, m, ATTRIBUTE_LIST, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   // ( attribute COMMA )*
-  private static boolean attribute_list_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "attribute_list_1")) return false;
+  private static boolean attribute_list_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "attribute_list_0_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!attribute_list_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "attribute_list_1", c)) break;
+      if (!attribute_list_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "attribute_list_0_1", c)) break;
     }
     return true;
   }
 
   // attribute COMMA
-  private static boolean attribute_list_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "attribute_list_1_0")) return false;
+  private static boolean attribute_list_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "attribute_list_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = attribute(b, l + 1);
     r = r && consumeToken(b, COMMA);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ( AT attribute )+
+  private static boolean attribute_list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "attribute_list_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = attribute_list_1_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!attribute_list_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "attribute_list_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // AT attribute
+  private static boolean attribute_list_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "attribute_list_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, AT);
+    r = r && attribute(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  public static boolean attribute_name(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "attribute_name")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, ATTRIBUTE_NAME, r);
     return r;
   }
 
@@ -883,7 +933,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // attribute_list* LET variable_ident_decl global_const_initializer?
   public static boolean global_constant_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_constant_decl")) return false;
-    if (!nextTokenIs(b, "<global constant decl>", ATTR_LEFT, LET)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, GLOBAL_CONSTANT_DECL, "<global constant decl>");
     r = global_constant_decl_0(b, l + 1);
@@ -993,7 +1042,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // attribute_list* variable_decl ( EQUAL const_expression )?
   public static boolean global_variable_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_variable_decl")) return false;
-    if (!nextTokenIs(b, "<global variable decl>", ATTR_LEFT, VAR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, GLOBAL_VARIABLE_DECL, "<global variable decl>");
     r = global_variable_decl_0(b, l + 1);
@@ -1183,7 +1231,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // attribute_list? variable_ident_decl
   public static boolean param(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param")) return false;
-    if (!nextTokenIs(b, "<param>", ATTR_LEFT, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PARAM, "<param>");
     r = param_0(b, l + 1);
@@ -1203,7 +1250,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // ( param COMMA )* param COMMA?
   public static boolean param_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param_list")) return false;
-    if (!nextTokenIs(b, "<param list>", ATTR_LEFT, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PARAM_LIST, "<param list>");
     r = param_list_0(b, l + 1);
@@ -1621,7 +1667,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // attribute_list * STRUCT IDENT struct_body_decl
   public static boolean struct_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_decl")) return false;
-    if (!nextTokenIs(b, "<struct decl>", ATTR_LEFT, STRUCT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_DECL, "<struct decl>");
     r = struct_decl_0(b, l + 1);
@@ -1646,7 +1691,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // attribute_list* variable_ident_decl SEMICOLON
   public static boolean struct_member(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_member")) return false;
-    if (!nextTokenIs(b, "<struct member>", ATTR_LEFT, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_MEMBER, "<struct member>");
     r = struct_member_0(b, l + 1);

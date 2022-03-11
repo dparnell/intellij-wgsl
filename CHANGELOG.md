@@ -4,7 +4,7 @@
 
 ## [Unreleased]
 ### Added
-- nothing as yet
+- proposed new `@attribute` syntax
 
 ## [0.6.0]
 ### Added

@@ -20,7 +20,8 @@ public enum WGSLColours {
     PARENTHESIS("Parenthesis", createTextAttributesKey("WGSL_PAREN", DefaultLanguageHighlighterColors.PARENTHESES)),
     BRACES("Braces", createTextAttributesKey("WGSL_BRACE", DefaultLanguageHighlighterColors.BRACES)),
     BRACKETS("Brackets", createTextAttributesKey("WGSL_BRACKET", DefaultLanguageHighlighterColors.BRACKETS)),
-    BAD_CHARACTER("Bad Character", createTextAttributesKey("WGSL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER));
+    BAD_CHARACTER("Bad Character", createTextAttributesKey("WGSL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)),
+    ATTRIBUTE("Attribute", createTextAttributesKey("WGSL_ATTRIBUTE", DefaultLanguageHighlighterColors.CLASS_NAME));
 
     private final String description;
     private final TextAttributesKey attributesKey;

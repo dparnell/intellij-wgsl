@@ -58,6 +58,8 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "{"                                { return BRACE_LEFT; }
   "}"                                { return BRACE_RIGHT; }
   ";"                                { return SEMICOLON; }
+  "@"                                { return AT; }
+
 /*
   "read"                             { return READ; }
   "write"                            { return WRITE; }

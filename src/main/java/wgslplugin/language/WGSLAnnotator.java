@@ -7,10 +7,7 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wgslplugin.language.psi.WGSLAccessMode;
-import wgslplugin.language.psi.WGSLFuncCallStatement;
-import wgslplugin.language.psi.WGSLTexelFormat;
-import wgslplugin.language.psi.WGSLTypes;
+import wgslplugin.language.psi.*;
 import wgslplugin.language.psi.impl.WGSLPsiImplUtil;
 
 import java.util.Arrays;
@@ -59,9 +56,14 @@ public class WGSLAnnotator implements Annotator {
             "r8unorm", "r8snorm", "r8uint", "r8sint", "r16uint", "r16sint", "r16float", "rg8unorm", "rg8snorm", "rg8uint",
             "rg8sint", "r32uint", "r32sint", "r32float", "rg16uint", "rg16sint", "rg16float", "rgba8unorm", "rgba8unorm_srgb",
             "rgba8snorm", "rgba8uint", "rgba8sint", "bgra8unorm", "bgra8unorm_srgb", "rgb10a2unorm", "rg11b10float", "rg32uint",
-            "rg32sint", "rg32float", "rgba16uint", "rgba16sint", "rgba16float", "rgba32uint", "rgba32sint", "rgba32float");
+            "rg32sint", "rg32float", "rgba16uint", "rgba16sint", "rgba16float", "rgba32uint", "rgba32sint", "rgba32float"
+    );
 
     public static final Set<String> ACCESS_MODES = names("read", "write", "read_write");
+
+    public static final Set<String> ATTRIBUTE_NAMES = names(
+            "align", "binding", "builtin", "group", "id", "interpolate", "invariant", "location", "size", "stage", "workgroup_size"
+    );
 
     private static Set<String> names(String ... names) {
         return Arrays.stream(names).collect(Collectors.toSet());
@@ -94,6 +96,14 @@ public class WGSLAnnotator implements Annotator {
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.KEYWORD.attributes()).create();
             } else {
                 holder.newAnnotation(HighlightSeverity.ERROR, "Invalid access mode").range(element).create();
+            }
+        } else if(element instanceof WGSLAttributeName) {
+            String name = WGSLPsiImplUtil.getName(element);
+            if(ATTRIBUTE_NAMES.contains(name)) {
+                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.ATTRIBUTE.attributes()).create();
+                // TODO: implement validations for attribute values
+            } else {
+                holder.newAnnotation(HighlightSeverity.ERROR, "Unknown attribute").range(element).create();
             }
         }
     }

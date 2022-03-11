@@ -34,10 +34,18 @@ float_literal ::=
     | HEX_FLOAT_LITERAL
 
 attribute_list ::= ATTR_LEFT ( attribute COMMA )* attribute ATTR_RIGHT
+    | ( AT attribute )+
 
 attribute ::=
-      IDENT PAREN_LEFT ( literal_or_ident COMMA )* literal_or_ident PAREN_RIGHT
-    | IDENT
+      attribute_name PAREN_LEFT ( literal_or_ident COMMA )* literal_or_ident PAREN_RIGHT
+    | attribute_name
+
+attribute_name ::=
+    IDENT {
+                mixin="wgslplugin.language.psi.impl.WGSLNamedElementImpl"
+                implements="wgslplugin.language.psi.WGSLNamedElement"
+                methods=[getName setName getNameIdentifier]
+          }
 
 literal_or_ident ::=
       float_literal

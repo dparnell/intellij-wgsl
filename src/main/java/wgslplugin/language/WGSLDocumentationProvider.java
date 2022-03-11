@@ -12,7 +12,6 @@ import wgslplugin.language.psi.*;
 
 public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
 
-
     @Override
     public @Nullable @NlsSafe String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
         // System.out.println(element);
