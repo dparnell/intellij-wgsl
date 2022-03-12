@@ -3,8 +3,11 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.7]
 ### Added
-- proposed new `@attribute` syntax
+- support for proposed new `@attribute` syntax
+- hover documentation for attributes
 
 ## [0.6.0]
 ### Added
