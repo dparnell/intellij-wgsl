@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wgslplugin.language.psi.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
 
     @Override
@@ -22,13 +26,14 @@ public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
             element = element.getParent();
         }
 
+        PsiElement e = originalElement == null ? element : originalElement;
+
         if (element instanceof WGSLFunctionDecl) {
             WGSLFunctionDecl func = (WGSLFunctionDecl) element;
 
             @Nullable WGSLAttributeList atts = func.getAttributeList();
             @NotNull WGSLFunctionHeader header = func.getFunctionHeader();
             StringBuilder b = new StringBuilder();
-            PsiElement e = originalElement == null ? element : originalElement;
 
             b.append(DocumentationMarkup.CONTENT_START);
             String fn = "```wgsl\n";
@@ -50,6 +55,12 @@ public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
                 b.append(DocumentationMarkup.CONTENT_END);
             }
             return b.toString();
+        } else if(element instanceof WGSLAttributeName) {
+            String attrName = ((WGSLAttributeName)element).getName();
+            String markdown = getResource("attributes/" + attrName + ".md");
+            if(markdown != null) {
+                return DocumentationMarkup.CONTENT_START + generateHTML(e, markdown.replace("\r", "")) + DocumentationMarkup.CONTENT_END;
+            }
         }
 
         return null;
@@ -62,5 +73,25 @@ public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
     private String generateHTML(PsiElement element, String md) {
         VirtualFile file = element.getContainingFile().getVirtualFile();
         return MarkdownUtil.INSTANCE.generateMarkdownHtml(file, md, element.getProject());
+    }
+
+    private static String getResource(String name) {
+        InputStream s = WGSLDocumentationProvider.class.getResourceAsStream(name);
+        if(s == null) {
+            return null;
+        }
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[16384];
+            int L = s.read(buf);
+            while (L > 0) {
+                bos.write(buf, 0, L);
+                L = s.read(buf);
+            }
+
+            return bos.toString();
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

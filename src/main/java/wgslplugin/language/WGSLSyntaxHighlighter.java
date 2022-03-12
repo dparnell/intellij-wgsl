@@ -110,10 +110,12 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
         if (tokenType.equals(WGSLTypes.PAREN_LEFT) || tokenType.equals(WGSLTypes.PAREN_RIGHT)) {
             return PAREN_KEYS;
         }
+
         if (tokenType.equals(WGSLTypes.BRACE_LEFT) || tokenType.equals(WGSLTypes.BRACE_RIGHT)) {
             return BRACE_KEYS;
         }
-        if (tokenType.equals(WGSLTypes.BRACKET_LEFT) || tokenType.equals(WGSLTypes.BRACKET_RIGHT) || tokenType.equals(WGSLTypes.ATTR_LEFT) || tokenType.equals(WGSLTypes.ATTR_RIGHT)) {
+
+        if (tokenType.equals(WGSLTypes.BRACKET_LEFT) || tokenType.equals(WGSLTypes.BRACKET_RIGHT)) {
             return BRACKET_KEYS;
         }
 
