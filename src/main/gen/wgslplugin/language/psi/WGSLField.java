@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface WGSLStructMember extends PsiElement {
+public interface WGSLField extends PsiElement {
 
   @NotNull
-  List<WGSLAttributeList> getAttributeListList();
+  WGSLFieldIdent getFieldIdent();
 
   @NotNull
-  WGSLField getField();
+  WGSLTypeDecl getTypeDecl();
 
 }

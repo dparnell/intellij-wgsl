@@ -706,6 +706,32 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // field_ident COLON type_decl
+  public static boolean field(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = field_ident(b, l + 1);
+    r = r && consumeToken(b, COLON);
+    r = r && type_decl(b, l + 1);
+    exit_section_(b, m, FIELD, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  public static boolean field_ident(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "field_ident")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, FIELD_IDENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // DECIMAL_FLOAT_LITERAL
   //     | HEX_FLOAT_LITERAL
   public static boolean float_literal(PsiBuilder b, int l) {
@@ -1247,36 +1273,36 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( param COMMA )* param COMMA?
+  // param (COMMA param)* COMMA?
   public static boolean param_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param_list")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PARAM_LIST, "<param list>");
-    r = param_list_0(b, l + 1);
-    r = r && param(b, l + 1);
+    r = param(b, l + 1);
+    r = r && param_list_1(b, l + 1);
     r = r && param_list_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // ( param COMMA )*
-  private static boolean param_list_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "param_list_0")) return false;
+  // (COMMA param)*
+  private static boolean param_list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "param_list_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!param_list_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "param_list_0", c)) break;
+      if (!param_list_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "param_list_1", c)) break;
     }
     return true;
   }
 
-  // param COMMA
-  private static boolean param_list_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "param_list_0_0")) return false;
+  // COMMA param
+  private static boolean param_list_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "param_list_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = param(b, l + 1);
-    r = r && consumeToken(b, COMMA);
+    r = consumeToken(b, COMMA);
+    r = r && param(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1688,13 +1714,13 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list* variable_ident_decl SEMICOLON
+  // attribute_list* field SEMICOLON
   public static boolean struct_member(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_member")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_MEMBER, "<struct member>");
     r = struct_member_0(b, l + 1);
-    r = r && variable_ident_decl(b, l + 1);
+    r = r && field(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, l, m, r, false, null);
     return r;

@@ -31,6 +31,8 @@ public interface WGSLTypes {
   IElementType ELSE_STATEMENT = new WGSLElementType("ELSE_STATEMENT");
   IElementType ENABLE_DIRECTIVE = new WGSLElementType("ENABLE_DIRECTIVE");
   IElementType EXPRESSION = new WGSLElementType("EXPRESSION");
+  IElementType FIELD = new WGSLElementType("FIELD");
+  IElementType FIELD_IDENT = new WGSLElementType("FIELD_IDENT");
   IElementType FLOAT_LITERAL = new WGSLElementType("FLOAT_LITERAL");
   IElementType FOR_HEADER = new WGSLElementType("FOR_HEADER");
   IElementType FOR_INIT = new WGSLElementType("FOR_INIT");
@@ -263,6 +265,12 @@ public interface WGSLTypes {
       }
       else if (type == EXPRESSION) {
         return new WGSLExpressionImpl(node);
+      }
+      else if (type == FIELD) {
+        return new WGSLFieldImpl(node);
+      }
+      else if (type == FIELD_IDENT) {
+        return new WGSLFieldIdentImpl(node);
       }
       else if (type == FLOAT_LITERAL) {
         return new WGSLFloatLiteralImpl(node);

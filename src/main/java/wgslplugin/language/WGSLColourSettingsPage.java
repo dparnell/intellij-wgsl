@@ -1,5 +1,6 @@
 package wgslplugin.language;
 
+import com.intellij.openapi.editor.colors.ColorKey;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class WGSLColourSettingsPage implements ColorSettingsPage {
@@ -54,7 +56,7 @@ public class WGSLColourSettingsPage implements ColorSettingsPage {
                 "var r_color: texture_2d<u32>;\n" +
                 "\n" +
                 "[[stage(fragment)]]\n" +
-                "fn fs_main(in: VertexOutput) -> [[location(0)]] vec4<f32> {\n" +
+                "fn <FUNCTION_NAME>fs_main</FUNCTION_NAME>(in: VertexOutput) -> [[location(0)]] vec4<f32> {\n" +
                 "    let tex = textureLoad(r_color, vec2<i32>(in.tex_coord * 256.0), 0);\n" +
                 "    let v = f32(tex.x) / 255.0;\n" +
                 "    return vec4<f32>(1.0 - (v * 5.0), 1.0 - (v * 15.0), 1.0 - (v * 50.0), 1.0);\n" +
@@ -68,7 +70,7 @@ public class WGSLColourSettingsPage implements ColorSettingsPage {
 
     @Override
     public @Nullable Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap() {
-        return null;
+        return Map.of(WGSLColours.FUNCTION_NAME.name(), WGSLColours.FUNCTION_NAME.attributes());
     }
 
     @Override

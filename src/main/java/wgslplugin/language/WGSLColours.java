@@ -21,7 +21,9 @@ public enum WGSLColours {
     BRACES("Braces", createTextAttributesKey("WGSL_BRACE", DefaultLanguageHighlighterColors.BRACES)),
     BRACKETS("Brackets", createTextAttributesKey("WGSL_BRACKET", DefaultLanguageHighlighterColors.BRACKETS)),
     BAD_CHARACTER("Bad Character", createTextAttributesKey("WGSL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)),
-    ATTRIBUTE("Attribute", createTextAttributesKey("WGSL_ATTRIBUTE", DefaultLanguageHighlighterColors.CLASS_NAME));
+    ATTRIBUTE("Attribute", createTextAttributesKey("WGSL_ATTRIBUTE", DefaultLanguageHighlighterColors.METADATA)),
+    FUNCTION_NAME("Function name", createTextAttributesKey("WGSL_FN_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)),
+    FIELD("Field", createTextAttributesKey("WGSL_FIELD", DefaultLanguageHighlighterColors.INSTANCE_FIELD));
 
     private final String description;
     private final TextAttributesKey attributesKey;

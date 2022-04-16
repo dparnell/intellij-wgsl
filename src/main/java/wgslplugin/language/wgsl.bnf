@@ -42,8 +42,8 @@ attribute ::=
 
 attribute_name ::=
     IDENT {
-                mixin="wgslplugin.language.psi.impl.WGSLNamedElementImpl"
-                implements="wgslplugin.language.psi.WGSLNamedElement"
+                mixin="wgslplugin.language.psi.impl.WGSLAttributeElementImpl"
+                implements="wgslplugin.language.psi.WGSLAttributeElement"
                 methods=[getName setName getNameIdentifier]
           }
 
@@ -71,7 +71,16 @@ struct_body_decl ::=
       BRACE_LEFT struct_member* BRACE_RIGHT
 
 struct_member ::=
-      attribute_list* variable_ident_decl SEMICOLON
+      attribute_list* field SEMICOLON
+
+field ::= field_ident COLON type_decl
+
+field_ident ::=
+    IDENT {
+      mixin="wgslplugin.language.psi.impl.WGSLStructFieldImpl"
+      implements="wgslplugin.language.psi.WGSLStructFieldElement"
+      methods=[getName setName getNameIdentifier]
+    }
 
 access_mode ::=
     IDENT
@@ -199,10 +208,10 @@ variable_decl ::=
 
 variable_ident_decl ::=
       IDENT (COLON type_decl)? {
-                              mixin="wgslplugin.language.psi.impl.WGSLNamedElementImpl"
-                              implements="wgslplugin.language.psi.WGSLNamedElement"
-                              methods=[getName setName getNameIdentifier]
-                            }
+          mixin="wgslplugin.language.psi.impl.WGSLNamedElementImpl"
+          implements="wgslplugin.language.psi.WGSLNamedElement"
+          methods=[getName setName getNameIdentifier]
+      }
 
 variable_qualifier ::=
      LESS_THAN storage_class ( COMMA access_mode )? GREATER_THAN
@@ -370,7 +379,7 @@ function_name ::=
           }
 
 param_list ::=
-      ( param COMMA )* param COMMA?
+      param (COMMA param)* COMMA?
 
 param ::=
       attribute_list? variable_ident_decl

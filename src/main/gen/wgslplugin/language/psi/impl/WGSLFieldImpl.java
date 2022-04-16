@@ -11,14 +11,14 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLStructMemberImpl extends ASTWrapperPsiElement implements WGSLStructMember {
+public class WGSLFieldImpl extends ASTWrapperPsiElement implements WGSLField {
 
-  public WGSLStructMemberImpl(@NotNull ASTNode node) {
+  public WGSLFieldImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitStructMember(this);
+    visitor.visitField(this);
   }
 
   @Override
@@ -29,14 +29,14 @@ public class WGSLStructMemberImpl extends ASTWrapperPsiElement implements WGSLSt
 
   @Override
   @NotNull
-  public List<WGSLAttributeList> getAttributeListList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLAttributeList.class);
+  public WGSLFieldIdent getFieldIdent() {
+    return findNotNullChildByClass(WGSLFieldIdent.class);
   }
 
   @Override
   @NotNull
-  public WGSLField getField() {
-    return findNotNullChildByClass(WGSLField.class);
+  public WGSLTypeDecl getTypeDecl() {
+    return findNotNullChildByClass(WGSLTypeDecl.class);
   }
 
 }
