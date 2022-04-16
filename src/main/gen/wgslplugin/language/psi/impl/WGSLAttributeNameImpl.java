@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static wgslplugin.language.psi.WGSLTypes.*;
 import wgslplugin.language.psi.*;
 
-public class WGSLAttributeNameImpl extends WGSLNamedElementImpl implements WGSLAttributeName {
+public class WGSLAttributeNameImpl extends WGSLAttributeElementImpl implements WGSLAttributeName {
 
   public WGSLAttributeNameImpl(@NotNull ASTNode node) {
     super(node);

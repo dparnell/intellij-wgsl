@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface WGSLAttributeName extends WGSLNamedElement {
+public interface WGSLAttributeName extends WGSLAttributeElement {
 
   String getName();
 

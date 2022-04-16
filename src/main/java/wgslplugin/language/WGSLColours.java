@@ -15,13 +15,15 @@ public enum WGSLColours {
     BLOCK_COMMENT("Block comment", createTextAttributesKey("WGSL_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT)),
     DOC_COMMENT("Documentation comment", createTextAttributesKey("WGSL_DOC_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT)),
     BUILTIN_FUNCTION("Built-in function", DefaultLanguageHighlighterColors.STATIC_METHOD),
-    BUILTIN_TYPE("Built-in type", createTextAttributesKey("WGSL_TYPE", DefaultLanguageHighlighterColors.CLASS_NAME)),
+    BUILTIN_TYPE("Built-in type", createTextAttributesKey("WGSL_TYPE", DefaultLanguageHighlighterColors.KEYWORD)),
     TEXEL_FORMAT("Texel format", createTextAttributesKey("WGSL_TEXEL_FORMAT", DefaultLanguageHighlighterColors.CLASS_NAME)),
     PARENTHESIS("Parenthesis", createTextAttributesKey("WGSL_PAREN", DefaultLanguageHighlighterColors.PARENTHESES)),
     BRACES("Braces", createTextAttributesKey("WGSL_BRACE", DefaultLanguageHighlighterColors.BRACES)),
     BRACKETS("Brackets", createTextAttributesKey("WGSL_BRACKET", DefaultLanguageHighlighterColors.BRACKETS)),
     BAD_CHARACTER("Bad Character", createTextAttributesKey("WGSL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)),
-    ATTRIBUTE("Attribute", createTextAttributesKey("WGSL_ATTRIBUTE", DefaultLanguageHighlighterColors.CLASS_NAME));
+    ATTRIBUTE("Attribute", createTextAttributesKey("WGSL_ATTRIBUTE", DefaultLanguageHighlighterColors.METADATA)),
+    FUNCTION_NAME("Function name", createTextAttributesKey("WGSL_FN_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)),
+    FIELD("Field", createTextAttributesKey("WGSL_FIELD", DefaultLanguageHighlighterColors.INSTANCE_FIELD));
 
     private final String description;
     private final TextAttributesKey attributesKey;

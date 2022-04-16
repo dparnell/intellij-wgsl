@@ -8,17 +8,16 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static wgslplugin.language.psi.WGSLTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLStructMemberImpl extends ASTWrapperPsiElement implements WGSLStructMember {
+public class WGSLFieldIdentImpl extends WGSLStructFieldImpl implements WGSLFieldIdent {
 
-  public WGSLStructMemberImpl(@NotNull ASTNode node) {
+  public WGSLFieldIdentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitStructMember(this);
+    visitor.visitFieldIdent(this);
   }
 
   @Override
@@ -28,15 +27,18 @@ public class WGSLStructMemberImpl extends ASTWrapperPsiElement implements WGSLSt
   }
 
   @Override
-  @NotNull
-  public List<WGSLAttributeList> getAttributeListList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WGSLAttributeList.class);
+  public String getName() {
+    return WGSLPsiImplUtil.getName(this);
   }
 
   @Override
-  @NotNull
-  public WGSLField getField() {
-    return findNotNullChildByClass(WGSLField.class);
+  public PsiElement setName(String newName) {
+    return WGSLPsiImplUtil.setName(this, newName);
+  }
+
+  @Override
+  public PsiElement getNameIdentifier() {
+    return WGSLPsiImplUtil.getNameIdentifier(this);
   }
 
 }

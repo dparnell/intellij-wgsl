@@ -32,7 +32,7 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitAttributeName(@NotNull WGSLAttributeName o) {
-    visitNamedElement(o);
+    visitAttributeElement(o);
   }
 
   public void visitBreakStatement(@NotNull WGSLBreakStatement o) {
@@ -97,6 +97,14 @@ public class WGSLVisitor extends PsiElementVisitor {
 
   public void visitExpression(@NotNull WGSLExpression o) {
     visitPsiElement(o);
+  }
+
+  public void visitField(@NotNull WGSLField o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFieldIdent(@NotNull WGSLFieldIdent o) {
+    visitStructFieldElement(o);
   }
 
   public void visitFloatLiteral(@NotNull WGSLFloatLiteral o) {
@@ -291,6 +299,10 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitAttributeElement(@NotNull WGSLAttributeElement o) {
+    visitPsiElement(o);
+  }
+
   public void visitFunctionCallElement(@NotNull WGSLFunctionCallElement o) {
     visitPsiElement(o);
   }
@@ -304,6 +316,10 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitReferenceElement(@NotNull WGSLReferenceElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStructFieldElement(@NotNull WGSLStructFieldElement o) {
     visitPsiElement(o);
   }
 

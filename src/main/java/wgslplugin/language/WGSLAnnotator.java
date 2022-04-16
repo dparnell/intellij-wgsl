@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wgslplugin.language.psi.*;
 import wgslplugin.language.psi.impl.WGSLPsiImplUtil;
+import wgslplugin.language.psi.impl.WGSLStructFieldImpl;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -72,17 +73,42 @@ public class WGSLAnnotator implements Annotator {
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
         if(element instanceof WGSLFuncCallStatement) {
-            @Nullable ASTNode name = element.getNode().findChildByType(WGSLTypes.IDENT);
+            var fragment_shader = false;
+
+            @Nullable ASTNode call_name = element.getNode().findChildByType(WGSLTypes.FUNC_CALL_NAME);
+            @Nullable ASTNode name = call_name.findChildByType(WGSLTypes.IDENT);
+
+            // Get the parent all the way to the function declaration
+            var parent = element.getParent();
+            while (parent != null && !(parent instanceof WGSLFunctionDecl)) {
+                parent = parent.getParent();
+            }
+
+            // If we have a parent that was a function declaration we get the attribute list and
+            // check if it contains the attribute 'stage(fragment)'
+            if (parent != null) {
+                var attributes = ((WGSLFunctionDecl) parent).getAttributeList();
+                for (var i : attributes.getAttributeList()) {
+                    fragment_shader |= (i.getText().equals("stage(fragment)"));
+                }
+            }
 
             if(name != null) {
                 String txt = name.getText();
                 if (BUILT_IN_FUNCTION_NAMES.contains(txt)) {
                     holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(name).textAttributes(WGSLColours.BUILTIN_FUNCTION.attributes()).create();
                 } else if (FRAGMENT_SHADER_ONLY_BUILTINS.contains(txt)) {
-                    // TODO: determine if we are in a fragment shader
-                    holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(name).textAttributes(WGSLColours.BUILTIN_FUNCTION.attributes()).create();
+                    if (fragment_shader) {
+                        holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(name).textAttributes(WGSLColours.BUILTIN_FUNCTION.attributes()).create();
+                    } else {
+                        holder.newAnnotation(HighlightSeverity.ERROR, "This build-in is only allowed in fragment shader functions").range(name).create();
+                    }
                 }
             }
+        } else if(element instanceof WGSLFunctionName) {
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.FUNCTION_NAME.attributes()).create();
+        } else if(element instanceof WGSLFieldIdent) {
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.FIELD.attributes()).create();
         } else if(element instanceof WGSLTexelFormat) {
             String name = WGSLPsiImplUtil.getName(element);
             if(TEXEL_FORMATS.contains(name)) {
