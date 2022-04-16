@@ -31,6 +31,8 @@
 
         <annotator language="WGSL" implementationClass="wgslplugin.language.WGSLAnnotator"/>
 
+        <lang.foldingBuilder language="WGSL" implementationClass="wgslplugin.language.WGSLFoldingBuilder"/>
+
         <colorSettingsPage implementation="wgslplugin.language.WGSLColourSettingsPage"/>
 
         <lang.refactoringSupport language="WGSL"
