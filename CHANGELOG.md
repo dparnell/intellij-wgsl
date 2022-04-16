@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.8]
 ### Added
 - Changes from HolgerGottChristensen
   - Updated the colour for built in types to be Keyword rather than class name
