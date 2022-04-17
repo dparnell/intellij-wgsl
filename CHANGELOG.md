@@ -3,9 +3,13 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
-### Addeed
+### Added
 - Changes from HolgerGottChristensen
   - Initial code folding implementation
+  - A bracket matcher that matches common bracket types
+  - Updated annotator to annotate reserved keywords
+  - Added keyword completion contributor that allows for completing all built-in keywords.
+  - Added built-in completion handler that completes all built-in functions.
   
 ## [0.0.8]
 ### Added
