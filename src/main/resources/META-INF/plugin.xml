@@ -39,6 +39,8 @@
                                  implementationClass="wgslplugin.language.WGSLRefactoringSupportProvider"/>
 
 
+        <lang.braceMatcher language="WGSL" implementationClass="wgslplugin.language.WGSLBracketMatcher"/>
+
         <lang.documentationProvider language="WGSL"
                                     implementationClass="wgslplugin.language.WGSLDocumentationProvider"/>
     </extensions>
