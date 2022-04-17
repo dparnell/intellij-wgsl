@@ -15,7 +15,7 @@ public class BuiltInFunctions {
     public static final BuiltInFunctions INSTANCE = new BuiltInFunctions();
 
     private PsiFile builtInFunctionsFile = null;
-    private Map<String, WGSLFunctionDecl> functions = new HashMap<>();
+    public Map<String, WGSLFunctionDecl> functions = new HashMap<>();
     private PsiElement[] allBuiltinFunctions;
 
     public synchronized WGSLFunctionDecl get(PsiElement element) {
