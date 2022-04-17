@@ -39,7 +39,11 @@
                                  implementationClass="wgslplugin.language.WGSLRefactoringSupportProvider"/>
 
 
+        <lang.braceMatcher language="WGSL" implementationClass="wgslplugin.language.WGSLBracketMatcher"/>
+
         <lang.documentationProvider language="WGSL"
                                     implementationClass="wgslplugin.language.WGSLDocumentationProvider"/>
+        <completion.contributor language="WGSL" implementationClass="wgslplugin.language.WGSLKeywordCompletionContributor"/>
+        <completion.contributor language="WGSL" implementationClass="wgslplugin.language.WGSLBuiltInCompletionContributor"/>
     </extensions>
 </idea-plugin>
