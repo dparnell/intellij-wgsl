@@ -3,7 +3,10 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
-
+### Addeed
+- Changes from HolgerGottChristensen
+  - Initial code folding implementation
+  
 ## [0.0.8]
 ### Added
 - Changes from HolgerGottChristensen
