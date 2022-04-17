@@ -3,6 +3,19 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Addeed
+- Changes from HolgerGottChristensen
+  - Initial code folding implementation
+  
+## [0.0.8]
+### Added
+- Changes from HolgerGottChristensen
+  - Updated the colour for built in types to be Keyword rather than class name
+  - Colour struct fields
+  - Colour attributes
+  - Colour built in functions
+  - Add error when a fragment only function is used outside of a fragment stage
+  - Colour function declarations
 
 ## [0.0.7]
 ### Added
