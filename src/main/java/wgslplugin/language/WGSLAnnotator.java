@@ -118,8 +118,10 @@ public class WGSLAnnotator implements Annotator {
             // check if it contains the attribute 'stage(fragment)'
             if (parent != null) {
                 var attributes = ((WGSLFunctionDecl) parent).getAttributeList();
-                for (var i : attributes.getAttributeList()) {
-                    fragment_shader |= (i.getText().equals("stage(fragment)"));
+                if(attributes != null) {
+                    for (var i : attributes.getAttributeList()) {
+                        fragment_shader |= (i.getText().equals("stage(fragment)"));
+                    }
                 }
             }
 
