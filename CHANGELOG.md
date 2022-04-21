@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.10]
 ### Added
 - Fixed null pointer exception in the annotator
 
