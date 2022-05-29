@@ -5,6 +5,8 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wgslplugin.language.psi.*;
@@ -162,6 +164,25 @@ public class WGSLAnnotator implements Annotator {
                 // TODO: implement validations for attribute values
             } else {
                 holder.newAnnotation(HighlightSeverity.ERROR, "Unknown attribute").range(element).create();
+            }
+        } else if(element instanceof WGSLStructMember) {
+            PsiElement e = element.getLastChild();
+            if(e != null) {
+                @NotNull IElementType et = e.getNode().getElementType();
+                if (et == WGSLTypes.SEMICOLON) {
+                    holder.newAnnotation(HighlightSeverity.WARNING, "Semicolon is deprecated, replace with comma").range(e).create();
+                }
+
+                PsiElement sib = element.getNextSibling();
+                while(sib != null && sib instanceof PsiWhiteSpace) {
+                    sib = sib.getNextSibling();
+                }
+                if(sib instanceof WGSLStructMember) {
+                    // handle the case where there is no comma between struct members
+                    if(et != WGSLTypes.SEMICOLON && et != WGSLTypes.COMMA) {
+                        holder.newAnnotation(HighlightSeverity.ERROR, "Comma expected").range(element).create();
+                    }
+                }
             }
         }
     }

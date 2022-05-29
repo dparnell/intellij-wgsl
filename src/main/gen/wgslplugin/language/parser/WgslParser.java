@@ -1714,14 +1714,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list* field SEMICOLON
+  // attribute_list* field (SEMICOLON | COMMA?)
   public static boolean struct_member(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "struct_member")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, STRUCT_MEMBER, "<struct member>");
     r = struct_member_0(b, l + 1);
     r = r && field(b, l + 1);
-    r = r && consumeToken(b, SEMICOLON);
+    r = r && struct_member_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1734,6 +1734,24 @@ public class WgslParser implements PsiParser, LightPsiParser {
       if (!attribute_list(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "struct_member_0", c)) break;
     }
+    return true;
+  }
+
+  // SEMICOLON | COMMA?
+  private static boolean struct_member_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_member_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SEMICOLON);
+    if (!r) r = struct_member_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA?
+  private static boolean struct_member_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "struct_member_2_1")) return false;
+    consumeToken(b, COMMA);
     return true;
   }
 

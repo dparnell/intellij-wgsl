@@ -71,7 +71,7 @@ struct_body_decl ::=
       BRACE_LEFT struct_member* BRACE_RIGHT
 
 struct_member ::=
-      attribute_list* field SEMICOLON
+      attribute_list* field (SEMICOLON | COMMA?)
 
 field ::= field_ident COLON type_decl
 
@@ -392,6 +392,6 @@ global_decl ::=
     | global_variable_decl SEMICOLON
     | global_constant_decl SEMICOLON
     | type_alias_decl SEMICOLON
-    | struct_decl SEMICOLON
+    | struct_decl SEMICOLON?
     | function_decl
 
