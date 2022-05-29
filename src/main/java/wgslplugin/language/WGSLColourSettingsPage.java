@@ -1,6 +1,5 @@
 package wgslplugin.language;
 
-import com.intellij.openapi.editor.colors.ColorKey;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
@@ -12,8 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class WGSLColourSettingsPage implements ColorSettingsPage {
@@ -29,6 +30,21 @@ public class WGSLColourSettingsPage implements ColorSettingsPage {
 
     @Override
     public @NonNls @NotNull String getDemoText() {
+        InputStream is = WGSLColourSettingsPage.class.getResourceAsStream("SyntaxHighlightingExample.wgsl");
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[16384];
+            int L = is.read(buf);
+            while (L > 0) {
+                bos.write(buf, 0, L);
+                L = is.read(buf);
+            }
+
+            return bos.toString().replace("\r", "");
+        } catch (Throwable ignored) {
+        }
+
+        // return the old default - it should never get here
         return "struct VertexOutput {\n" +
                 "    [[location(0)]] tex_coord: vec2<f32>;\n" +
                 "    [[builtin(position)]] position: vec4<f32>;\n" +
