@@ -3,6 +3,9 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- Updated to support comma instead of semicolon in struct definitions
+- Updated syntax highlighting example to use more modern syntax
 
 ## [0.0.10]
 ### Added
