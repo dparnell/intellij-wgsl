@@ -3,6 +3,11 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- All currently defined attributes are supported
+- Added warnings for deprecated stage attribute
+- Added hover documentation for all defined attributes
+- Added warnings for deprecated attribute syntax
 
 ## [0.0.11]
 ### Added
