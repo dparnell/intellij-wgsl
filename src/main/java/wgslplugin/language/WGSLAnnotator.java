@@ -65,7 +65,15 @@ public class WGSLAnnotator implements Annotator {
     public static final Set<String> ACCESS_MODES = names("read", "write", "read_write");
 
     public static final Set<String> ATTRIBUTE_NAMES = names(
-            "align", "binding", "builtin", "group", "id", "interpolate", "invariant", "location", "size", "stage", "workgroup_size"
+            "align", "binding", "builtin", "const", "group", "id", "interpolate", "invariant", "location", "size", "workgroup_size"
+    );
+
+    public static final Set<String> DEPRECATED_ATTRIBUTE_NAMES = names(
+            "stage"
+    );
+
+    public static final Set<String> STAGE_NAMES = names(
+            "compute", "fragment", "vertex"
     );
 
     public static final Set<String> RESERVED_KEYWORDS = names(
@@ -122,7 +130,8 @@ public class WGSLAnnotator implements Annotator {
                 var attributes = ((WGSLFunctionDecl) parent).getAttributeList();
                 if(attributes != null) {
                     for (var i : attributes.getAttributeList()) {
-                        fragment_shader |= (i.getText().equals("stage(fragment)"));
+                        String txt = i.getText();
+                        fragment_shader |= (txt.equals("fragment") || txt.equals("stage(fragment)"));
                     }
                 }
             }
@@ -159,11 +168,15 @@ public class WGSLAnnotator implements Annotator {
             }
         } else if(element instanceof WGSLAttributeName) {
             String name = WGSLPsiImplUtil.getName(element);
-            if(ATTRIBUTE_NAMES.contains(name)) {
+            if(ATTRIBUTE_NAMES.contains(name) || STAGE_NAMES.contains(name)) {
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.ATTRIBUTE.attributes()).create();
                 // TODO: implement validations for attribute values
             } else {
-                holder.newAnnotation(HighlightSeverity.ERROR, "Unknown attribute").range(element).create();
+                if(DEPRECATED_ATTRIBUTE_NAMES.contains(name)) {
+                    holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated attribute").range(element).create();
+                } else {
+                    holder.newAnnotation(HighlightSeverity.ERROR, "Unknown attribute").range(element).create();
+                }
             }
         } else if(element instanceof WGSLStructMember) {
             PsiElement e = element.getLastChild();
@@ -183,6 +196,10 @@ public class WGSLAnnotator implements Annotator {
                         holder.newAnnotation(HighlightSeverity.ERROR, "Comma expected").range(element).create();
                     }
                 }
+            }
+        } else if(element instanceof WGSLAttributeList) {
+            if(element.getFirstChild().getNode().getElementType() == WGSLTypes.ATTR_LEFT) {
+                holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated attribute syntax").range(element).create();
             }
         }
     }
