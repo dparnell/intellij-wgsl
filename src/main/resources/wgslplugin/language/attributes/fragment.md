@@ -1,0 +1,1 @@
+Declares the function to be an entry point for the fragment shader stage of a render pipeline.
