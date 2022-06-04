@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.12]
 ### Added
 - All currently defined attributes are supported
 - Added warnings for deprecated stage attribute
