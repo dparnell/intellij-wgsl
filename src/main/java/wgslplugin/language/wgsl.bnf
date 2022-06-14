@@ -16,6 +16,7 @@
   tokens = [
     LINE_COMMENT = 'LINE_COMMENT'
     BLOCK_COMMENT = 'BLOCK_COMMENT'
+    PREPROCESSOR_DECLARATION = 'PREPROCESSOR_DECLARATION'
   ]
 }
 
@@ -394,4 +395,5 @@ global_decl ::=
     | type_alias_decl SEMICOLON
     | struct_decl SEMICOLON?
     | function_decl
+    | PREPROCESSOR_DECLARATION
 

@@ -992,8 +992,9 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | global_variable_decl SEMICOLON
   //     | global_constant_decl SEMICOLON
   //     | type_alias_decl SEMICOLON
-  //     | struct_decl SEMICOLON
+  //     | struct_decl SEMICOLON?
   //     | function_decl
+  //     | PREPROCESSOR_DECLARATION
   public static boolean global_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_decl")) return false;
     boolean r;
@@ -1004,6 +1005,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = global_decl_3(b, l + 1);
     if (!r) r = global_decl_4(b, l + 1);
     if (!r) r = function_decl(b, l + 1);
+    if (!r) r = consumeToken(b, PREPROCESSOR_DECLARATION);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1041,15 +1043,22 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // struct_decl SEMICOLON
+  // struct_decl SEMICOLON?
   private static boolean global_decl_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_decl_4")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = struct_decl(b, l + 1);
-    r = r && consumeToken(b, SEMICOLON);
+    r = r && global_decl_4_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // SEMICOLON?
+  private static boolean global_decl_4_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "global_decl_4_1")) return false;
+    consumeToken(b, SEMICOLON);
+    return true;
   }
 
   /* ********************************************************** */

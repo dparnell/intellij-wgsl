@@ -152,6 +152,7 @@ public interface WGSLTypes {
   IElementType PLUS = new WGSLTokenType("PLUS");
   IElementType PLUS_PLUS = new WGSLTokenType("PLUS_PLUS");
   IElementType POINTER = new WGSLTokenType("POINTER");
+  IElementType PREPROCESSOR_DECLARATION = new WGSLTokenType("PREPROCESSOR_DECLARATION");
   IElementType PRIVATE = new WGSLTokenType("PRIVATE");
   IElementType PUSH_CONSTANT = new WGSLTokenType("PUSH_CONSTANT");
   IElementType RETURN = new WGSLTokenType("RETURN");

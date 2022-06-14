@@ -28,6 +28,7 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] BRACKET_KEYS = new TextAttributesKey[]{WGSLColours.BRACKETS.attributes()};
     private static final TextAttributesKey[] ATTRIBUTE_KEYS = new TextAttributesKey[]{WGSLColours.ATTRIBUTE.attributes()};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+    private static final TextAttributesKey[] PREPROCESSOR_KEYS = new TextAttributesKey[]{WGSLColours.PREPROCESSOR.attributes()};
 
     private static final Set<IElementType> NUMBER_TOKENS = tokens(
               WGSLTypes.INT_LITERAL, WGSLTypes.UINT_LITERAL, WGSLTypes.DECIMAL_FLOAT_LITERAL
@@ -125,6 +126,10 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
 
         if(tokenType.equals(WGSLTypes.AT) || tokenType.equals(WGSLTypes.ATTR_LEFT) || tokenType.equals(WGSLTypes.ATTR_RIGHT) || tokenType.equals(WGSLTypes.ATTRIBUTE_NAME)) {
             return ATTRIBUTE_KEYS;
+        }
+
+        if(tokenType.equals(WGSLTypes.PREPROCESSOR_DECLARATION)) {
+            return PREPROCESSOR_KEYS;
         }
 
         return EMPTY_KEYS;

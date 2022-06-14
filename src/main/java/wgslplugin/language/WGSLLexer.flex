@@ -24,13 +24,14 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 
 WHITE_SPACE=\s+
 
-LINE_COMMENT          = "//"[^\r\n]*
-DOC_COMMENT           = "/**"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
-BLOCK_COMMENT         = "/*"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
-INT_LITERAL           = -?0x[0-9a-fA-F]+|0|-?[1-9][0-9]*
-UINT_LITERAL          = 0x[0-9a-fA-F]+u|0u|[1-9][0-9]*u
-DECIMAL_FLOAT_LITERAL = ((-?[0-9]*\.[0-9]+|-?[0-9]+\.[0-9]*)((e|E)(\+|-)?[0-9]+)?f?)|(-?[0-9]+(e|E)(\+|-)?[0-9]+f?)
-HEX_FLOAT_LITERAL     = -?0x((([0-9a-fA-F]*\.[0-9a-fA-F]+|[0-9a-fA-F]+\.[0-9a-fA-F]*)((p|P)(\+|-)?[0-9]+f?)?)|([0-9a-fA-F]+(p|P)(\+|-)?[0-9]+f?))
+LINE_COMMENT             = "//"[^\r\n]*
+DOC_COMMENT              = "/**"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
+BLOCK_COMMENT            = "/*"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
+INT_LITERAL              = -?0x[0-9a-fA-F]+|0|-?[1-9][0-9]*
+UINT_LITERAL             = 0x[0-9a-fA-F]+u|0u|[1-9][0-9]*u
+DECIMAL_FLOAT_LITERAL    = ((-?[0-9]*\.[0-9]+|-?[0-9]+\.[0-9]*)((e|E)(\+|-)?[0-9]+)?f?)|(-?[0-9]+(e|E)(\+|-)?[0-9]+f?)
+HEX_FLOAT_LITERAL        = -?0x((([0-9a-fA-F]*\.[0-9a-fA-F]+|[0-9a-fA-F]+\.[0-9a-fA-F]*)((p|P)(\+|-)?[0-9]+f?)?)|([0-9a-fA-F]+(p|P)(\+|-)?[0-9]+f?))
+PREPROCESSOR_DECLARATION = "#"[^\r\n]*
 
 IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 
@@ -38,6 +39,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL> {
   {WHITE_SPACE}                      { return WHITE_SPACE; }
   {LINE_COMMENT}                     { return LINE_COMMENT; }
+  {PREPROCESSOR_DECLARATION}         { return PREPROCESSOR_DECLARATION; }
   {DOC_COMMENT}                      { return DOC_COMMENT; }
   {BLOCK_COMMENT}                    { return BLOCK_COMMENT; }
   {INT_LITERAL}                      { return INT_LITERAL; }

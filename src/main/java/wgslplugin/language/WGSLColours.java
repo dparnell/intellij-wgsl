@@ -23,7 +23,8 @@ public enum WGSLColours {
     BAD_CHARACTER("Bad Character", createTextAttributesKey("WGSL_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)),
     ATTRIBUTE("Attribute", createTextAttributesKey("WGSL_ATTRIBUTE", DefaultLanguageHighlighterColors.METADATA)),
     FUNCTION_NAME("Function name", createTextAttributesKey("WGSL_FN_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)),
-    FIELD("Field", createTextAttributesKey("WGSL_FIELD", DefaultLanguageHighlighterColors.INSTANCE_FIELD));
+    FIELD("Field", createTextAttributesKey("WGSL_FIELD", DefaultLanguageHighlighterColors.INSTANCE_FIELD)),
+    PREPROCESSOR("Preprocessor declaration", createTextAttributesKey("WGSL_PREPROCESSOR", DefaultLanguageHighlighterColors.METADATA));
 
     private final String description;
     private final TextAttributesKey attributesKey;
