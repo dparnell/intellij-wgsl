@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.13]
 ### Added
 - Added missing attribute docs
 - Added simple support for Bevy WGSL preprocessor declarations
