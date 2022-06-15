@@ -994,7 +994,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | type_alias_decl SEMICOLON
   //     | struct_decl SEMICOLON?
   //     | function_decl
-  //     | PREPROCESSOR_DECLARATION
   public static boolean global_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_decl")) return false;
     boolean r;
@@ -1005,7 +1004,6 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = global_decl_3(b, l + 1);
     if (!r) r = global_decl_4(b, l + 1);
     if (!r) r = function_decl(b, l + 1);
-    if (!r) r = consumeToken(b, PREPROCESSOR_DECLARATION);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

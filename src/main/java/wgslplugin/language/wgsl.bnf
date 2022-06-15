@@ -395,5 +395,4 @@ global_decl ::=
     | type_alias_decl SEMICOLON
     | struct_decl SEMICOLON?
     | function_decl
-    | PREPROCESSOR_DECLARATION
 
