@@ -13,6 +13,7 @@ import wgslplugin.language.psi.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
 public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
 
@@ -72,7 +73,13 @@ public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
 
     private String generateHTML(PsiElement element, String md) {
         VirtualFile file = element.getContainingFile().getVirtualFile();
-        return MarkdownUtil.INSTANCE.generateMarkdownHtml(file, md, element.getProject());
+        return clean(MarkdownUtil.INSTANCE.generateMarkdownHtml(file, md, element.getProject()));
+    }
+
+    private static final Pattern IMG_TAG = Pattern.compile("<img[^>]+>");
+    private static final Pattern DIV_TAG = Pattern.compile("<\\/?div[^>]*>");
+    private String clean(String html) {
+        return DIV_TAG.matcher(IMG_TAG.matcher(html).replaceAll("")).replaceAll("");
     }
 
     private static String getResource(String name) {
