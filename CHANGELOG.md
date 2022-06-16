@@ -3,6 +3,10 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- reserved words list update from vibernation
+- IDE comment action support
+- preprocessor changes from Arc-blroth
 
 ## [0.0.13]
 ### Added

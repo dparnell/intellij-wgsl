@@ -33,6 +33,10 @@
 
         <lang.foldingBuilder language="WGSL" implementationClass="wgslplugin.language.WGSLFoldingBuilder"/>
 
+        <lang.commenter
+                language="WGSL"
+                implementationClass="wgslplugin.language.WGSLCommenter"/>
+
         <colorSettingsPage implementation="wgslplugin.language.WGSLColourSettingsPage"/>
 
         <lang.refactoringSupport language="WGSL"
