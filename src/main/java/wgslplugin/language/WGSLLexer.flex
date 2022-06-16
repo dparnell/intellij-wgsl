@@ -22,7 +22,9 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %type IElementType
 %unicode
 
-WHITE_SPACE=\s+
+// note: newlines are parsed separately to allow leading whitespace on a preprocessor declaration line
+WHITE_SPACE=[^\S\r\n]+
+NEWLINE=[\r\n]+
 
 LINE_COMMENT             = "//"[^\r\n]*
 DOC_COMMENT              = "/**"([^"*"]|("*"+[^"*""/"]))*("*"+"/")?
@@ -37,9 +39,10 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 
 %%
 <YYINITIAL> {
+  ^\s*{PREPROCESSOR_DECLARATION}     { return PREPROCESSOR_DECLARATION; }
   {WHITE_SPACE}                      { return WHITE_SPACE; }
+  {NEWLINE}                          { return WHITE_SPACE; }
   {LINE_COMMENT}                     { return LINE_COMMENT; }
-  {PREPROCESSOR_DECLARATION}         { return PREPROCESSOR_DECLARATION; }
   {DOC_COMMENT}                      { return DOC_COMMENT; }
   {BLOCK_COMMENT}                    { return BLOCK_COMMENT; }
   {INT_LITERAL}                      { return INT_LITERAL; }
