@@ -18,7 +18,7 @@ import wgslplugin.language.psi.WGSLTypes;
 
 public class WGSLParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
-    public static final TokenSet COMMENTS = TokenSet.create(WGSLTypes.LINE_COMMENT, WGSLTypes.BLOCK_COMMENT);
+    public static final TokenSet COMMENTS = TokenSet.create(WGSLTypes.LINE_COMMENT, WGSLTypes.BLOCK_COMMENT, WGSLTypes.PREPROCESSOR_DECLARATION);
 
     public static final IFileElementType FILE = new IFileElementType(WGSLLanguage.INSTANCE);
 
