@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.14]
 ### Added
 - reserved words list update from vibernation
 - IDE comment action support
