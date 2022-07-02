@@ -3,16 +3,17 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- updating grammar to handle the latest spec changes
+  - while
+  - staticAssert
+  - vec and mat without type when used as a constructor see #32
 
 ## [0.0.14]
 ### Added
 - reserved words list update from vibernation
 - IDE comment action support
 - preprocessor changes from Arc-blroth
-- updating grammar to handle the latest spec changes
-  - while
-  - staticAssert
-  - vec and mat without type when used as a constructor see #32
   
 ## [0.0.13]
 ### Added
