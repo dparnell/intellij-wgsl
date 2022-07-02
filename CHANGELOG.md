@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.15]
 ### Added
 - updating grammar to handle the latest spec changes
   - while
@@ -14,7 +16,7 @@
 - reserved words list update from vibernation
 - IDE comment action support
 - preprocessor changes from Arc-blroth
-  
+
 ## [0.0.13]
 ### Added
 - Added missing attribute docs
