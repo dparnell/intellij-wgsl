@@ -8,16 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static wgslplugin.language.psi.WGSLTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLFuncCallNameImpl extends WGSLFunctionCallElementImpl implements WGSLFuncCallName {
+public class WGSLWhileStatementImpl extends ASTWrapperPsiElement implements WGSLWhileStatement {
 
-  public WGSLFuncCallNameImpl(@NotNull ASTNode node) {
+  public WGSLWhileStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitFuncCallName(this);
+    visitor.visitWhileStatement(this);
   }
 
   @Override
@@ -27,25 +28,15 @@ public class WGSLFuncCallNameImpl extends WGSLFunctionCallElementImpl implements
   }
 
   @Override
-  @Nullable
-  public WGSLMatPrefix getMatPrefix() {
-    return findChildByClass(WGSLMatPrefix.class);
+  @NotNull
+  public WGSLCompoundStatement getCompoundStatement() {
+    return findNotNullChildByClass(WGSLCompoundStatement.class);
   }
 
   @Override
-  @Nullable
-  public WGSLVecPrefix getVecPrefix() {
-    return findChildByClass(WGSLVecPrefix.class);
-  }
-
-  @Override
-  public String getName() {
-    return WGSLPsiImplUtil.getName(this);
-  }
-
-  @Override
-  public PsiElement setName(String newName) {
-    return WGSLPsiImplUtil.setName(this, newName);
+  @NotNull
+  public WGSLExpression getExpression() {
+    return findNotNullChildByClass(WGSLExpression.class);
   }
 
 }

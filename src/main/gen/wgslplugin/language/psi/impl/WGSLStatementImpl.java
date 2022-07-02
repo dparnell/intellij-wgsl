@@ -95,6 +95,12 @@ public class WGSLStatementImpl extends ASTWrapperPsiElement implements WGSLState
 
   @Override
   @Nullable
+  public WGSLStaticAssertStatement getStaticAssertStatement() {
+    return findChildByClass(WGSLStaticAssertStatement.class);
+  }
+
+  @Override
+  @Nullable
   public WGSLSwitchStatement getSwitchStatement() {
     return findChildByClass(WGSLSwitchStatement.class);
   }
@@ -103,6 +109,12 @@ public class WGSLStatementImpl extends ASTWrapperPsiElement implements WGSLState
   @Nullable
   public WGSLVariableStatement getVariableStatement() {
     return findChildByClass(WGSLVariableStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public WGSLWhileStatement getWhileStatement() {
+    return findChildByClass(WGSLWhileStatement.class);
   }
 
 }

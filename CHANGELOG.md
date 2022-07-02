@@ -7,7 +7,11 @@
 - reserved words list update from vibernation
 - IDE comment action support
 - preprocessor changes from Arc-blroth
-
+- updating grammar to handle the latest spec changes
+  - while
+  - staticAssert
+  - vec and mat without type when used as a constructor see #32
+  
 ## [0.0.13]
 ### Added
 - Added missing attribute docs

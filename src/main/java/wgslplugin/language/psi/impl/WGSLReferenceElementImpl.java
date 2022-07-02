@@ -13,7 +13,6 @@ import wgslplugin.language.psi.WGSLReferenceElement;
 
 public abstract class WGSLReferenceElementImpl extends ASTWrapperPsiElement implements WGSLReferenceElement {
 
-
     public WGSLReferenceElementImpl(@NotNull ASTNode node) {
         super(node);
     }
@@ -21,6 +20,9 @@ public abstract class WGSLReferenceElementImpl extends ASTWrapperPsiElement impl
     @Override
     public PsiReference getReference() {
         String myName = WGSLPsiImplUtil.getName(this);
+        if(myName == null) {
+            return null;
+        }
 
         PsiElement[] names = PsiTreeUtil.collectElements(getContainingFile(), e -> e instanceof WGSLNamedElement ? myName.equals(((WGSLNamedElement) e).getName()) : false);
         if(names.length == 0) {

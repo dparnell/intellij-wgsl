@@ -8,44 +8,23 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static wgslplugin.language.psi.WGSLTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLFuncCallNameImpl extends WGSLFunctionCallElementImpl implements WGSLFuncCallName {
+public class WGSLMatPrefixImpl extends ASTWrapperPsiElement implements WGSLMatPrefix {
 
-  public WGSLFuncCallNameImpl(@NotNull ASTNode node) {
+  public WGSLMatPrefixImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitFuncCallName(this);
+    visitor.visitMatPrefix(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof WGSLVisitor) accept((WGSLVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public WGSLMatPrefix getMatPrefix() {
-    return findChildByClass(WGSLMatPrefix.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLVecPrefix getVecPrefix() {
-    return findChildByClass(WGSLVecPrefix.class);
-  }
-
-  @Override
-  public String getName() {
-    return WGSLPsiImplUtil.getName(this);
-  }
-
-  @Override
-  public PsiElement setName(String newName) {
-    return WGSLPsiImplUtil.setName(this, newName);
   }
 
 }

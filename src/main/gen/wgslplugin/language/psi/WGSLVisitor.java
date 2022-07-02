@@ -187,6 +187,10 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMatPrefix(@NotNull WGSLMatPrefix o) {
+    visitPsiElement(o);
+  }
+
   public void visitMultisampledTextureType(@NotNull WGSLMultisampledTextureType o) {
     visitPsiElement(o);
   }
@@ -228,6 +232,10 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitStatement(@NotNull WGSLStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStaticAssertStatement(@NotNull WGSLStaticAssertStatement o) {
     visitPsiElement(o);
   }
 
@@ -296,6 +304,14 @@ public class WGSLVisitor extends PsiElementVisitor {
   }
 
   public void visitVariableStatement(@NotNull WGSLVariableStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVecPrefix(@NotNull WGSLVecPrefix o) {
+    visitPsiElement(o);
+  }
+
+  public void visitWhileStatement(@NotNull WGSLWhileStatement o) {
     visitPsiElement(o);
   }
 

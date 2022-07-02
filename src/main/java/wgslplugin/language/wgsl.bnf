@@ -183,22 +183,28 @@ type_decl ::=
     | FLOAT32
     | INT32
     | UINT32
-    | VEC2 LESS_THAN type_decl GREATER_THAN
-    | VEC3 LESS_THAN type_decl GREATER_THAN
-    | VEC4 LESS_THAN type_decl GREATER_THAN
+    | vec_prefix LESS_THAN type_decl GREATER_THAN
     | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
     | array_type_decl
-    | MAT2X2 LESS_THAN type_decl GREATER_THAN
-    | MAT2X3 LESS_THAN type_decl GREATER_THAN
-    | MAT2X4 LESS_THAN type_decl GREATER_THAN
-    | MAT3X2 LESS_THAN type_decl GREATER_THAN
-    | MAT3X3 LESS_THAN type_decl GREATER_THAN
-    | MAT3X4 LESS_THAN type_decl GREATER_THAN
-    | MAT4X2 LESS_THAN type_decl GREATER_THAN
-    | MAT4X3 LESS_THAN type_decl GREATER_THAN
-    | MAT4X4 LESS_THAN type_decl GREATER_THAN
+    | mat_prefix LESS_THAN type_decl GREATER_THAN
     | ATOMIC LESS_THAN type_decl GREATER_THAN
     | texture_sampler_types
+
+vec_prefix ::=
+      VEC2
+    | VEC3
+    | VEC4
+
+mat_prefix ::=
+      MAT2X2
+    | MAT2X3
+    | MAT2X4
+    | MAT3X2
+    | MAT3X3
+    | MAT3X4
+    | MAT4X2
+    | MAT4X3
+    | MAT4X4
 
 variable_statement ::=
       variable_decl (EQUAL expression)?
@@ -318,11 +324,17 @@ for_init ::=
 for_update ::=
     increment_statement | decrement_statement | assignment_statement | func_call_statement
 
+while_statement ::=
+    WHILE expression compound_statement
+
 increment_statement ::=
     lhs_expression PLUS_PLUS
 
 decrement_statement ::=
     lhs_expression MINUS_MINUS
+
+static_assert_statement ::=
+    STATIC_ASSERT expression
 
 break_statement ::=
       BREAK
@@ -340,28 +352,32 @@ func_call_statement ::=
       func_call_name argument_expression_list
 
 func_call_name ::=
-    IDENT {
+      vec_prefix
+    | mat_prefix
+    | IDENT {
               mixin="wgslplugin.language.psi.impl.WGSLFunctionCallElementImpl"
               implements="wgslplugin.language.psi.WGSLFunctionCallElement"
               methods=[getName setName]
           }
 
 statement ::=
-      SEMICOLON
-    | return_statement SEMICOLON
-    | if_statement
-    | switch_statement
-    | loop_statement
-    | for_statement
-    | func_call_statement SEMICOLON
-    | variable_statement SEMICOLON
-    | break_statement SEMICOLON
-    | continue_statement SEMICOLON
-    | DISCARD SEMICOLON
-    | assignment_statement SEMICOLON
-    | compound_statement
-    | increment_statement SEMICOLON
-    | decrement_statement SEMICOLON
+   SEMICOLON
+ | return_statement SEMICOLON
+ | if_statement
+ | switch_statement
+ | loop_statement
+ | for_statement
+ | while_statement
+ | func_call_statement SEMICOLON
+ | variable_statement SEMICOLON
+ | break_statement SEMICOLON
+ | continue_statement SEMICOLON
+ | DISCARD SEMICOLON
+ | assignment_statement SEMICOLON
+ | compound_statement
+ | increment_statement SEMICOLON
+ | decrement_statement SEMICOLON
+ | static_assert_statement SEMICOLON
 
 docs ::=
     DOC_COMMENT

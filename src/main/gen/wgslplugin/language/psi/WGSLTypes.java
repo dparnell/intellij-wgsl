@@ -53,6 +53,7 @@ public interface WGSLTypes {
   IElementType LHS_EXPRESSION = new WGSLElementType("LHS_EXPRESSION");
   IElementType LITERAL_OR_IDENT = new WGSLElementType("LITERAL_OR_IDENT");
   IElementType LOOP_STATEMENT = new WGSLElementType("LOOP_STATEMENT");
+  IElementType MAT_PREFIX = new WGSLElementType("MAT_PREFIX");
   IElementType MULTISAMPLED_TEXTURE_TYPE = new WGSLElementType("MULTISAMPLED_TEXTURE_TYPE");
   IElementType PARAM = new WGSLElementType("PARAM");
   IElementType PARAM_LIST = new WGSLElementType("PARAM_LIST");
@@ -64,6 +65,7 @@ public interface WGSLTypes {
   IElementType SAMPLER_TYPE = new WGSLElementType("SAMPLER_TYPE");
   IElementType SINGULAR_EXPRESSION = new WGSLElementType("SINGULAR_EXPRESSION");
   IElementType STATEMENT = new WGSLElementType("STATEMENT");
+  IElementType STATIC_ASSERT_STATEMENT = new WGSLElementType("STATIC_ASSERT_STATEMENT");
   IElementType STORAGE_CLASS = new WGSLElementType("STORAGE_CLASS");
   IElementType STORAGE_TEXTURE_TYPE = new WGSLElementType("STORAGE_TEXTURE_TYPE");
   IElementType STRUCT_BODY_DECL = new WGSLElementType("STRUCT_BODY_DECL");
@@ -81,6 +83,8 @@ public interface WGSLTypes {
   IElementType VARIABLE_QUALIFIER = new WGSLElementType("VARIABLE_QUALIFIER");
   IElementType VARIABLE_REFERENCE = new WGSLElementType("VARIABLE_REFERENCE");
   IElementType VARIABLE_STATEMENT = new WGSLElementType("VARIABLE_STATEMENT");
+  IElementType VEC_PREFIX = new WGSLElementType("VEC_PREFIX");
+  IElementType WHILE_STATEMENT = new WGSLElementType("WHILE_STATEMENT");
 
   IElementType AND = new WGSLTokenType("AND");
   IElementType AND_AND = new WGSLTokenType("AND_AND");
@@ -162,6 +166,7 @@ public interface WGSLTypes {
   IElementType SHIFT_LEFT = new WGSLTokenType("SHIFT_LEFT");
   IElementType SHIFT_RIGHT = new WGSLTokenType("SHIFT_RIGHT");
   IElementType STAR = new WGSLTokenType("STAR");
+  IElementType STATIC_ASSERT = new WGSLTokenType("STATIC_ASSERT");
   IElementType STORAGE = new WGSLTokenType("STORAGE");
   IElementType STRUCT = new WGSLTokenType("STRUCT");
   IElementType SWITCH = new WGSLTokenType("SWITCH");
@@ -192,6 +197,7 @@ public interface WGSLTypes {
   IElementType VEC2 = new WGSLTokenType("VEC2");
   IElementType VEC3 = new WGSLTokenType("VEC3");
   IElementType VEC4 = new WGSLTokenType("VEC4");
+  IElementType WHILE = new WGSLTokenType("WHILE");
   IElementType WORKGROUP = new WGSLTokenType("WORKGROUP");
   IElementType XOR = new WGSLTokenType("XOR");
 
@@ -333,6 +339,9 @@ public interface WGSLTypes {
       else if (type == LOOP_STATEMENT) {
         return new WGSLLoopStatementImpl(node);
       }
+      else if (type == MAT_PREFIX) {
+        return new WGSLMatPrefixImpl(node);
+      }
       else if (type == MULTISAMPLED_TEXTURE_TYPE) {
         return new WGSLMultisampledTextureTypeImpl(node);
       }
@@ -365,6 +374,9 @@ public interface WGSLTypes {
       }
       else if (type == STATEMENT) {
         return new WGSLStatementImpl(node);
+      }
+      else if (type == STATIC_ASSERT_STATEMENT) {
+        return new WGSLStaticAssertStatementImpl(node);
       }
       else if (type == STORAGE_CLASS) {
         return new WGSLStorageClassImpl(node);
@@ -416,6 +428,12 @@ public interface WGSLTypes {
       }
       else if (type == VARIABLE_STATEMENT) {
         return new WGSLVariableStatementImpl(node);
+      }
+      else if (type == VEC_PREFIX) {
+        return new WGSLVecPrefixImpl(node);
+      }
+      else if (type == WHILE_STATEMENT) {
+        return new WGSLWhileStatementImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

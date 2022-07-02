@@ -14,6 +14,9 @@ public interface WGSLTypeDecl extends PsiElement {
   WGSLArrayTypeDecl getArrayTypeDecl();
 
   @Nullable
+  WGSLMatPrefix getMatPrefix();
+
+  @Nullable
   WGSLStorageClass getStorageClass();
 
   @Nullable
@@ -21,5 +24,8 @@ public interface WGSLTypeDecl extends PsiElement {
 
   @Nullable
   WGSLTypeDecl getTypeDecl();
+
+  @Nullable
+  WGSLVecPrefix getVecPrefix();
 
 }

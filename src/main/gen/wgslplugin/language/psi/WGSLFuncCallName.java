@@ -7,6 +7,12 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLFuncCallName extends WGSLFunctionCallElement {
 
+  @Nullable
+  WGSLMatPrefix getMatPrefix();
+
+  @Nullable
+  WGSLVecPrefix getVecPrefix();
+
   String getName();
 
   PsiElement setName(String newName);

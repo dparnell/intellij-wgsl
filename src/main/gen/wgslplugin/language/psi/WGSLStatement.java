@@ -41,9 +41,15 @@ public interface WGSLStatement extends PsiElement {
   WGSLReturnStatement getReturnStatement();
 
   @Nullable
+  WGSLStaticAssertStatement getStaticAssertStatement();
+
+  @Nullable
   WGSLSwitchStatement getSwitchStatement();
 
   @Nullable
   WGSLVariableStatement getVariableStatement();
+
+  @Nullable
+  WGSLWhileStatement getWhileStatement();
 
 }

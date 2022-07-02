@@ -41,6 +41,12 @@ public class WGSLTypeDeclImpl extends ASTWrapperPsiElement implements WGSLTypeDe
 
   @Override
   @Nullable
+  public WGSLMatPrefix getMatPrefix() {
+    return findChildByClass(WGSLMatPrefix.class);
+  }
+
+  @Override
+  @Nullable
   public WGSLStorageClass getStorageClass() {
     return findChildByClass(WGSLStorageClass.class);
   }
@@ -55,6 +61,12 @@ public class WGSLTypeDeclImpl extends ASTWrapperPsiElement implements WGSLTypeDe
   @Nullable
   public WGSLTypeDecl getTypeDecl() {
     return findChildByClass(WGSLTypeDecl.class);
+  }
+
+  @Override
+  @Nullable
+  public WGSLVecPrefix getVecPrefix() {
+    return findChildByClass(WGSLVecPrefix.class);
   }
 
 }

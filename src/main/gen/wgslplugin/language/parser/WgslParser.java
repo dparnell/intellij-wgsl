@@ -824,14 +824,17 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT
+  // vec_prefix
+  //     | mat_prefix
+  //     | IDENT
   public static boolean func_call_name(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "func_call_name")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    exit_section_(b, m, FUNC_CALL_NAME, r);
+    Marker m = enter_section_(b, l, _NONE_, FUNC_CALL_NAME, "<func call name>");
+    r = vec_prefix(b, l + 1);
+    if (!r) r = mat_prefix(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -839,12 +842,11 @@ public class WgslParser implements PsiParser, LightPsiParser {
   // func_call_name argument_expression_list
   public static boolean func_call_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "func_call_statement")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, FUNC_CALL_STATEMENT, "<func call statement>");
     r = func_call_name(b, l + 1);
     r = r && argument_expression_list(b, l + 1);
-    exit_section_(b, m, FUNC_CALL_STATEMENT, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1249,6 +1251,33 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // MAT2X2
+  //     | MAT2X3
+  //     | MAT2X4
+  //     | MAT3X2
+  //     | MAT3X3
+  //     | MAT3X4
+  //     | MAT4X2
+  //     | MAT4X3
+  //     | MAT4X4
+  public static boolean mat_prefix(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mat_prefix")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MAT_PREFIX, "<mat prefix>");
+    r = consumeToken(b, MAT2X2);
+    if (!r) r = consumeToken(b, MAT2X3);
+    if (!r) r = consumeToken(b, MAT2X4);
+    if (!r) r = consumeToken(b, MAT3X2);
+    if (!r) r = consumeToken(b, MAT3X3);
+    if (!r) r = consumeToken(b, MAT3X4);
+    if (!r) r = consumeToken(b, MAT4X2);
+    if (!r) r = consumeToken(b, MAT4X3);
+    if (!r) r = consumeToken(b, MAT4X4);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // TEXTURE_MULTISAMPLED_2D
   public static boolean multisampled_texture_type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multisampled_texture_type")) return false;
@@ -1508,20 +1537,22 @@ public class WgslParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // SEMICOLON
-  //     | return_statement SEMICOLON
-  //     | if_statement
-  //     | switch_statement
-  //     | loop_statement
-  //     | for_statement
-  //     | func_call_statement SEMICOLON
-  //     | variable_statement SEMICOLON
-  //     | break_statement SEMICOLON
-  //     | continue_statement SEMICOLON
-  //     | DISCARD SEMICOLON
-  //     | assignment_statement SEMICOLON
-  //     | compound_statement
-  //     | increment_statement SEMICOLON
-  //     | decrement_statement SEMICOLON
+  //  | return_statement SEMICOLON
+  //  | if_statement
+  //  | switch_statement
+  //  | loop_statement
+  //  | for_statement
+  //  | while_statement
+  //  | func_call_statement SEMICOLON
+  //  | variable_statement SEMICOLON
+  //  | break_statement SEMICOLON
+  //  | continue_statement SEMICOLON
+  //  | DISCARD SEMICOLON
+  //  | assignment_statement SEMICOLON
+  //  | compound_statement
+  //  | increment_statement SEMICOLON
+  //  | decrement_statement SEMICOLON
+  //  | static_assert_statement SEMICOLON
   public static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
@@ -1532,15 +1563,17 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = switch_statement(b, l + 1);
     if (!r) r = loop_statement(b, l + 1);
     if (!r) r = for_statement(b, l + 1);
-    if (!r) r = statement_6(b, l + 1);
+    if (!r) r = while_statement(b, l + 1);
     if (!r) r = statement_7(b, l + 1);
     if (!r) r = statement_8(b, l + 1);
     if (!r) r = statement_9(b, l + 1);
+    if (!r) r = statement_10(b, l + 1);
     if (!r) r = parseTokens(b, 0, DISCARD, SEMICOLON);
-    if (!r) r = statement_11(b, l + 1);
+    if (!r) r = statement_12(b, l + 1);
     if (!r) r = compound_statement(b, l + 1);
-    if (!r) r = statement_13(b, l + 1);
     if (!r) r = statement_14(b, l + 1);
+    if (!r) r = statement_15(b, l + 1);
+    if (!r) r = statement_16(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1557,8 +1590,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // func_call_statement SEMICOLON
-  private static boolean statement_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_6")) return false;
+  private static boolean statement_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_7")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = func_call_statement(b, l + 1);
@@ -1568,8 +1601,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // variable_statement SEMICOLON
-  private static boolean statement_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_7")) return false;
+  private static boolean statement_8(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_8")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = variable_statement(b, l + 1);
@@ -1579,8 +1612,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // break_statement SEMICOLON
-  private static boolean statement_8(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_8")) return false;
+  private static boolean statement_9(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_9")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = break_statement(b, l + 1);
@@ -1590,8 +1623,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // continue_statement SEMICOLON
-  private static boolean statement_9(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_9")) return false;
+  private static boolean statement_10(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_10")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = continue_statement(b, l + 1);
@@ -1601,8 +1634,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // assignment_statement SEMICOLON
-  private static boolean statement_11(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_11")) return false;
+  private static boolean statement_12(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_12")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = assignment_statement(b, l + 1);
@@ -1612,8 +1645,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // increment_statement SEMICOLON
-  private static boolean statement_13(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_13")) return false;
+  private static boolean statement_14(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_14")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = increment_statement(b, l + 1);
@@ -1623,13 +1656,37 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // decrement_statement SEMICOLON
-  private static boolean statement_14(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_14")) return false;
+  private static boolean statement_15(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_15")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = decrement_statement(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // static_assert_statement SEMICOLON
+  private static boolean statement_16(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_16")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = static_assert_statement(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // STATIC_ASSERT expression
+  public static boolean static_assert_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "static_assert_statement")) return false;
+    if (!nextTokenIs(b, STATIC_ASSERT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STATIC_ASSERT);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, STATIC_ASSERT_STATEMENT, r);
     return r;
   }
 
@@ -1972,20 +2029,10 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | FLOAT32
   //     | INT32
   //     | UINT32
-  //     | VEC2 LESS_THAN type_decl GREATER_THAN
-  //     | VEC3 LESS_THAN type_decl GREATER_THAN
-  //     | VEC4 LESS_THAN type_decl GREATER_THAN
+  //     | vec_prefix LESS_THAN type_decl GREATER_THAN
   //     | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
   //     | array_type_decl
-  //     | MAT2X2 LESS_THAN type_decl GREATER_THAN
-  //     | MAT2X3 LESS_THAN type_decl GREATER_THAN
-  //     | MAT2X4 LESS_THAN type_decl GREATER_THAN
-  //     | MAT3X2 LESS_THAN type_decl GREATER_THAN
-  //     | MAT3X3 LESS_THAN type_decl GREATER_THAN
-  //     | MAT3X4 LESS_THAN type_decl GREATER_THAN
-  //     | MAT4X2 LESS_THAN type_decl GREATER_THAN
-  //     | MAT4X3 LESS_THAN type_decl GREATER_THAN
-  //     | MAT4X4 LESS_THAN type_decl GREATER_THAN
+  //     | mat_prefix LESS_THAN type_decl GREATER_THAN
   //     | ATOMIC LESS_THAN type_decl GREATER_THAN
   //     | texture_sampler_types
   public static boolean type_decl(PsiBuilder b, int l) {
@@ -1999,54 +2046,21 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, UINT32);
     if (!r) r = type_decl_5(b, l + 1);
     if (!r) r = type_decl_6(b, l + 1);
-    if (!r) r = type_decl_7(b, l + 1);
-    if (!r) r = type_decl_8(b, l + 1);
     if (!r) r = array_type_decl(b, l + 1);
-    if (!r) r = type_decl_10(b, l + 1);
-    if (!r) r = type_decl_11(b, l + 1);
-    if (!r) r = type_decl_12(b, l + 1);
-    if (!r) r = type_decl_13(b, l + 1);
-    if (!r) r = type_decl_14(b, l + 1);
-    if (!r) r = type_decl_15(b, l + 1);
-    if (!r) r = type_decl_16(b, l + 1);
-    if (!r) r = type_decl_17(b, l + 1);
-    if (!r) r = type_decl_18(b, l + 1);
-    if (!r) r = type_decl_19(b, l + 1);
+    if (!r) r = type_decl_8(b, l + 1);
+    if (!r) r = type_decl_9(b, l + 1);
     if (!r) r = texture_sampler_types(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // VEC2 LESS_THAN type_decl GREATER_THAN
+  // vec_prefix LESS_THAN type_decl GREATER_THAN
   private static boolean type_decl_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_5")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, VEC2, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // VEC3 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_6")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, VEC3, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // VEC4 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_7")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, VEC4, LESS_THAN);
+    r = vec_prefix(b, l + 1);
+    r = r && consumeToken(b, LESS_THAN);
     r = r && type_decl(b, l + 1);
     r = r && consumeToken(b, GREATER_THAN);
     exit_section_(b, m, null, r);
@@ -2054,30 +2068,30 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
-  private static boolean type_decl_8(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_8")) return false;
+  private static boolean type_decl_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_decl_6")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, POINTER, LESS_THAN);
     r = r && storage_class(b, l + 1);
     r = r && consumeToken(b, COMMA);
     r = r && type_decl(b, l + 1);
-    r = r && type_decl_8_5(b, l + 1);
+    r = r && type_decl_6_5(b, l + 1);
     r = r && consumeToken(b, GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // ( COMMA access_mode )?
-  private static boolean type_decl_8_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_8_5")) return false;
-    type_decl_8_5_0(b, l + 1);
+  private static boolean type_decl_6_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_decl_6_5")) return false;
+    type_decl_6_5_0(b, l + 1);
     return true;
   }
 
   // COMMA access_mode
-  private static boolean type_decl_8_5_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_8_5_0")) return false;
+  private static boolean type_decl_6_5_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_decl_6_5_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
@@ -2086,108 +2100,13 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // MAT2X2 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_10(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_10")) return false;
+  // mat_prefix LESS_THAN type_decl GREATER_THAN
+  private static boolean type_decl_8(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_decl_8")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT2X2, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT2X3 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_11(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_11")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT2X3, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT2X4 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_12(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_12")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT2X4, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT3X2 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_13(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_13")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT3X2, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT3X3 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_14(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_14")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT3X3, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT3X4 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_15(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_15")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT3X4, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT4X2 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_16(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_16")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT4X2, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT4X3 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_17(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_17")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT4X3, LESS_THAN);
-    r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MAT4X4 LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_18(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_18")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, MAT4X4, LESS_THAN);
+    r = mat_prefix(b, l + 1);
+    r = r && consumeToken(b, LESS_THAN);
     r = r && type_decl(b, l + 1);
     r = r && consumeToken(b, GREATER_THAN);
     exit_section_(b, m, null, r);
@@ -2195,8 +2114,8 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   // ATOMIC LESS_THAN type_decl GREATER_THAN
-  private static boolean type_decl_19(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "type_decl_19")) return false;
+  private static boolean type_decl_9(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_decl_9")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, ATOMIC, LESS_THAN);
@@ -2432,6 +2351,35 @@ public class WgslParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, EQUAL);
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // VEC2
+  //     | VEC3
+  //     | VEC4
+  public static boolean vec_prefix(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "vec_prefix")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, VEC_PREFIX, "<vec prefix>");
+    r = consumeToken(b, VEC2);
+    if (!r) r = consumeToken(b, VEC3);
+    if (!r) r = consumeToken(b, VEC4);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // WHILE expression compound_statement
+  public static boolean while_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "while_statement")) return false;
+    if (!nextTokenIs(b, WHILE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, WHILE);
+    r = r && expression(b, l + 1);
+    r = r && compound_statement(b, l + 1);
+    exit_section_(b, m, WHILE_STATEMENT, r);
     return r;
   }
 
