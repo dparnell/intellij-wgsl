@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.16]
 ### Added
 - added support for compound assignment operators - see issue #34
 
