@@ -47,6 +47,10 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCompoundAssignmentOperator(@NotNull WGSLCompoundAssignmentOperator o) {
+    visitPsiElement(o);
+  }
+
   public void visitCompoundStatement(@NotNull WGSLCompoundStatement o) {
     visitPsiElement(o);
   }

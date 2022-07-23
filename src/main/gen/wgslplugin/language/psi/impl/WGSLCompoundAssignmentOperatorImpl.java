@@ -11,38 +11,20 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import wgslplugin.language.psi.*;
 
-public class WGSLAssignmentStatementImpl extends ASTWrapperPsiElement implements WGSLAssignmentStatement {
+public class WGSLCompoundAssignmentOperatorImpl extends ASTWrapperPsiElement implements WGSLCompoundAssignmentOperator {
 
-  public WGSLAssignmentStatementImpl(@NotNull ASTNode node) {
+  public WGSLCompoundAssignmentOperatorImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull WGSLVisitor visitor) {
-    visitor.visitAssignmentStatement(this);
+    visitor.visitCompoundAssignmentOperator(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof WGSLVisitor) accept((WGSLVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public WGSLCompoundAssignmentOperator getCompoundAssignmentOperator() {
-    return findChildByClass(WGSLCompoundAssignmentOperator.class);
-  }
-
-  @Override
-  @NotNull
-  public WGSLExpression getExpression() {
-    return findNotNullChildByClass(WGSLExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public WGSLLhsExpression getLhsExpression() {
-    return findChildByClass(WGSLLhsExpression.class);
   }
 
 }

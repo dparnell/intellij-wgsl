@@ -285,8 +285,21 @@ expression ::=
 compound_statement ::=
      BRACE_LEFT statement* BRACE_RIGHT
 
+compound_assignment_operator ::=
+      PLUS_EQUAL
+    | MINUS_EQUAL
+    | TIMES_EQUAL
+    | DIVISION_EQUAL
+    | MODULO_EQUAL
+    | AND_EQUAL
+    | OR_EQUAL
+    | XOR_EQUAL
+    | SHIFT_RIGHT_EQUAL
+    | SHIFT_LEFT_EQUAL
+
 assignment_statement ::=
-      ( lhs_expression | UNDERSCORE ) EQUAL expression
+        lhs_expression ( EQUAL | compound_assignment_operator) expression
+      | UNDERSCORE EQUAL expression
 
 if_statement ::=
      IF paren_expression compound_statement ( ELSE else_statement )?

@@ -154,24 +154,47 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( lhs_expression | UNDERSCORE ) EQUAL expression
+  // lhs_expression ( EQUAL | compound_assignment_operator) expression
+  //       | UNDERSCORE EQUAL expression
   public static boolean assignment_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment_statement")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ASSIGNMENT_STATEMENT, "<assignment statement>");
     r = assignment_statement_0(b, l + 1);
-    r = r && consumeToken(b, EQUAL);
-    r = r && expression(b, l + 1);
+    if (!r) r = assignment_statement_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // lhs_expression | UNDERSCORE
+  // lhs_expression ( EQUAL | compound_assignment_operator) expression
   private static boolean assignment_statement_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment_statement_0")) return false;
     boolean r;
+    Marker m = enter_section_(b);
     r = lhs_expression(b, l + 1);
-    if (!r) r = consumeToken(b, UNDERSCORE);
+    r = r && assignment_statement_0_1(b, l + 1);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // EQUAL | compound_assignment_operator
+  private static boolean assignment_statement_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_statement_0_1")) return false;
+    boolean r;
+    r = consumeToken(b, EQUAL);
+    if (!r) r = compound_assignment_operator(b, l + 1);
+    return r;
+  }
+
+  // UNDERSCORE EQUAL expression
+  private static boolean assignment_statement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_statement_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, UNDERSCORE, EQUAL);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -395,6 +418,35 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "case_selectors_2")) return false;
     consumeToken(b, COMMA);
     return true;
+  }
+
+  /* ********************************************************** */
+  // PLUS_EQUAL
+  //     | MINUS_EQUAL
+  //     | TIMES_EQUAL
+  //     | DIVISION_EQUAL
+  //     | MODULO_EQUAL
+  //     | AND_EQUAL
+  //     | OR_EQUAL
+  //     | XOR_EQUAL
+  //     | SHIFT_RIGHT_EQUAL
+  //     | SHIFT_LEFT_EQUAL
+  public static boolean compound_assignment_operator(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "compound_assignment_operator")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, COMPOUND_ASSIGNMENT_OPERATOR, "<compound assignment operator>");
+    r = consumeToken(b, PLUS_EQUAL);
+    if (!r) r = consumeToken(b, MINUS_EQUAL);
+    if (!r) r = consumeToken(b, TIMES_EQUAL);
+    if (!r) r = consumeToken(b, DIVISION_EQUAL);
+    if (!r) r = consumeToken(b, MODULO_EQUAL);
+    if (!r) r = consumeToken(b, AND_EQUAL);
+    if (!r) r = consumeToken(b, OR_EQUAL);
+    if (!r) r = consumeToken(b, XOR_EQUAL);
+    if (!r) r = consumeToken(b, SHIFT_RIGHT_EQUAL);
+    if (!r) r = consumeToken(b, SHIFT_LEFT_EQUAL);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */

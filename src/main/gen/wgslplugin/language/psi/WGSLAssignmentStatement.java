@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLAssignmentStatement extends PsiElement {
 
+  @Nullable
+  WGSLCompoundAssignmentOperator getCompoundAssignmentOperator();
+
   @NotNull
   WGSLExpression getExpression();
 

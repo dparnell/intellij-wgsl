@@ -18,6 +18,7 @@ public interface WGSLTypes {
   IElementType BREAK_STATEMENT = new WGSLElementType("BREAK_STATEMENT");
   IElementType CASE_BODY = new WGSLElementType("CASE_BODY");
   IElementType CASE_SELECTORS = new WGSLElementType("CASE_SELECTORS");
+  IElementType COMPOUND_ASSIGNMENT_OPERATOR = new WGSLElementType("COMPOUND_ASSIGNMENT_OPERATOR");
   IElementType COMPOUND_STATEMENT = new WGSLElementType("COMPOUND_STATEMENT");
   IElementType CONST_EXPRESSION = new WGSLElementType("CONST_EXPRESSION");
   IElementType CONST_LITERAL = new WGSLElementType("CONST_LITERAL");
@@ -88,6 +89,7 @@ public interface WGSLTypes {
 
   IElementType AND = new WGSLTokenType("AND");
   IElementType AND_AND = new WGSLTokenType("AND_AND");
+  IElementType AND_EQUAL = new WGSLTokenType("AND_EQUAL");
   IElementType ARRAY = new WGSLTokenType("ARRAY");
   IElementType ARROW = new WGSLTokenType("ARROW");
   IElementType AT = new WGSLTokenType("AT");
@@ -111,6 +113,7 @@ public interface WGSLTypes {
   IElementType DECIMAL_FLOAT_LITERAL = new WGSLTokenType("DECIMAL_FLOAT_LITERAL");
   IElementType DEFAULT = new WGSLTokenType("DEFAULT");
   IElementType DISCARD = new WGSLTokenType("DISCARD");
+  IElementType DIVISION_EQUAL = new WGSLTokenType("DIVISION_EQUAL");
   IElementType DOC_COMMENT = new WGSLTokenType("DOC_COMMENT");
   IElementType ELSE = new WGSLTokenType("ELSE");
   IElementType ENABLE = new WGSLTokenType("ENABLE");
@@ -145,15 +148,19 @@ public interface WGSLTypes {
   IElementType MAT4X3 = new WGSLTokenType("MAT4X3");
   IElementType MAT4X4 = new WGSLTokenType("MAT4X4");
   IElementType MINUS = new WGSLTokenType("MINUS");
+  IElementType MINUS_EQUAL = new WGSLTokenType("MINUS_EQUAL");
   IElementType MINUS_MINUS = new WGSLTokenType("MINUS_MINUS");
   IElementType MODULO = new WGSLTokenType("MODULO");
+  IElementType MODULO_EQUAL = new WGSLTokenType("MODULO_EQUAL");
   IElementType NOT_EQUAL = new WGSLTokenType("NOT_EQUAL");
   IElementType OR = new WGSLTokenType("OR");
+  IElementType OR_EQUAL = new WGSLTokenType("OR_EQUAL");
   IElementType OR_OR = new WGSLTokenType("OR_OR");
   IElementType PAREN_LEFT = new WGSLTokenType("PAREN_LEFT");
   IElementType PAREN_RIGHT = new WGSLTokenType("PAREN_RIGHT");
   IElementType PERIOD = new WGSLTokenType("PERIOD");
   IElementType PLUS = new WGSLTokenType("PLUS");
+  IElementType PLUS_EQUAL = new WGSLTokenType("PLUS_EQUAL");
   IElementType PLUS_PLUS = new WGSLTokenType("PLUS_PLUS");
   IElementType POINTER = new WGSLTokenType("POINTER");
   IElementType PREPROCESSOR_DECLARATION = new WGSLTokenType("PREPROCESSOR_DECLARATION");
@@ -164,7 +171,9 @@ public interface WGSLTypes {
   IElementType SAMPLER_COMPARISON = new WGSLTokenType("SAMPLER_COMPARISON");
   IElementType SEMICOLON = new WGSLTokenType("SEMICOLON");
   IElementType SHIFT_LEFT = new WGSLTokenType("SHIFT_LEFT");
+  IElementType SHIFT_LEFT_EQUAL = new WGSLTokenType("SHIFT_LEFT_EQUAL");
   IElementType SHIFT_RIGHT = new WGSLTokenType("SHIFT_RIGHT");
+  IElementType SHIFT_RIGHT_EQUAL = new WGSLTokenType("SHIFT_RIGHT_EQUAL");
   IElementType STAR = new WGSLTokenType("STAR");
   IElementType STATIC_ASSERT = new WGSLTokenType("STATIC_ASSERT");
   IElementType STORAGE = new WGSLTokenType("STORAGE");
@@ -187,6 +196,7 @@ public interface WGSLTypes {
   IElementType TEXTURE_STORAGE_2D_ARRAY = new WGSLTokenType("TEXTURE_STORAGE_2D_ARRAY");
   IElementType TEXTURE_STORAGE_3D = new WGSLTokenType("TEXTURE_STORAGE_3D");
   IElementType TILDE = new WGSLTokenType("TILDE");
+  IElementType TIMES_EQUAL = new WGSLTokenType("TIMES_EQUAL");
   IElementType TRUE = new WGSLTokenType("TRUE");
   IElementType TYPE = new WGSLTokenType("TYPE");
   IElementType UINT32 = new WGSLTokenType("UINT32");
@@ -200,6 +210,7 @@ public interface WGSLTypes {
   IElementType WHILE = new WGSLTokenType("WHILE");
   IElementType WORKGROUP = new WGSLTokenType("WORKGROUP");
   IElementType XOR = new WGSLTokenType("XOR");
+  IElementType XOR_EQUAL = new WGSLTokenType("XOR_EQUAL");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -233,6 +244,9 @@ public interface WGSLTypes {
       }
       else if (type == CASE_SELECTORS) {
         return new WGSLCaseSelectorsImpl(node);
+      }
+      else if (type == COMPOUND_ASSIGNMENT_OPERATOR) {
+        return new WGSLCompoundAssignmentOperatorImpl(node);
       }
       else if (type == COMPOUND_STATEMENT) {
         return new WGSLCompoundStatementImpl(node);

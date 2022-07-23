@@ -197,6 +197,17 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
   "enable"                           { return ENABLE; }
   "while"                            { return WHILE; }
   "staticAssert"                     { return STATIC_ASSERT; }
+  "+="                               { return PLUS_EQUAL; }
+  "-="                               { return MINUS_EQUAL; }
+  "*="                               { return TIMES_EQUAL; }
+  "/="                               { return DIVISION_EQUAL; }
+  "%="                               { return MODULO_EQUAL; }
+  "&="                               { return AND_EQUAL; }
+  "|="                               { return OR_EQUAL; }
+  "^="                               { return XOR_EQUAL; }
+  ">>="                              { return SHIFT_RIGHT_EQUAL; }
+  "<<="                              { return SHIFT_LEFT_EQUAL; }
+
   {IDENT}                            { return IDENT; }
 
 }
