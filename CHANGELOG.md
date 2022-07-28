@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- increase maximum build number for IntelliJ platform to 222 - #36
 
 ## [0.0.16]
 ### Added
