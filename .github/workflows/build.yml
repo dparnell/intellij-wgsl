@@ -70,8 +70,8 @@ jobs:
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
 
       # Run tests
-      #- name: Run Tests
-      #  run: ./gradlew test
+      - name: Run Tests
+        run: ./gradlew test
 
       # Collect Tests Result of failed tests
       #- name: Collect Tests Result
