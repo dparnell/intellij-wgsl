@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.18]
 ### Added
 - fix for nested types - #37
 - allow older syntax deprecation warnings to be turned off - #38
