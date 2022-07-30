@@ -5,6 +5,14 @@
 ## [Unreleased]
 ### Added
 - fix for nested types - #37
+- allow older syntax deprecation warnings to be turned off - #38
+    - adding a comment as the first line in the file like the following will allow deprecation warnings to be disabled
+      ```
+      \\+ old-attribute-syntax old-struct-syntax old-attributes
+      ```
+      - old-attribute-syntax disables the warning on the old bracket style attributes
+      - old-struct-syntax disable the warning for semicolons separating `stuct` members
+      - old-attributes disables the warning for old deprecated attributes such as `stage`
 
 ## [0.0.17]
 ### Added

@@ -203,7 +203,6 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL>  ">>="                              { return SHIFT_RIGHT_EQUAL; }
 <YYINITIAL>  "<<="                              { return SHIFT_LEFT_EQUAL; }
 
-
 <TYPE_SPEC>  "r8unorm"                          { return R8UNORM; }
 <TYPE_SPEC>  "r8snorm"                          { return R8SNORM; }
 <TYPE_SPEC>  "r8uint"                           { return R8UINT; }

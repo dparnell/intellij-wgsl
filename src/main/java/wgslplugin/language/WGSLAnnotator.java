@@ -5,6 +5,7 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
@@ -170,7 +171,9 @@ public class WGSLAnnotator implements Annotator {
                 // TODO: implement validations for attribute values
             } else {
                 if(DEPRECATED_ATTRIBUTE_NAMES.contains(name)) {
-                    holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated attribute").range(element).create();
+                    if(annotationEnabled(element, "old-attributes")) {
+                        holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated attribute").range(element).create();
+                    }
                 } else {
                     holder.newAnnotation(HighlightSeverity.ERROR, "Unknown attribute").range(element).create();
                 }
@@ -180,7 +183,9 @@ public class WGSLAnnotator implements Annotator {
             if(e != null) {
                 @NotNull IElementType et = e.getNode().getElementType();
                 if (et == WGSLTypes.SEMICOLON) {
-                    holder.newAnnotation(HighlightSeverity.WARNING, "Semicolon is deprecated, replace with comma").range(e).create();
+                    if(annotationEnabled(element, "old-struct-syntax")) {
+                        holder.newAnnotation(HighlightSeverity.WARNING, "Semicolon is deprecated, replace with comma").range(e).create();
+                    }
                 }
 
                 PsiElement sib = element.getNextSibling();
@@ -196,8 +201,27 @@ public class WGSLAnnotator implements Annotator {
             }
         } else if(element instanceof WGSLAttributeList) {
             if(element.getFirstChild().getNode().getElementType() == WGSLTypes.ATTR_LEFT) {
-                holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated attribute syntax").range(element).create();
+                if(annotationEnabled(element, "old-attribute-syntax")) {
+                    holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated attribute syntax").range(element).create();
+                }
             }
         }
+    }
+
+    private boolean annotationEnabled(PsiElement element, String name) {
+        PsiFile file = element.getContainingFile();
+        if(file != null) {
+            PsiElement first = file.getFirstChild();
+            if(first != null) {
+                ASTNode node = first.getNode();
+                if (node.getElementType() == WGSLTypes.LINE_COMMENT) {
+                    String txt = node.getText();
+                    if(txt != null && txt.startsWith("//+")) {
+                        return !txt.contains(name);
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
