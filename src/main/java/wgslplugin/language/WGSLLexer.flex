@@ -125,6 +125,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 
 <YYINITIAL>  "type"                             { return TYPE; }
 <YYINITIAL>  "="                                { return EQUAL; }
+<TYPE_SPEC>  "="                                { popState(); return EQUAL; }
 <YYINITIAL, TYPE_SPEC>  "bool"                  { return BOOL; }
 <YYINITIAL, TYPE_SPEC>  "f32"                   { return FLOAT32; }
 <YYINITIAL, TYPE_SPEC>  "i32"                   { return INT32; }
@@ -147,6 +148,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL>  "let"                              { return LET; }
 <YYINITIAL>  "var"                              { pushState(TYPE_SPEC); return VAR; }
 <YYINITIAL>  ":"                                { return COLON; }
+<TYPE_SPEC>  ":"                                { popState(); return COLON; }
 <YYINITIAL>  "bitcast"                          { pushState(TYPE_SPEC); return BITCAST; }
 <YYINITIAL>  "["                                { return BRACKET_LEFT; }
 <YYINITIAL>  "]"                                { return BRACKET_RIGHT; }
@@ -238,7 +240,6 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <TYPE_SPEC>  "rgba32sint"                       { return RGBA32SINT; }
 <TYPE_SPEC>  "rgba32float"                      { return RGBA32FLOAT; }
 
-<YYINITIAL>  {IDENT}                            { return IDENT; }
-<TYPE_SPEC>  {IDENT}                            { popState(); return IDENT; }
+<YYINITIAL, TYPE_SPEC>  {IDENT}                 { return IDENT; }
 
 [^] { return BAD_CHARACTER; }
