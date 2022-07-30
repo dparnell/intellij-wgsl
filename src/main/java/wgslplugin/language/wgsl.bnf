@@ -58,7 +58,7 @@ global_directive ::=
      enable_directive
 
 array_type_decl ::=
-     attribute_list* ARRAY LESS_THAN type_decl ( COMMA element_count_expression )? GREATER_THAN
+     attribute_list* ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
 
 element_count_expression ::=
       INT_LITERAL
@@ -84,12 +84,9 @@ field_ident ::=
     }
 
 access_mode ::=
-    IDENT
-/*
       READ
     | WRITE
     | READ_WRITE
-*/
 
 storage_class ::=
       FUNCTION
@@ -102,9 +99,9 @@ storage_class ::=
 texture_sampler_types ::=
       sampler_type
     | depth_texture_type
-    | sampled_texture_type LESS_THAN type_decl GREATER_THAN
-    | multisampled_texture_type LESS_THAN type_decl GREATER_THAN
-    | storage_texture_type LESS_THAN texel_format COMMA access_mode GREATER_THAN
+    | sampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+    | multisampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+    | storage_texture_type TYPE_LESS_THAN texel_format COMMA access_mode TYPE_GREATER_THAN
 
 sampler_type ::=
       SAMPLER
@@ -183,11 +180,11 @@ type_decl ::=
     | FLOAT32
     | INT32
     | UINT32
-    | vec_prefix LESS_THAN type_decl GREATER_THAN
-    | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
+    | vec_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+    | POINTER TYPE_LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? TYPE_GREATER_THAN
     | array_type_decl
-    | mat_prefix LESS_THAN type_decl GREATER_THAN
-    | ATOMIC LESS_THAN type_decl GREATER_THAN
+    | mat_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+    | ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
     | texture_sampler_types
 
 vec_prefix ::=
@@ -221,7 +218,7 @@ variable_ident_decl ::=
       }
 
 variable_qualifier ::=
-     LESS_THAN storage_class ( COMMA access_mode )? GREATER_THAN
+     TYPE_LESS_THAN storage_class ( COMMA access_mode )? TYPE_GREATER_THAN
 
 global_variable_decl ::=
      attribute_list* variable_decl ( EQUAL const_expression )?
@@ -242,7 +239,7 @@ primary_expression ::=
     | type_decl argument_expression_list
     | const_literal
     | paren_expression
-    | BITCAST LESS_THAN type_decl GREATER_THAN paren_expression
+    | BITCAST TYPE_LESS_THAN type_decl TYPE_GREATER_THAN paren_expression
 
 variable_reference ::=
     IDENT {

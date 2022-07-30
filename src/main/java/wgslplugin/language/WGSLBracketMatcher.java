@@ -15,7 +15,7 @@ public class WGSLBracketMatcher implements PairedBraceMatcher {
             new BracePair(BRACE_LEFT, BRACE_RIGHT, true),
             new BracePair(BRACKET_LEFT, BRACKET_RIGHT, true),
             new BracePair(PAREN_LEFT, PAREN_RIGHT, true),
-            new BracePair(LESS_THAN, GREATER_THAN, false),
+            new BracePair(TYPE_LESS_THAN, TYPE_GREATER_THAN, true),
     };
 
     @Override

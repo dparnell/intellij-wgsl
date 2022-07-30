@@ -36,14 +36,17 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT
+  // READ
+  //     | WRITE
+  //     | READ_WRITE
   public static boolean access_mode(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "access_mode")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    exit_section_(b, m, ACCESS_MODE, r);
+    Marker m = enter_section_(b, l, _NONE_, ACCESS_MODE, "<access mode>");
+    r = consumeToken(b, READ);
+    if (!r) r = consumeToken(b, WRITE);
+    if (!r) r = consumeToken(b, READ_WRITE);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -110,16 +113,16 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // attribute_list* ARRAY LESS_THAN type_decl ( COMMA element_count_expression )? GREATER_THAN
+  // attribute_list* ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
   public static boolean array_type_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "array_type_decl")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARRAY_TYPE_DECL, "<array type decl>");
     r = array_type_decl_0(b, l + 1);
-    r = r && consumeTokens(b, 0, ARRAY, LESS_THAN);
+    r = r && consumeTokens(b, 0, ARRAY, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
     r = r && array_type_decl_4(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -1474,7 +1477,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | type_decl argument_expression_list
   //     | const_literal
   //     | paren_expression
-  //     | BITCAST LESS_THAN type_decl GREATER_THAN paren_expression
+  //     | BITCAST TYPE_LESS_THAN type_decl TYPE_GREATER_THAN paren_expression
   public static boolean primary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression")) return false;
     boolean r;
@@ -1500,14 +1503,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // BITCAST LESS_THAN type_decl GREATER_THAN paren_expression
+  // BITCAST TYPE_LESS_THAN type_decl TYPE_GREATER_THAN paren_expression
   private static boolean primary_expression_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression_5")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, BITCAST, LESS_THAN);
+    r = consumeTokens(b, 0, BITCAST, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     r = r && paren_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
@@ -1971,9 +1974,9 @@ public class WgslParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // sampler_type
   //     | depth_texture_type
-  //     | sampled_texture_type LESS_THAN type_decl GREATER_THAN
-  //     | multisampled_texture_type LESS_THAN type_decl GREATER_THAN
-  //     | storage_texture_type LESS_THAN texel_format COMMA access_mode GREATER_THAN
+  //     | sampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+  //     | multisampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+  //     | storage_texture_type TYPE_LESS_THAN texel_format COMMA access_mode TYPE_GREATER_THAN
   public static boolean texture_sampler_types(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types")) return false;
     boolean r;
@@ -1987,43 +1990,43 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // sampled_texture_type LESS_THAN type_decl GREATER_THAN
+  // sampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   private static boolean texture_sampler_types_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = sampled_texture_type(b, l + 1);
-    r = r && consumeToken(b, LESS_THAN);
+    r = r && consumeToken(b, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // multisampled_texture_type LESS_THAN type_decl GREATER_THAN
+  // multisampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   private static boolean texture_sampler_types_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = multisampled_texture_type(b, l + 1);
-    r = r && consumeToken(b, LESS_THAN);
+    r = r && consumeToken(b, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // storage_texture_type LESS_THAN texel_format COMMA access_mode GREATER_THAN
+  // storage_texture_type TYPE_LESS_THAN texel_format COMMA access_mode TYPE_GREATER_THAN
   private static boolean texture_sampler_types_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types_4")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = storage_texture_type(b, l + 1);
-    r = r && consumeToken(b, LESS_THAN);
+    r = r && consumeToken(b, TYPE_LESS_THAN);
     r = r && texel_format(b, l + 1);
     r = r && consumeToken(b, COMMA);
     r = r && access_mode(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -2081,11 +2084,11 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | FLOAT32
   //     | INT32
   //     | UINT32
-  //     | vec_prefix LESS_THAN type_decl GREATER_THAN
-  //     | POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
+  //     | vec_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+  //     | POINTER TYPE_LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? TYPE_GREATER_THAN
   //     | array_type_decl
-  //     | mat_prefix LESS_THAN type_decl GREATER_THAN
-  //     | ATOMIC LESS_THAN type_decl GREATER_THAN
+  //     | mat_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+  //     | ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   //     | texture_sampler_types
   public static boolean type_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl")) return false;
@@ -2106,30 +2109,30 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // vec_prefix LESS_THAN type_decl GREATER_THAN
+  // vec_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   private static boolean type_decl_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_5")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = vec_prefix(b, l + 1);
-    r = r && consumeToken(b, LESS_THAN);
+    r = r && consumeToken(b, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // POINTER LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? GREATER_THAN
+  // POINTER TYPE_LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? TYPE_GREATER_THAN
   private static boolean type_decl_6(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_6")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, POINTER, LESS_THAN);
+    r = consumeTokens(b, 0, POINTER, TYPE_LESS_THAN);
     r = r && storage_class(b, l + 1);
     r = r && consumeToken(b, COMMA);
     r = r && type_decl(b, l + 1);
     r = r && type_decl_6_5(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -2152,27 +2155,27 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // mat_prefix LESS_THAN type_decl GREATER_THAN
+  // mat_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   private static boolean type_decl_8(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_8")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = mat_prefix(b, l + 1);
-    r = r && consumeToken(b, LESS_THAN);
+    r = r && consumeToken(b, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ATOMIC LESS_THAN type_decl GREATER_THAN
+  // ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   private static boolean type_decl_9(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_9")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, ATOMIC, LESS_THAN);
+    r = consumeTokens(b, 0, ATOMIC, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -2306,16 +2309,16 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LESS_THAN storage_class ( COMMA access_mode )? GREATER_THAN
+  // TYPE_LESS_THAN storage_class ( COMMA access_mode )? TYPE_GREATER_THAN
   public static boolean variable_qualifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_qualifier")) return false;
-    if (!nextTokenIs(b, LESS_THAN)) return false;
+    if (!nextTokenIs(b, TYPE_LESS_THAN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, LESS_THAN);
+    r = consumeToken(b, TYPE_LESS_THAN);
     r = r && storage_class(b, l + 1);
     r = r && variable_qualifier_2(b, l + 1);
-    r = r && consumeToken(b, GREATER_THAN);
+    r = r && consumeToken(b, TYPE_GREATER_THAN);
     exit_section_(b, m, VARIABLE_QUALIFIER, r);
     return r;
   }

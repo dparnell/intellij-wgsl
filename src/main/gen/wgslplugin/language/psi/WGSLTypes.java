@@ -166,6 +166,8 @@ public interface WGSLTypes {
   IElementType PREPROCESSOR_DECLARATION = new WGSLTokenType("PREPROCESSOR_DECLARATION");
   IElementType PRIVATE = new WGSLTokenType("PRIVATE");
   IElementType PUSH_CONSTANT = new WGSLTokenType("PUSH_CONSTANT");
+  IElementType READ = new WGSLTokenType("READ");
+  IElementType READ_WRITE = new WGSLTokenType("READ_WRITE");
   IElementType RETURN = new WGSLTokenType("RETURN");
   IElementType SAMPLER = new WGSLTokenType("SAMPLER");
   IElementType SAMPLER_COMPARISON = new WGSLTokenType("SAMPLER_COMPARISON");
@@ -199,6 +201,8 @@ public interface WGSLTypes {
   IElementType TIMES_EQUAL = new WGSLTokenType("TIMES_EQUAL");
   IElementType TRUE = new WGSLTokenType("TRUE");
   IElementType TYPE = new WGSLTokenType("TYPE");
+  IElementType TYPE_GREATER_THAN = new WGSLTokenType("TYPE_GREATER_THAN");
+  IElementType TYPE_LESS_THAN = new WGSLTokenType("TYPE_LESS_THAN");
   IElementType UINT32 = new WGSLTokenType("UINT32");
   IElementType UINT_LITERAL = new WGSLTokenType("UINT_LITERAL");
   IElementType UNDERSCORE = new WGSLTokenType("UNDERSCORE");
@@ -209,6 +213,7 @@ public interface WGSLTypes {
   IElementType VEC4 = new WGSLTokenType("VEC4");
   IElementType WHILE = new WGSLTokenType("WHILE");
   IElementType WORKGROUP = new WGSLTokenType("WORKGROUP");
+  IElementType WRITE = new WGSLTokenType("WRITE");
   IElementType XOR = new WGSLTokenType("XOR");
   IElementType XOR_EQUAL = new WGSLTokenType("XOR_EQUAL");
 

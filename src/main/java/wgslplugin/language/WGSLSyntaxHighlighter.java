@@ -61,7 +61,8 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
     );
 
     private static final Set<IElementType> STORAGE_TOKENS = tokens(
-            WGSLTypes.STORAGE, WGSLTypes.UNIFORM, WGSLTypes.WORKGROUP, WGSLTypes.FUNCTION, WGSLTypes.PRIVATE,WGSLTypes.PUSH_CONSTANT
+            WGSLTypes.STORAGE, WGSLTypes.UNIFORM, WGSLTypes.WORKGROUP, WGSLTypes.FUNCTION, WGSLTypes.PRIVATE, WGSLTypes.PUSH_CONSTANT,
+            WGSLTypes.READ, WGSLTypes.WRITE, WGSLTypes.READ_WRITE
     );
 
     private static Set<IElementType> tokens(IElementType ... types) {

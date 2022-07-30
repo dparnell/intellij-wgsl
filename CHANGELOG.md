@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- fix for nested types - #37
 
 ## [0.0.17]
 ### Added

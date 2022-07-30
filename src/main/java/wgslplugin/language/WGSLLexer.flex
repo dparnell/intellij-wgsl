@@ -2,6 +2,7 @@ package wgslplugin.language;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
+import java.util.*;
 
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
@@ -10,6 +11,26 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %%
 
 %{
+  private static final class State {
+    final int state;
+
+    private State(int state) {
+      this.state = state;
+    }
+  }
+
+  protected final Stack<State> myStateStack = new Stack<>();
+
+  private void pushState(int state) {
+    myStateStack.push(new State(yystate()));
+    yybegin(state);
+  }
+
+  private void popState() {
+    State state = myStateStack.pop();
+    yybegin(state.state);
+  }
+
   public _WgslLexer() {
     this((java.io.Reader)null);
   }
@@ -21,6 +42,8 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %function advance
 %type IElementType
 %unicode
+
+%state TYPE_SPEC
 
 // note: newlines are parsed separately to allow leading whitespace on a preprocessor declaration line
 WHITE_SPACE=[^\S\r\n]+
@@ -38,178 +61,147 @@ PREPROCESSOR_DECLARATION = "#"[^\r\n]*
 IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 
 %%
-<YYINITIAL> {
-  ^\s*{PREPROCESSOR_DECLARATION}     { return PREPROCESSOR_DECLARATION; }
-  {WHITE_SPACE}                      { return WHITE_SPACE; }
-  {NEWLINE}                          { return WHITE_SPACE; }
-  {LINE_COMMENT}                     { return LINE_COMMENT; }
-  {DOC_COMMENT}                      { return DOC_COMMENT; }
-  {BLOCK_COMMENT}                    { return BLOCK_COMMENT; }
-  {INT_LITERAL}                      { return INT_LITERAL; }
-  {UINT_LITERAL}                     { return UINT_LITERAL; }
-  "true"                             { return TRUE; }
-  "false"                            { return FALSE; }
-  {DECIMAL_FLOAT_LITERAL}            { return DECIMAL_FLOAT_LITERAL; }
-  {HEX_FLOAT_LITERAL}                { return HEX_FLOAT_LITERAL; }
-  "[["                               { return ATTR_LEFT; }
-  ","                                { return COMMA; }
-  "]]"                               { return ATTR_RIGHT; }
-  "("                                { return PAREN_LEFT; }
-  ")"                                { return PAREN_RIGHT; }
-  "array"                            { return ARRAY; }
-  "<"                                { return LESS_THAN; }
-  ">"                                { return GREATER_THAN; }
-  "struct"                           { return STRUCT; }
-  "{"                                { return BRACE_LEFT; }
-  "}"                                { return BRACE_RIGHT; }
-  ";"                                { return SEMICOLON; }
-  "@"                                { return AT; }
 
-/*
-  "read"                             { return READ; }
-  "write"                            { return WRITE; }
-  "read_write"                       { return READ_WRITE; }
- */
-  "function"                         { return FUNCTION; }
-  "private"                          { return PRIVATE; }
-  "workgroup"                        { return WORKGROUP; }
-  "uniform"                          { return UNIFORM; }
-  "storage"                          { return STORAGE; }
-  "push_constant"                    { return PUSH_CONSTANT; }
-  "sampler"                          { return SAMPLER; }
-  "sampler_comparison"               { return SAMPLER_COMPARISON; }
-  "texture_1d"                       { return TEXTURE_1D; }
-  "texture_2d"                       { return TEXTURE_2D; }
-  "texture_2d_array"                 { return TEXTURE_2D_ARRAY; }
-  "texture_3d"                       { return TEXTURE_3D; }
-  "texture_cube"                     { return TEXTURE_CUBE; }
-  "texture_cube_array"               { return TEXTURE_CUBE_ARRAY; }
-  "texture_multisampled_2d"          { return TEXTURE_MULTISAMPLED_2D; }
-  "texture_storage_1d"               { return TEXTURE_STORAGE_1D; }
-  "texture_storage_2d"               { return TEXTURE_STORAGE_2D; }
-  "texture_storage_2d_array"         { return TEXTURE_STORAGE_2D_ARRAY; }
-  "texture_storage_3d"               { return TEXTURE_STORAGE_3D; }
-  "texture_depth_2d"                 { return TEXTURE_DEPTH_2D; }
-  "texture_depth_2d_array"           { return TEXTURE_DEPTH_2D_ARRAY; }
-  "texture_depth_cube"               { return TEXTURE_DEPTH_CUBE; }
-  "texture_depth_cube_array"         { return TEXTURE_DEPTH_CUBE_ARRAY; }
-  "texture_depth_multisampled_2d"    { return TEXTURE_DEPTH_MULTISAMPLED_2D; }
-/*
-  "r8unorm"                          { return R8UNORM; }
-  "r8snorm"                          { return R8SNORM; }
-  "r8uint"                           { return R8UINT; }
-  "r8sint"                           { return R8SINT; }
-  "r16uint"                          { return R16UINT; }
-  "r16sint"                          { return R16SINT; }
-  "r16float"                         { return R16FLOAT; }
-  "rg8unorm"                         { return RG8UNORM; }
-  "rg8snorm"                         { return RG8SNORM; }
-  "rg8uint"                          { return RG8UINT; }
-  "rg8sint"                          { return RG8SINT; }
-  "r32uint"                          { return R32UINT; }
-  "r32sint"                          { return R32SINT; }
-  "r32float"                         { return R32FLOAT; }
-  "rg16uint"                         { return RG16UINT; }
-  "rg16sint"                         { return RG16SINT; }
-  "rg16float"                        { return RG16FLOAT; }
-  "rgba8unorm"                       { return RGBA8UNORM; }
-  "rgba8unorm_srgb"                  { return RGBA8UNORM_SRGB; }
-  "rgba8snorm"                       { return RGBA8SNORM; }
-  "rgba8uint"                        { return RGBA8UINT; }
-  "rgba8sint"                        { return RGBA8SINT; }
-  "bgra8unorm"                       { return BGRA8UNORM; }
-  "bgra8unorm_srgb"                  { return BGRA8UNORM_SRGB; }
-  "rgb10a2unorm"                     { return RGB10A2UNORM; }
-  "rg11b10float"                     { return RG11B10FLOAT; }
-  "rg32uint"                         { return RG32UINT; }
-  "rg32sint"                         { return RG32SINT; }
-  "rg32float"                        { return RG32FLOAT; }
-  "rgba16uint"                       { return RGBA16UINT; }
-  "rgba16sint"                       { return RGBA16SINT; }
-  "rgba16float"                      { return RGBA16FLOAT; }
-  "rgba32uint"                       { return RGBA32UINT; }
-  "rgba32sint"                       { return RGBA32SINT; }
-  "rgba32float"                      { return RGBA32FLOAT; }
- */
-  "type"                             { return TYPE; }
-  "="                                { return EQUAL; }
-  "bool"                             { return BOOL; }
-  "f32"                              { return FLOAT32; }
-  "i32"                              { return INT32; }
-  "u32"                              { return UINT32; }
-  "vec2"                             { return VEC2; }
-  "vec3"                             { return VEC3; }
-  "vec4"                             { return VEC4; }
-  "ptr"                              { return POINTER; }
-  "mat2x2"                           { return MAT2X2; }
-  "mat2x3"                           { return MAT2X3; }
-  "mat2x4"                           { return MAT2X4; }
-  "mat3x2"                           { return MAT3X2; }
-  "mat3x3"                           { return MAT3X3; }
-  "mat3x4"                           { return MAT3X4; }
-  "mat4x2"                           { return MAT4X2; }
-  "mat4x3"                           { return MAT4X3; }
-  "mat4x4"                           { return MAT4X4; }
-  "atomic"                           { return ATOMIC; }
-  "let"                              { return LET; }
-  "var"                              { return VAR; }
-  ":"                                { return COLON; }
-  "bitcast"                          { return BITCAST; }
-  "["                                { return BRACKET_LEFT; }
-  "]"                                { return BRACKET_RIGHT; }
-  "."                                { return PERIOD; }
-  "--"                               { return MINUS_MINUS; }
-  "-"                                { return MINUS; }
-  "!"                                { return BANG; }
-  "~"                                { return TILDE; }
-  "*"                                { return STAR; }
-  "&"                                { return AND; }
-  "/"                                { return FORWARD_SLASH; }
-  "%"                                { return MODULO; }
-  "++"                               { return PLUS_PLUS; }
-  "+"                                { return PLUS; }
-  "<<"                               { return SHIFT_LEFT; }
-  ">>"                               { return SHIFT_RIGHT; }
-  "<="                               { return LESS_THAN_EQUAL; }
-  ">="                               { return GREATER_THAN_EQUAL; }
-  "=="                               { return EQUAL_EQUAL; }
-  "!="                               { return NOT_EQUAL; }
-  "&&"                               { return AND_AND; }
-  "||"                               { return OR_OR; }
-  "|"                                { return OR; }
-  "^"                                { return XOR; }
-  "_"                                { return UNDERSCORE; }
-  "if"                               { return IF; }
-  "else"                             { return ELSE; }
-  "switch"                           { return SWITCH; }
-  "case"                             { return CASE; }
-  "default"                          { return DEFAULT; }
-  "fallthrough"                      { return FALLTHROUGH; }
-  "loop"                             { return LOOP; }
-  "for"                              { return FOR; }
-  "break"                            { return BREAK; }
-  "continue"                         { return CONTINUE; }
-  "continuing"                       { return CONTINUING; }
-  "return"                           { return RETURN; }
-  "discard"                          { return DISCARD; }
-  "fn"                               { return FN; }
-  "->"                               { return ARROW; }
-  "enable"                           { return ENABLE; }
-  "while"                            { return WHILE; }
-  "staticAssert"                     { return STATIC_ASSERT; }
-  "+="                               { return PLUS_EQUAL; }
-  "-="                               { return MINUS_EQUAL; }
-  "*="                               { return TIMES_EQUAL; }
-  "/="                               { return DIVISION_EQUAL; }
-  "%="                               { return MODULO_EQUAL; }
-  "&="                               { return AND_EQUAL; }
-  "|="                               { return OR_EQUAL; }
-  "^="                               { return XOR_EQUAL; }
-  ">>="                              { return SHIFT_RIGHT_EQUAL; }
-  "<<="                              { return SHIFT_LEFT_EQUAL; }
+<YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}     { return PREPROCESSOR_DECLARATION; }
+<YYINITIAL, TYPE_SPEC>  {WHITE_SPACE}           { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC>  {NEWLINE}               { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC>  {LINE_COMMENT}          { return LINE_COMMENT; }
+<YYINITIAL, TYPE_SPEC>  {DOC_COMMENT}           { return DOC_COMMENT; }
+<YYINITIAL, TYPE_SPEC>  {BLOCK_COMMENT}         { return BLOCK_COMMENT; }
+<YYINITIAL>  {INT_LITERAL}                      { return INT_LITERAL; }
+<YYINITIAL>  {UINT_LITERAL}                     { return UINT_LITERAL; }
+<YYINITIAL>  "true"                             { return TRUE; }
+<YYINITIAL>  "false"                            { return FALSE; }
+<YYINITIAL>  {DECIMAL_FLOAT_LITERAL}            { return DECIMAL_FLOAT_LITERAL; }
+<YYINITIAL>  {HEX_FLOAT_LITERAL}                { return HEX_FLOAT_LITERAL; }
+<YYINITIAL>  "[["                               { return ATTR_LEFT; }
+<YYINITIAL, TYPE_SPEC>  ","                     { return COMMA; }
+<YYINITIAL>  "]]"                               { return ATTR_RIGHT; }
+<YYINITIAL>  "("                                { return PAREN_LEFT; }
+<TYPE_SPEC>  "("                                { popState(); return PAREN_LEFT; }
+<YYINITIAL>  ")"                                { return PAREN_RIGHT; }
+<YYINITIAL>  "array"                            { pushState(TYPE_SPEC); return ARRAY; }
+<YYINITIAL>  "<"                                { return LESS_THAN; }
+<TYPE_SPEC>  "<"                                { return TYPE_LESS_THAN; }
+<YYINITIAL>  ">"                                { return GREATER_THAN; }
+<TYPE_SPEC>  ">"                                { popState(); return TYPE_GREATER_THAN; }
+<YYINITIAL>  "struct"                           { return STRUCT; }
+<YYINITIAL>  "{"                                { return BRACE_LEFT; }
+<YYINITIAL>  "}"                                { return BRACE_RIGHT; }
+<YYINITIAL>  ";"                                { return SEMICOLON; }
+<YYINITIAL>  "@"                                { return AT; }
 
-  {IDENT}                            { return IDENT; }
+<TYPE_SPEC>  "function"                         { return FUNCTION; }
+<TYPE_SPEC>  "private"                          { return PRIVATE; }
+<TYPE_SPEC>  "workgroup"                        { return WORKGROUP; }
+<TYPE_SPEC>  "uniform"                          { return UNIFORM; }
+<TYPE_SPEC>  "storage"                          { return STORAGE; }
+<TYPE_SPEC>  "push_constant"                    { return PUSH_CONSTANT; }
 
-}
+<TYPE_SPEC>  "read"                             { return READ; }
+<TYPE_SPEC>  "write"                            { return WRITE; }
+<TYPE_SPEC>  "read_write"                       { return READ_WRITE; }
+
+<YYINITIAL>  "sampler"                          { return SAMPLER; }
+<YYINITIAL>  "sampler_comparison"               { return SAMPLER_COMPARISON; }
+
+<YYINITIAL>  "texture_1d"                       { pushState(TYPE_SPEC); return TEXTURE_1D; }
+<YYINITIAL>  "texture_2d"                       { pushState(TYPE_SPEC); return TEXTURE_2D; }
+<YYINITIAL>  "texture_2d_array"                 { pushState(TYPE_SPEC); return TEXTURE_2D_ARRAY; }
+<YYINITIAL>  "texture_3d"                       { pushState(TYPE_SPEC); return TEXTURE_3D; }
+<YYINITIAL>  "texture_cube"                     { pushState(TYPE_SPEC); return TEXTURE_CUBE; }
+<YYINITIAL>  "texture_cube_array"               { pushState(TYPE_SPEC); return TEXTURE_CUBE_ARRAY; }
+<YYINITIAL>  "texture_multisampled_2d"          { pushState(TYPE_SPEC); return TEXTURE_MULTISAMPLED_2D; }
+<YYINITIAL>  "texture_storage_1d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_1D; }
+<YYINITIAL>  "texture_storage_2d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_2D; }
+<YYINITIAL>  "texture_storage_2d_array"         { pushState(TYPE_SPEC); return TEXTURE_STORAGE_2D_ARRAY; }
+<YYINITIAL>  "texture_storage_3d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_3D; }
+
+<YYINITIAL>  "texture_depth_2d"                 { return TEXTURE_DEPTH_2D; }
+<YYINITIAL>  "texture_depth_2d_array"           { return TEXTURE_DEPTH_2D_ARRAY; }
+<YYINITIAL>  "texture_depth_cube"               { return TEXTURE_DEPTH_CUBE; }
+<YYINITIAL>  "texture_depth_cube_array"         { return TEXTURE_DEPTH_CUBE_ARRAY; }
+<YYINITIAL>  "texture_depth_multisampled_2d"    { return TEXTURE_DEPTH_MULTISAMPLED_2D; }
+
+<YYINITIAL>  "type"                             { return TYPE; }
+<YYINITIAL>  "="                                { return EQUAL; }
+<YYINITIAL, TYPE_SPEC>  "bool"                  { return BOOL; }
+<YYINITIAL, TYPE_SPEC>  "f32"                   { return FLOAT32; }
+<YYINITIAL, TYPE_SPEC>  "i32"                   { return INT32; }
+<YYINITIAL, TYPE_SPEC>  "u32"                   { return UINT32; }
+
+<YYINITIAL, TYPE_SPEC>  "vec2"                  { pushState(TYPE_SPEC); return VEC2; }
+<YYINITIAL, TYPE_SPEC>  "vec3"                  { pushState(TYPE_SPEC); return VEC3; }
+<YYINITIAL, TYPE_SPEC>  "vec4"                  { pushState(TYPE_SPEC); return VEC4; }
+<YYINITIAL, TYPE_SPEC>  "ptr"                   { pushState(TYPE_SPEC); return POINTER; }
+<YYINITIAL, TYPE_SPEC>  "mat2x2"                { pushState(TYPE_SPEC); return MAT2X2; }
+<YYINITIAL, TYPE_SPEC>  "mat2x3"                { pushState(TYPE_SPEC); return MAT2X3; }
+<YYINITIAL, TYPE_SPEC>  "mat2x4"                { pushState(TYPE_SPEC); return MAT2X4; }
+<YYINITIAL, TYPE_SPEC>  "mat3x2"                { pushState(TYPE_SPEC); return MAT3X2; }
+<YYINITIAL, TYPE_SPEC>  "mat3x3"                { pushState(TYPE_SPEC); return MAT3X3; }
+<YYINITIAL, TYPE_SPEC>  "mat3x4"                { pushState(TYPE_SPEC); return MAT3X4; }
+<YYINITIAL, TYPE_SPEC>  "mat4x2"                { pushState(TYPE_SPEC); return MAT4X2; }
+<YYINITIAL, TYPE_SPEC>  "mat4x3"                { pushState(TYPE_SPEC); return MAT4X3; }
+<YYINITIAL, TYPE_SPEC>  "mat4x4"                { pushState(TYPE_SPEC); return MAT4X4; }
+<YYINITIAL, TYPE_SPEC>  "atomic"                { pushState(TYPE_SPEC); return ATOMIC; }
+<YYINITIAL>  "let"                              { return LET; }
+<YYINITIAL>  "var"                              { pushState(TYPE_SPEC); return VAR; }
+<YYINITIAL>  ":"                                { return COLON; }
+<YYINITIAL>  "bitcast"                          { pushState(TYPE_SPEC); return BITCAST; }
+<YYINITIAL>  "["                                { return BRACKET_LEFT; }
+<YYINITIAL>  "]"                                { return BRACKET_RIGHT; }
+<YYINITIAL>  "."                                { return PERIOD; }
+<YYINITIAL>  "--"                               { return MINUS_MINUS; }
+<YYINITIAL>  "-"                                { return MINUS; }
+<YYINITIAL>  "!"                                { return BANG; }
+<YYINITIAL>  "~"                                { return TILDE; }
+<YYINITIAL>  "*"                                { return STAR; }
+<YYINITIAL>  "&"                                { return AND; }
+<YYINITIAL>  "/"                                { return FORWARD_SLASH; }
+<YYINITIAL>  "%"                                { return MODULO; }
+<YYINITIAL>  "++"                               { return PLUS_PLUS; }
+<YYINITIAL>  "+"                                { return PLUS; }
+<YYINITIAL>  "<<"                               { return SHIFT_LEFT; }
+<YYINITIAL>  ">>"                               { return SHIFT_RIGHT; }
+<YYINITIAL>  "<="                               { return LESS_THAN_EQUAL; }
+<YYINITIAL>  ">="                               { return GREATER_THAN_EQUAL; }
+<YYINITIAL>  "=="                               { return EQUAL_EQUAL; }
+<YYINITIAL>  "!="                               { return NOT_EQUAL; }
+<YYINITIAL>  "&&"                               { return AND_AND; }
+<YYINITIAL>  "||"                               { return OR_OR; }
+<YYINITIAL>  "|"                                { return OR; }
+<YYINITIAL>  "^"                                { return XOR; }
+<YYINITIAL>  "_"                                { return UNDERSCORE; }
+<YYINITIAL>  "if"                               { return IF; }
+<YYINITIAL>  "else"                             { return ELSE; }
+<YYINITIAL>  "switch"                           { return SWITCH; }
+<YYINITIAL>  "case"                             { return CASE; }
+<YYINITIAL>  "default"                          { return DEFAULT; }
+<YYINITIAL>  "fallthrough"                      { return FALLTHROUGH; }
+<YYINITIAL>  "loop"                             { return LOOP; }
+<YYINITIAL>  "for"                              { return FOR; }
+<YYINITIAL>  "break"                            { return BREAK; }
+<YYINITIAL>  "continue"                         { return CONTINUE; }
+<YYINITIAL>  "continuing"                       { return CONTINUING; }
+<YYINITIAL>  "return"                           { return RETURN; }
+<YYINITIAL>  "discard"                          { return DISCARD; }
+<YYINITIAL>  "fn"                               { return FN; }
+<YYINITIAL>  "->"                               { return ARROW; }
+<YYINITIAL>  "enable"                           { return ENABLE; }
+<YYINITIAL>  "while"                            { return WHILE; }
+<YYINITIAL>  "staticAssert"                     { return STATIC_ASSERT; }
+<YYINITIAL>  "+="                               { return PLUS_EQUAL; }
+<YYINITIAL>  "-="                               { return MINUS_EQUAL; }
+<YYINITIAL>  "*="                               { return TIMES_EQUAL; }
+<YYINITIAL>  "/="                               { return DIVISION_EQUAL; }
+<YYINITIAL>  "%="                               { return MODULO_EQUAL; }
+<YYINITIAL>  "&="                               { return AND_EQUAL; }
+<YYINITIAL>  "|="                               { return OR_EQUAL; }
+<YYINITIAL>  "^="                               { return XOR_EQUAL; }
+<YYINITIAL>  ">>="                              { return SHIFT_RIGHT_EQUAL; }
+<YYINITIAL>  "<<="                              { return SHIFT_LEFT_EQUAL; }
+
+<YYINITIAL>  {IDENT}                            { return IDENT; }
+<TYPE_SPEC>  {IDENT}                            { popState(); return IDENT; }
 
 [^] { return BAD_CHARACTER; }
