@@ -201,6 +201,43 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL>  ">>="                              { return SHIFT_RIGHT_EQUAL; }
 <YYINITIAL>  "<<="                              { return SHIFT_LEFT_EQUAL; }
 
+
+<TYPE_SPEC>  "r8unorm"                          { return R8UNORM; }
+<TYPE_SPEC>  "r8snorm"                          { return R8SNORM; }
+<TYPE_SPEC>  "r8uint"                           { return R8UINT; }
+<TYPE_SPEC>  "r8sint"                           { return R8SINT; }
+<TYPE_SPEC>  "r16uint"                          { return R16UINT; }
+<TYPE_SPEC>  "r16sint"                          { return R16SINT; }
+<TYPE_SPEC>  "r16float"                         { return R16FLOAT; }
+<TYPE_SPEC>  "rg8unorm"                         { return RG8UNORM; }
+<TYPE_SPEC>  "rg8snorm"                         { return RG8SNORM; }
+<TYPE_SPEC>  "rg8uint"                          { return RG8UINT; }
+<TYPE_SPEC>  "rg8sint"                          { return RG8SINT; }
+<TYPE_SPEC>  "r32uint"                          { return R32UINT; }
+<TYPE_SPEC>  "r32sint"                          { return R32SINT; }
+<TYPE_SPEC>  "r32float"                         { return R32FLOAT; }
+<TYPE_SPEC>  "rg16uint"                         { return RG16UINT; }
+<TYPE_SPEC>  "rg16sint"                         { return RG16SINT; }
+<TYPE_SPEC>  "rg16float"                        { return RG16FLOAT; }
+<TYPE_SPEC>  "rgba8unorm"                       { return RGBA8UNORM; }
+<TYPE_SPEC>  "rgba8unorm_srgb"                  { return RGBA8UNORM_SRGB; }
+<TYPE_SPEC>  "rgba8snorm"                       { return RGBA8SNORM; }
+<TYPE_SPEC>  "rgba8uint"                        { return RGBA8UINT; }
+<TYPE_SPEC>  "rgba8sint"                        { return RGBA8SINT; }
+<TYPE_SPEC>  "bgra8unorm"                       { return BGRA8UNORM; }
+<TYPE_SPEC>  "bgra8unorm_srgb"                  { return BGRA8UNORM_SRGB; }
+<TYPE_SPEC>  "rgb10a2unorm"                     { return RGB10A2UNORM; }
+<TYPE_SPEC>  "rg11b10float"                     { return RG11B10FLOAT; }
+<TYPE_SPEC>  "rg32uint"                         { return RG32UINT; }
+<TYPE_SPEC>  "rg32sint"                         { return RG32SINT; }
+<TYPE_SPEC>  "rg32float"                        { return RG32FLOAT; }
+<TYPE_SPEC>  "rgba16uint"                       { return RGBA16UINT; }
+<TYPE_SPEC>  "rgba16sint"                       { return RGBA16SINT; }
+<TYPE_SPEC>  "rgba16float"                      { return RGBA16FLOAT; }
+<TYPE_SPEC>  "rgba32uint"                       { return RGBA32UINT; }
+<TYPE_SPEC>  "rgba32sint"                       { return RGBA32SINT; }
+<TYPE_SPEC>  "rgba32float"                      { return RGBA32FLOAT; }
+
 <YYINITIAL>  {IDENT}                            { return IDENT; }
 <TYPE_SPEC>  {IDENT}                            { popState(); return IDENT; }
 

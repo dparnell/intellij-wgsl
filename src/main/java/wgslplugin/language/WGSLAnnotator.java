@@ -55,15 +55,6 @@ public class WGSLAnnotator implements Annotator {
             "dpdx", "dpdxCoarse", "dpdxFine", "dpdy", "dpdyCoarse", "dpdyFine", "fwidth", "fwidthCoarse", "fwidthFine"
     );
 
-    public static final Set<String> TEXEL_FORMATS = names(
-            "r8unorm", "r8snorm", "r8uint", "r8sint", "r16uint", "r16sint", "r16float", "rg8unorm", "rg8snorm", "rg8uint",
-            "rg8sint", "r32uint", "r32sint", "r32float", "rg16uint", "rg16sint", "rg16float", "rgba8unorm", "rgba8unorm_srgb",
-            "rgba8snorm", "rgba8uint", "rgba8sint", "bgra8unorm", "bgra8unorm_srgb", "rgb10a2unorm", "rg11b10float", "rg32uint",
-            "rg32sint", "rg32float", "rgba16uint", "rgba16sint", "rgba16float", "rgba32uint", "rgba32sint", "rgba32float"
-    );
-
-    public static final Set<String> ACCESS_MODES = names("read", "write", "read_write");
-
     public static final Set<String> ATTRIBUTE_NAMES = names(
             "align", "binding", "builtin", "const", "group", "id", "interpolate", "invariant", "location", "size", "workgroup_size"
     );
@@ -164,7 +155,7 @@ public class WGSLAnnotator implements Annotator {
                     if (fragment_shader) {
                         holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(name).textAttributes(WGSLColours.BUILTIN_FUNCTION.attributes()).create();
                     } else {
-                        holder.newAnnotation(HighlightSeverity.ERROR, "This build-in is only allowed in fragment shader functions").range(name).create();
+                        holder.newAnnotation(HighlightSeverity.ERROR, "This built-in is only allowed in fragment shader functions").range(name).create();
                     }
                 }
             }
@@ -172,20 +163,6 @@ public class WGSLAnnotator implements Annotator {
             holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.FUNCTION_NAME.attributes()).create();
         } else if(element instanceof WGSLFieldIdent) {
             holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.FIELD.attributes()).create();
-        } else if(element instanceof WGSLTexelFormat) {
-            String name = WGSLPsiImplUtil.getName(element);
-            if(TEXEL_FORMATS.contains(name)) {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.TEXEL_FORMAT.attributes()).create();
-            } else {
-                holder.newAnnotation(HighlightSeverity.ERROR, "Invalid texel format").range(element).create();
-            }
-        } else if(element instanceof WGSLAccessMode) {
-            String name = WGSLPsiImplUtil.getName(element);
-            if(ACCESS_MODES.contains(name)) {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element).textAttributes(WGSLColours.KEYWORD.attributes()).create();
-            } else {
-                holder.newAnnotation(HighlightSeverity.ERROR, "Invalid access mode").range(element).create();
-            }
         } else if(element instanceof WGSLAttributeName) {
             String name = WGSLPsiImplUtil.getName(element);
             if(ATTRIBUTE_NAMES.contains(name) || STAGE_NAMES.contains(name)) {
