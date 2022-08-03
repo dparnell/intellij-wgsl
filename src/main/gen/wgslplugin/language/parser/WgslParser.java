@@ -51,7 +51,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PAREN_LEFT ( ( expression COMMA )* expression COMMA? )? PAREN_RIGHT
+  // PAREN_LEFT ( expression (COMMA expression)* COMMA? )? PAREN_RIGHT
   public static boolean argument_expression_list(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list")) return false;
     if (!nextTokenIs(b, PAREN_LEFT)) return false;
@@ -64,43 +64,43 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( ( expression COMMA )* expression COMMA? )?
+  // ( expression (COMMA expression)* COMMA? )?
   private static boolean argument_expression_list_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list_1")) return false;
     argument_expression_list_1_0(b, l + 1);
     return true;
   }
 
-  // ( expression COMMA )* expression COMMA?
+  // expression (COMMA expression)* COMMA?
   private static boolean argument_expression_list_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "argument_expression_list_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = argument_expression_list_1_0_0(b, l + 1);
-    r = r && expression(b, l + 1);
+    r = expression(b, l + 1);
+    r = r && argument_expression_list_1_0_1(b, l + 1);
     r = r && argument_expression_list_1_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ( expression COMMA )*
-  private static boolean argument_expression_list_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "argument_expression_list_1_0_0")) return false;
+  // (COMMA expression)*
+  private static boolean argument_expression_list_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_expression_list_1_0_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!argument_expression_list_1_0_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "argument_expression_list_1_0_0", c)) break;
+      if (!argument_expression_list_1_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "argument_expression_list_1_0_1", c)) break;
     }
     return true;
   }
 
-  // expression COMMA
-  private static boolean argument_expression_list_1_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "argument_expression_list_1_0_0_0")) return false;
+  // COMMA expression
+  private static boolean argument_expression_list_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "argument_expression_list_1_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = expression(b, l + 1);
-    r = r && consumeToken(b, COMMA);
+    r = consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -478,7 +478,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // type_decl PAREN_LEFT ( ( const_expression COMMA )* const_expression COMMA? )? PAREN_RIGHT
+  // type_decl PAREN_LEFT ( const_expression (COMMA const_expression)* COMMA? )? PAREN_RIGHT
   //     | const_literal
   public static boolean const_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression")) return false;
@@ -490,7 +490,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // type_decl PAREN_LEFT ( ( const_expression COMMA )* const_expression COMMA? )? PAREN_RIGHT
+  // type_decl PAREN_LEFT ( const_expression (COMMA const_expression)* COMMA? )? PAREN_RIGHT
   private static boolean const_expression_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0")) return false;
     boolean r;
@@ -503,43 +503,43 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( ( const_expression COMMA )* const_expression COMMA? )?
+  // ( const_expression (COMMA const_expression)* COMMA? )?
   private static boolean const_expression_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0_2")) return false;
     const_expression_0_2_0(b, l + 1);
     return true;
   }
 
-  // ( const_expression COMMA )* const_expression COMMA?
+  // const_expression (COMMA const_expression)* COMMA?
   private static boolean const_expression_0_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "const_expression_0_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = const_expression_0_2_0_0(b, l + 1);
-    r = r && const_expression(b, l + 1);
+    r = const_expression(b, l + 1);
+    r = r && const_expression_0_2_0_1(b, l + 1);
     r = r && const_expression_0_2_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ( const_expression COMMA )*
-  private static boolean const_expression_0_2_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "const_expression_0_2_0_0")) return false;
+  // (COMMA const_expression)*
+  private static boolean const_expression_0_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "const_expression_0_2_0_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!const_expression_0_2_0_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "const_expression_0_2_0_0", c)) break;
+      if (!const_expression_0_2_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "const_expression_0_2_0_1", c)) break;
     }
     return true;
   }
 
-  // const_expression COMMA
-  private static boolean const_expression_0_2_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "const_expression_0_2_0_0_0")) return false;
+  // COMMA const_expression
+  private static boolean const_expression_0_2_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "const_expression_0_2_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = const_expression(b, l + 1);
-    r = r && consumeToken(b, COMMA);
+    r = consumeToken(b, COMMA);
+    r = r && const_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }

@@ -227,7 +227,7 @@ global_const_initializer ::=
      EQUAL const_expression
 
 const_expression ::=
-      type_decl PAREN_LEFT ( ( const_expression COMMA )* const_expression COMMA? )? PAREN_RIGHT
+      type_decl PAREN_LEFT ( const_expression (COMMA const_expression)* COMMA? )? PAREN_RIGHT
     | const_literal
 
 primary_expression ::=
@@ -249,7 +249,7 @@ paren_expression ::=
       PAREN_LEFT expression PAREN_RIGHT
 
 argument_expression_list ::=
-      PAREN_LEFT ( ( expression COMMA )* expression COMMA? )? PAREN_RIGHT
+      PAREN_LEFT ( expression (COMMA expression)* COMMA? )? PAREN_RIGHT
 
 postfix_expression ::=
       BRACKET_LEFT expression BRACKET_RIGHT postfix_expression?

@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- fix for trailing commas in function and constant constructor arguments - ticket #41
 
 ## [0.0.18]
 ### Added
