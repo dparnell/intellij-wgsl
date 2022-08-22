@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.20]
 ### Added
 - fix for f16 and f32 code completions - #43
 - added support for const and override expressions - #44
