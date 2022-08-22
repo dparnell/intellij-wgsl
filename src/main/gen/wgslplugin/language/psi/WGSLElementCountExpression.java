@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLElementCountExpression extends PsiElement {
 
+  @Nullable
+  WGSLFuncCallStatement getFuncCallStatement();
+
 }

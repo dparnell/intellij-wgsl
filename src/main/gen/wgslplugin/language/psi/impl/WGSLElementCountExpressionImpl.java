@@ -27,4 +27,10 @@ public class WGSLElementCountExpressionImpl extends ASTWrapperPsiElement impleme
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public WGSLFuncCallStatement getFuncCallStatement() {
+    return findChildByClass(WGSLFuncCallStatement.class);
+  }
+
 }

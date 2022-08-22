@@ -76,7 +76,7 @@ public class WGSLAnnotator implements Annotator {
         "Texture2D", "Texture2DArray", "Texture2DMS", "Texture2DMSArray", "Texture3D", "TextureCube", "TextureCubeArray", "TriangleStream", "VertexShader", 
         "abstract", "active", "alignas", "alignof", "array", "as", "asm", "asm_fragment", "async", "atomic", "atomic_uint", "attribute", "auto", "await", 
         "become", "bf16", "binding_array", "bitcast", "bool", "break", "case", "cast", "catch", "cbuffer", "centroid", "char", "class", "co_await", 
-        "co_return", "co_yield", "coherent", "column_major", "common", "compile", "compile_fragment", "concept", "const", "const_cast", "consteval", 
+        "co_return", "co_yield", "coherent", "column_major", "common", "compile", "compile_fragment", "concept", "const_cast", "consteval",
         "constexpr", "constinit", "continue", "continuing", "crate", "debugger", "decltype", "default", "delete", "demote", "demote_to_helper", "discard", 
         "do", "dword", "dynamic_cast", "else", "enable", "enum", "explicit", "export", "extends", "extern", "external", "f16", "f32", "f64", "fallthrough", 
         "false", "filter", "final", "finally", "fixed", "flat", "fn", "for", "friend", "from", "function", "fvec2", "fvec3", "fvec4", "fxgroup", "get", 
@@ -122,7 +122,6 @@ public class WGSLAnnotator implements Annotator {
                 holder.newAnnotation(HighlightSeverity.ERROR, "'" + named.getName() + "' is a reserved keyword").range(element).create();
             }
         }
-
 
         if(element instanceof WGSLFuncCallStatement) {
             var fragment_shader = false;
@@ -203,6 +202,15 @@ public class WGSLAnnotator implements Annotator {
             if(element.getFirstChild().getNode().getElementType() == WGSLTypes.ATTR_LEFT) {
                 if(annotationEnabled(element, "old-attribute-syntax")) {
                     holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated attribute syntax").range(element).create();
+                }
+            }
+        } else if(element instanceof WGSLGlobalConstantDecl) {
+            for(ASTNode node : element.getNode().getChildren(null)) {
+                if(node.getElementType() == WGSLTypes.LET) {
+                    if(annotationEnabled(element, "old-global-constant-decl")) {
+                        holder.newAnnotation(HighlightSeverity.WARNING, "Deprecated global constant syntax").range(element).create();
+                    }
+                    break;
                 }
             }
         }

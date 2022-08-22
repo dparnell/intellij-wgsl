@@ -110,6 +110,7 @@ public interface WGSLTypes {
   IElementType CASE = new WGSLTokenType("CASE");
   IElementType COLON = new WGSLTokenType("COLON");
   IElementType COMMA = new WGSLTokenType("COMMA");
+  IElementType CONST = new WGSLTokenType("CONST");
   IElementType CONTINUE = new WGSLTokenType("CONTINUE");
   IElementType CONTINUING = new WGSLTokenType("CONTINUING");
   IElementType DECIMAL_FLOAT_LITERAL = new WGSLTokenType("DECIMAL_FLOAT_LITERAL");
@@ -158,6 +159,7 @@ public interface WGSLTypes {
   IElementType OR = new WGSLTokenType("OR");
   IElementType OR_EQUAL = new WGSLTokenType("OR_EQUAL");
   IElementType OR_OR = new WGSLTokenType("OR_OR");
+  IElementType OVERRIDE = new WGSLTokenType("OVERRIDE");
   IElementType PAREN_LEFT = new WGSLTokenType("PAREN_LEFT");
   IElementType PAREN_RIGHT = new WGSLTokenType("PAREN_RIGHT");
   IElementType PERIOD = new WGSLTokenType("PERIOD");

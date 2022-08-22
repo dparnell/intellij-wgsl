@@ -64,6 +64,7 @@ element_count_expression ::=
       INT_LITERAL
     | UINT_LITERAL
     | IDENT
+    | func_call_statement
 
 struct_decl ::=
      attribute_list * STRUCT IDENT struct_body_decl
@@ -177,10 +178,10 @@ type_decl ::=
     | FLOAT32
     | INT32
     | UINT32
-    | vec_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+    | vec_prefix (TYPE_LESS_THAN type_decl TYPE_GREATER_THAN)?
     | POINTER TYPE_LESS_THAN storage_class COMMA type_decl ( COMMA access_mode )? TYPE_GREATER_THAN
     | array_type_decl
-    | mat_prefix TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+    | mat_prefix (TYPE_LESS_THAN type_decl TYPE_GREATER_THAN)?
     | ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
     | texture_sampler_types
 
@@ -203,6 +204,7 @@ mat_prefix ::=
 variable_statement ::=
       variable_decl (EQUAL expression)?
     | LET variable_ident_decl EQUAL expression
+    | CONST variable_ident_decl EQUAL expression
 
 variable_decl ::=
       VAR variable_qualifier? variable_ident_decl
@@ -221,7 +223,8 @@ global_variable_decl ::=
      attribute_list* variable_decl ( EQUAL const_expression )?
 
 global_constant_decl ::=
-     attribute_list* LET variable_ident_decl global_const_initializer?
+     CONST variable_ident_decl global_const_initializer |
+     attribute_list* (LET | OVERRIDE) variable_ident_decl global_const_initializer?
 
 global_const_initializer ::=
      EQUAL const_expression

@@ -57,7 +57,7 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
             , WGSLTypes.IF , WGSLTypes.LET , WGSLTypes.LOOP
             , WGSLTypes.RETURN
             , WGSLTypes.STRUCT , WGSLTypes.SWITCH , WGSLTypes.TRUE
-            , WGSLTypes.TYPE , WGSLTypes.VAR
+            , WGSLTypes.TYPE , WGSLTypes.VAR, WGSLTypes.CONST, WGSLTypes.OVERRIDE
     );
 
     private static final Set<IElementType> STORAGE_TOKENS = tokens(

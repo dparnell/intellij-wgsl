@@ -3,6 +3,12 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- fix for f16 and f32 code completions - #43
+- added support for const and override expressions - #44
+- added a warning for old global constant syntax - disable with
+  - `\\+ old-global-constant-decl` on the first line of the file
+- fixed sized arrays - #45
 
 ## [0.0.19]
 ### Added

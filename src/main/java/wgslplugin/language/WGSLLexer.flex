@@ -68,8 +68,8 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL, TYPE_SPEC>  {LINE_COMMENT}          { return LINE_COMMENT; }
 <YYINITIAL, TYPE_SPEC>  {DOC_COMMENT}           { return DOC_COMMENT; }
 <YYINITIAL, TYPE_SPEC>  {BLOCK_COMMENT}         { return BLOCK_COMMENT; }
-<YYINITIAL>  {INT_LITERAL}                      { return INT_LITERAL; }
-<YYINITIAL>  {UINT_LITERAL}                     { return UINT_LITERAL; }
+<YYINITIAL, TYPE_SPEC>  {INT_LITERAL}           { return INT_LITERAL; }
+<YYINITIAL, TYPE_SPEC>  {UINT_LITERAL}          { return UINT_LITERAL; }
 <YYINITIAL>  "true"                             { return TRUE; }
 <YYINITIAL>  "false"                            { return FALSE; }
 <YYINITIAL>  {DECIMAL_FLOAT_LITERAL}            { return DECIMAL_FLOAT_LITERAL; }
@@ -147,6 +147,8 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL, TYPE_SPEC>  "atomic"                { pushState(TYPE_SPEC); return ATOMIC; }
 <YYINITIAL>  "let"                              { return LET; }
 <YYINITIAL>  "var"                              { pushState(TYPE_SPEC); return VAR; }
+<YYINITIAL>  "const"                            { pushState(TYPE_SPEC); return CONST; }
+<YYINITIAL>  "override"                         { return OVERRIDE; }
 <YYINITIAL>  ":"                                { return COLON; }
 <TYPE_SPEC>  ":"                                { popState(); return COLON; }
 <YYINITIAL>  "bitcast"                          { pushState(TYPE_SPEC); return BITCAST; }

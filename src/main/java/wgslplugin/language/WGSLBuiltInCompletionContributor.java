@@ -50,7 +50,7 @@ public class WGSLBuiltInCompletionContributor extends CompletionContributor {
     }
 
     private LookupElement createStaticMethod(String name, List<String> arguments) {
-        System.out.println("Static: " + name);
+        // System.out.println("Static: " + name);
         return LookupElementBuilder.create(name)
                 .withIcon(new LayeredIcon(AllIcons.Nodes.Method, AllIcons.Nodes.StaticMark))
                 .withTailText("(" + String.join(", ", arguments) + ")")
