@@ -3,6 +3,9 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- fix for i32 and u32 code completions - #47
+- fixed highlighting of `texture_2d`
 
 ## [0.0.20]
 ### Added

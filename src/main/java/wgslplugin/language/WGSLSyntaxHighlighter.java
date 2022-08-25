@@ -46,6 +46,7 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
             , WGSLTypes.TEXTURE_STORAGE_3D , WGSLTypes.TEXTURE_DEPTH_2D , WGSLTypes.TEXTURE_DEPTH_CUBE
             , WGSLTypes.TEXTURE_DEPTH_CUBE_ARRAY , WGSLTypes.TEXTURE_DEPTH_MULTISAMPLED_2D
             , WGSLTypes.UINT32 , WGSLTypes.VEC2 , WGSLTypes.VEC3 , WGSLTypes.VEC4
+            , WGSLTypes.TEXTURE_2D_ARRAY
     );
 
     private static final Set<IElementType> KEYWORD_TOKENS = tokens(
