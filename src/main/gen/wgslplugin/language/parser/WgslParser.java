@@ -1002,14 +1002,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // EQUAL const_expression
+  // EQUAL expression
   public static boolean global_const_initializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "global_const_initializer")) return false;
     if (!nextTokenIs(b, EQUAL)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, EQUAL);
-    r = r && const_expression(b, l + 1);
+    r = r && expression(b, l + 1);
     exit_section_(b, m, GLOBAL_CONST_INITIALIZER, r);
     return r;
   }

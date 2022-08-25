@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- fix for const expressions - #44
 
 ## [0.0.21]
 ### Added

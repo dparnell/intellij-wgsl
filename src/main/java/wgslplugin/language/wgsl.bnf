@@ -227,7 +227,7 @@ global_constant_decl ::=
      attribute_list* (LET | OVERRIDE) variable_ident_decl global_const_initializer?
 
 global_const_initializer ::=
-     EQUAL const_expression
+     EQUAL expression
 
 const_expression ::=
       type_decl PAREN_LEFT ( const_expression (COMMA const_expression)* COMMA? )? PAREN_RIGHT

@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface WGSLGlobalConstInitializer extends PsiElement {
 
   @NotNull
-  WGSLConstExpression getConstExpression();
+  WGSLExpression getExpression();
 
 }

@@ -29,8 +29,8 @@ public class WGSLGlobalConstInitializerImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @NotNull
-  public WGSLConstExpression getConstExpression() {
-    return findNotNullChildByClass(WGSLConstExpression.class);
+  public WGSLExpression getExpression() {
+    return findNotNullChildByClass(WGSLExpression.class);
   }
 
 }
