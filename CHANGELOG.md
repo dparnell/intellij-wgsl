@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.23]
 ### Added
 - updated max version of IntelliJ to 2022.3
 - updated to JDK 17
