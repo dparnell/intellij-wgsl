@@ -13,8 +13,12 @@ public interface WGSLFuncCallName extends WGSLFunctionCallElement {
   @Nullable
   WGSLVecPrefix getVecPrefix();
 
-  String getName();
+  //WARNING: getName(...) is skipped
+  //matching getName(WGSLFuncCallName, ...)
+  //methods are not found in WGSLPsiImplUtil
 
-  PsiElement setName(String newName);
+  //WARNING: setName(...) is skipped
+  //matching setName(WGSLFuncCallName, ...)
+  //methods are not found in WGSLPsiImplUtil
 
 }

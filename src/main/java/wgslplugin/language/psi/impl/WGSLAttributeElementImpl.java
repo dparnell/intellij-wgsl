@@ -8,4 +8,5 @@ public abstract class WGSLAttributeElementImpl extends WGSLNamedElementImpl impl
     public WGSLAttributeElementImpl(@NotNull ASTNode node) {
         super(node);
     }
+
 }

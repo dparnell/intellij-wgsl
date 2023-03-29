@@ -10,9 +10,13 @@ public interface WGSLVariableIdentDecl extends WGSLNamedElement {
   @Nullable
   WGSLTypeDecl getTypeDecl();
 
-  String getName();
+  //WARNING: getName(...) is skipped
+  //matching getName(WGSLVariableIdentDecl, ...)
+  //methods are not found in WGSLPsiImplUtil
 
-  PsiElement setName(String newName);
+  //WARNING: setName(...) is skipped
+  //matching setName(WGSLVariableIdentDecl, ...)
+  //methods are not found in WGSLPsiImplUtil
 
   PsiElement getNameIdentifier();
 

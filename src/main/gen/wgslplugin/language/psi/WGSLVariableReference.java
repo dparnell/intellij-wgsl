@@ -7,8 +7,12 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLVariableReference extends WGSLReferenceElement {
 
-  String getName();
+  //WARNING: getName(...) is skipped
+  //matching getName(WGSLVariableReference, ...)
+  //methods are not found in WGSLPsiImplUtil
 
-  PsiElement setName(String newName);
+  //WARNING: setName(...) is skipped
+  //matching setName(WGSLVariableReference, ...)
+  //methods are not found in WGSLPsiImplUtil
 
 }

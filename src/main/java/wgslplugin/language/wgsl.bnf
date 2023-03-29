@@ -1,5 +1,6 @@
 {
   parserClass="wgslplugin.language.parser.WgslParser"
+  parserUtilClass="wgslplugin.language.parser.WgslParserUtil"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="WGSL"
@@ -421,4 +422,5 @@ global_decl ::=
     | type_alias_decl SEMICOLON
     | struct_decl SEMICOLON?
     | function_decl
+    | PREPROCESSOR_DECLARATION
 
