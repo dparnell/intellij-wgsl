@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.24]
 ### Added
 - updated max version of IntelliJ to 2023.1
 - added preprocessor stuff to the top level in the parser
