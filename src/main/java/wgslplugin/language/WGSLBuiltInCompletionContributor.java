@@ -39,10 +39,12 @@ public class WGSLBuiltInCompletionContributor extends CompletionContributor {
 
         BuiltInFunctions.INSTANCE.get(element);
         return BuiltInFunctions.INSTANCE.functions.values().stream()
+                .filter(x -> x.getFunctionHeader().getFunctionName().getName() != null && x.getFunctionHeader().getParamList() != null)
                 .map(x -> {
                     var name = x.getFunctionHeader().getFunctionName().getName();
-                    var params = x.getFunctionHeader().getParamList().getParamList().stream().map(y ->
-                            y.getVariableIdentDecl().getName() + ": " + y.getVariableIdentDecl().getTypeDecl().getText()
+                    var params = x.getFunctionHeader().getParamList().getParamList().stream()
+                            .filter(y -> y.getVariableIdentDecl().getTypeDecl() != null)
+                            .map(y -> y.getVariableIdentDecl().getName() + ": " + y.getVariableIdentDecl().getTypeDecl().getText()
                     ).collect(Collectors.toList());
                     return createStaticMethod(name, params);
 
