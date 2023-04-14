@@ -26,4 +26,14 @@ public class WGSLVariableReferenceImpl extends WGSLReferenceElementImpl implemen
     else super.accept(visitor);
   }
 
+  @Override
+  public String getName() {
+    return WGSLPsiImplUtil.getName(this);
+  }
+
+  @Override
+  public PsiElement setName(String newName) {
+    return WGSLPsiImplUtil.setName(this, newName);
+  }
+
 }

@@ -7,13 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLFunctionName extends WGSLFunctionElement {
 
-  //WARNING: getName(...) is skipped
-  //matching getName(WGSLFunctionName, ...)
-  //methods are not found in WGSLPsiImplUtil
+  String getName();
 
-  //WARNING: setName(...) is skipped
-  //matching setName(WGSLFunctionName, ...)
-  //methods are not found in WGSLPsiImplUtil
+  PsiElement setName(String newName);
 
   PsiElement getNameIdentifier();
 

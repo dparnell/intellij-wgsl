@@ -44,6 +44,7 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %unicode
 
 %state TYPE_SPEC
+%state ATTRIBUTE
 
 // note: newlines are parsed separately to allow leading whitespace on a preprocessor declaration line
 WHITE_SPACE=[^\S\r\n]+
@@ -62,24 +63,24 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 
 %%
 
-<YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}     { return PREPROCESSOR_DECLARATION; }
-<YYINITIAL, TYPE_SPEC>  {WHITE_SPACE}           { return WHITE_SPACE; }
-<YYINITIAL, TYPE_SPEC>  {NEWLINE}               { return WHITE_SPACE; }
-<YYINITIAL, TYPE_SPEC>  {LINE_COMMENT}          { return LINE_COMMENT; }
-<YYINITIAL, TYPE_SPEC>  {DOC_COMMENT}           { return DOC_COMMENT; }
-<YYINITIAL, TYPE_SPEC>  {BLOCK_COMMENT}         { return BLOCK_COMMENT; }
-<YYINITIAL, TYPE_SPEC>  {INT_LITERAL}           { return INT_LITERAL; }
-<YYINITIAL, TYPE_SPEC>  {UINT_LITERAL}          { return UINT_LITERAL; }
-<YYINITIAL>  "true"                             { return TRUE; }
-<YYINITIAL>  "false"                            { return FALSE; }
-<YYINITIAL>  {DECIMAL_FLOAT_LITERAL}            { return DECIMAL_FLOAT_LITERAL; }
-<YYINITIAL>  {HEX_FLOAT_LITERAL}                { return HEX_FLOAT_LITERAL; }
-<YYINITIAL>  "[["                               { return ATTR_LEFT; }
-<YYINITIAL, TYPE_SPEC>  ","                     { return COMMA; }
-<YYINITIAL>  "]]"                               { return ATTR_RIGHT; }
-<YYINITIAL>  "("                                { return PAREN_LEFT; }
-<TYPE_SPEC>  "("                                { popState(); return PAREN_LEFT; }
-<YYINITIAL>  ")"                                { return PAREN_RIGHT; }
+<YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}         { return PREPROCESSOR_DECLARATION; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {WHITE_SPACE}    { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {NEWLINE}        { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {LINE_COMMENT}   { return LINE_COMMENT; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {DOC_COMMENT}    { return DOC_COMMENT; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {BLOCK_COMMENT}  { return BLOCK_COMMENT; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {INT_LITERAL}    { return INT_LITERAL; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {UINT_LITERAL}   { return UINT_LITERAL; }
+<YYINITIAL, ATTRIBUTE>  "true"                      { return TRUE; }
+<YYINITIAL, ATTRIBUTE>  "false"                     { return FALSE; }
+<YYINITIAL, ATTRIBUTE>  {DECIMAL_FLOAT_LITERAL}     { return DECIMAL_FLOAT_LITERAL; }
+<YYINITIAL, ATTRIBUTE>  {HEX_FLOAT_LITERAL}         { return HEX_FLOAT_LITERAL; }
+<YYINITIAL>  "[["                                   { pushState(ATTRIBUTE); return ATTR_LEFT; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  ","              { return COMMA; }
+<ATTRIBUTE>  "]]"                                   { popState(); return ATTR_RIGHT; }
+<YYINITIAL, ATTRIBUTE>  "("                         { return PAREN_LEFT; }
+<TYPE_SPEC>  "("                                    { popState(); return PAREN_LEFT; }
+<YYINITIAL, ATTRIBUTE>  ")"                         { return PAREN_RIGHT; }
 <YYINITIAL>  "array"                            { pushState(TYPE_SPEC); return ARRAY; }
 <YYINITIAL>  "<"                                { return LESS_THAN; }
 <TYPE_SPEC>  "<"                                { return TYPE_LESS_THAN; }
@@ -241,6 +242,6 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <TYPE_SPEC>  "rgba32sint"                       { return RGBA32SINT; }
 <TYPE_SPEC>  "rgba32float"                      { return RGBA32FLOAT; }
 
-<YYINITIAL, TYPE_SPEC>  {IDENT}                 { return IDENT; }
+<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {IDENT}      { return IDENT; }
 
 [^] { return BAD_CHARACTER; }

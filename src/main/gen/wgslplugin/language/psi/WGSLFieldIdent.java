@@ -7,13 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface WGSLFieldIdent extends WGSLStructFieldElement {
 
-  //WARNING: getName(...) is skipped
-  //matching getName(WGSLFieldIdent, ...)
-  //methods are not found in WGSLPsiImplUtil
+  String getName();
 
-  //WARNING: setName(...) is skipped
-  //matching setName(WGSLFieldIdent, ...)
-  //methods are not found in WGSLPsiImplUtil
+  PsiElement setName(String newName);
 
   PsiElement getNameIdentifier();
 

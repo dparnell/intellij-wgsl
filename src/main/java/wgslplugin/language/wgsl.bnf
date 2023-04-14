@@ -1,6 +1,6 @@
 {
   parserClass="wgslplugin.language.parser.WgslParser"
-  parserUtilClass="wgslplugin.language.parser.WgslParserUtil"
+  // parserUtilClass="wgslplugin.language.parser.WgslParserUtil"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="WGSL"
@@ -214,7 +214,7 @@ variable_ident_decl ::=
       IDENT (COLON type_decl)? {
           mixin="wgslplugin.language.psi.impl.WGSLNamedElementImpl"
           implements="wgslplugin.language.psi.WGSLNamedElement"
-          methods=[getName setName getNameIdentifier]
+          methods=[getName getNameIdentifier]
       }
 
 variable_qualifier ::=

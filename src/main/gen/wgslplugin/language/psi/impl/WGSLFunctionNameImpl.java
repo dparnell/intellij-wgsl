@@ -27,6 +27,16 @@ public class WGSLFunctionNameImpl extends WGSLFunctionElementImpl implements WGS
   }
 
   @Override
+  public String getName() {
+    return WGSLPsiImplUtil.getName(this);
+  }
+
+  @Override
+  public PsiElement setName(String newName) {
+    return WGSLPsiImplUtil.setName(this, newName);
+  }
+
+  @Override
   public PsiElement getNameIdentifier() {
     return WGSLPsiImplUtil.getNameIdentifier(this);
   }
