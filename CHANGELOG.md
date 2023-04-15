@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.25]
 ### Added
 - fix for nested array references - #55
 - updated grammar kit dependencies
