@@ -2,7 +2,9 @@
 
 # wgsl plugin Changelog
 
-## [Unreleased]
+## [Unreleased] 
+### Added
+- improved refactoring support from @rosingrind
 
 ## [0.0.25]
 ### Added
