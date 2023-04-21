@@ -7,10 +7,11 @@ import wgslplugin.language.WGSLFileType;
 
 public class WGSLElementFactory {
     public static WGSLVariableIdentDecl createVariable(Project project, String name) {
-        final WGSLFile file = createFile(project, "var " + name + ";");
-        PsiElement[] idents = PsiTreeUtil.collectElements(file, e -> e instanceof WGSLVariableIdentDecl);
+        final WGSLFile file = createFile(project, "var " + name + ": dummy;");
+        WGSLVariableIdentDecl ident = PsiTreeUtil.findChildOfType(file, WGSLVariableIdentDecl.class);
+        assert ident != null;
 
-        return (WGSLVariableIdentDecl) idents[0];
+        return ident;
     }
 
     public static WGSLFile createFile(Project project, String text) {
