@@ -214,7 +214,7 @@ variable_ident_decl ::=
       IDENT (COLON type_decl)? {
           mixin="wgslplugin.language.psi.impl.WGSLNamedElementImpl"
           implements="wgslplugin.language.psi.WGSLNamedElement"
-          methods=[getName getNameIdentifier]
+          methods=[getName setName getNameIdentifier]
       }
 
 variable_qualifier ::=
