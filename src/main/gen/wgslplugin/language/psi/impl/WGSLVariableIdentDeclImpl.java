@@ -38,13 +38,13 @@ public class WGSLVariableIdentDeclImpl extends WGSLNamedElementImpl implements W
   }
 
   @Override
-  public PsiElement getNameIdentifier() {
-    return WGSLPsiImplUtil.getNameIdentifier(this);
+  public PsiElement setName(String newName) {
+    return WGSLPsiImplUtil.setName(this, newName);
   }
 
   @Override
-  public PsiElement setName(String newName) {
-    return WGSLPsiImplUtil.setName(this, newName);
+  public PsiElement getNameIdentifier() {
+    return WGSLPsiImplUtil.getNameIdentifier(this);
   }
 
 }

@@ -12,6 +12,8 @@ public interface WGSLVariableIdentDecl extends WGSLNamedElement {
 
   String getName();
 
+  PsiElement setName(String newName);
+
   PsiElement getNameIdentifier();
 
 }
