@@ -49,5 +49,10 @@
                                     implementationClass="wgslplugin.language.WGSLDocumentationProvider"/>
         <completion.contributor language="WGSL" implementationClass="wgslplugin.language.WGSLKeywordCompletionContributor"/>
         <completion.contributor language="WGSL" implementationClass="wgslplugin.language.WGSLBuiltInCompletionContributor"/>
+        <projectConfigurable parentId="tools" instance="wgslplugin.language.WGSLSettingsConfigurable"
+            id="wgslplugin.language.WGSLSettingsConfigurable"
+            displayName="WGSL"
+            nonDefaultProject="true"/>
+        <projectService serviceImplementation="wgslplugin.language.WGSLSettingsState"/>
     </extensions>
 </idea-plugin>
