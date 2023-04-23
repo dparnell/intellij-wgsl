@@ -24,7 +24,7 @@ public class WGSLCustomImportsFetcher {
     public Map<String, WGSLStructDecl> structs = new HashMap<>();
 
     public synchronized WGSLFunctionDecl get(PsiElement element) {
-        List<String> customImports = WGSLSettingsState.getInstance().customImports;
+        List<String> customImports = WGSLSettingsState.getInstance(element.getProject()).customImports;
 
         if (!customImportsCached.equals(customImports)) {
             customImportsCached.addAll(customImports);
