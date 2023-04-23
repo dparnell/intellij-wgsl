@@ -3,6 +3,9 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- better code completion from @rosingrind - closes #53
+- code fixes from @rosingrind
 
 ## [0.0.26]
 ### Added
