@@ -6,6 +6,7 @@
 ### Added
 - better code completion from @rosingrind - closes #53
 - code fixes from @rosingrind
+- updated for 2023.2 based IDEs
 
 ## [0.0.26]
 ### Added
