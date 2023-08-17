@@ -30,7 +30,7 @@ public class WGSLAnnotator implements Annotator {
             , "distance", "exp", "exp2", "faceForward", "floor", "fma", "fract", "frexp"
             , "frexp", "inverseSqrt", "ldexp", "length", "log", "log2", "max", "min", "mix"
             , "modf", "normalize", "pow", "quantizeToF16", "reflect", "refract", "round"
-            , "sign", "sin", "sinh", "smoothstep", "sqrt", "step", "tan", "tanh", "trunc"
+            , "saturate", "sign", "sin", "sinh", "smoothstep", "sqrt", "step", "tan", "tanh", "trunc"
             // integer builtins
             , "countOneBits", "reverseBits"
             // matrix builtins
