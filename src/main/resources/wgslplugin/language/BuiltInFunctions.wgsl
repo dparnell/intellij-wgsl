@@ -348,6 +348,13 @@ Component-wise when T is a vector. (GLSLstd450RoundEven)
 fn round(e: T) -> T {}
 
 /**
+Returns clamp(e, 0.0, 1.0). Component-wise when T is a vector.
+
+* T is `f32` or `vecN<f32>`
+*/
+fn saturate(e1: T) -> T {}
+
+/**
 Returns the sign of e. Component-wise when T is a vector. (GLSLstd450FSign)
 
 * T is `f32` or `vecN<f32>`
@@ -373,7 +380,7 @@ Returns the smooth Hermite interpolation between 0 and 1. Component-wise when T 
 
 * T is `f32` or `vecN<f32>`
 */
-fn smoothStep(e1: T, e2: T, e3: T) -> T {}
+fn smoothstep(e1: T, e2: T, e3: T) -> T {}
 
 /**
 Returns the square root of e. Component-wise when T is a vector. (GLSLstd450Sqrt)
