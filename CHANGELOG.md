@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+### Added
+- code fixes from @Uriopass
 
 ## [0.0.27]
 ### Added
