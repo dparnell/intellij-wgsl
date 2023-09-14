@@ -44,6 +44,7 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %unicode
 
 %state TYPE_SPEC
+%state BIND_SPEC
 %state ATTRIBUTE
 
 // note: newlines are parsed separately to allow leading whitespace on a preprocessor declaration line
@@ -64,13 +65,12 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 %%
 
 <YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}         { return PREPROCESSOR_DECLARATION; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {WHITE_SPACE}    { return WHITE_SPACE; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {NEWLINE}        { return WHITE_SPACE; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {LINE_COMMENT}   { return LINE_COMMENT; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {DOC_COMMENT}    { return DOC_COMMENT; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {BLOCK_COMMENT}  { return BLOCK_COMMENT; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {INT_LITERAL}    { return INT_LITERAL; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {UINT_LITERAL}   { return UINT_LITERAL; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {WHITE_SPACE}    { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {NEWLINE}        { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {LINE_COMMENT}   { return LINE_COMMENT; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {BLOCK_COMMENT}  { return BLOCK_COMMENT; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {INT_LITERAL}    { return INT_LITERAL; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {UINT_LITERAL}   { return UINT_LITERAL; }
 <YYINITIAL, ATTRIBUTE>  "true"                      { return TRUE; }
 <YYINITIAL, ATTRIBUTE>  "false"                     { return FALSE; }
 <YYINITIAL, ATTRIBUTE>  {DECIMAL_FLOAT_LITERAL}     { return DECIMAL_FLOAT_LITERAL; }
@@ -83,9 +83,9 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL, ATTRIBUTE>  ")"                         { return PAREN_RIGHT; }
 <YYINITIAL>  "array"                            { pushState(TYPE_SPEC); return ARRAY; }
 <YYINITIAL>  "<"                                { return LESS_THAN; }
-<TYPE_SPEC>  "<"                                { return TYPE_LESS_THAN; }
+<TYPE_SPEC, BIND_SPEC>  "<"                     { return TYPE_LESS_THAN; }
 <YYINITIAL>  ">"                                { return GREATER_THAN; }
-<TYPE_SPEC>  ">"                                { popState(); return TYPE_GREATER_THAN; }
+<TYPE_SPEC, BIND_SPEC>  ">"                     { popState(); return TYPE_GREATER_THAN; }
 <YYINITIAL>  "struct"                           { return STRUCT; }
 <YYINITIAL>  "{"                                { return BRACE_LEFT; }
 <YYINITIAL>  "}"                                { return BRACE_RIGHT; }
@@ -106,46 +106,46 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL>  "sampler"                          { return SAMPLER; }
 <YYINITIAL>  "sampler_comparison"               { return SAMPLER_COMPARISON; }
 
-<YYINITIAL>  "texture_1d"                       { pushState(TYPE_SPEC); return TEXTURE_1D; }
-<YYINITIAL>  "texture_2d"                       { pushState(TYPE_SPEC); return TEXTURE_2D; }
-<YYINITIAL>  "texture_2d_array"                 { pushState(TYPE_SPEC); return TEXTURE_2D_ARRAY; }
-<YYINITIAL>  "texture_3d"                       { pushState(TYPE_SPEC); return TEXTURE_3D; }
-<YYINITIAL>  "texture_cube"                     { pushState(TYPE_SPEC); return TEXTURE_CUBE; }
-<YYINITIAL>  "texture_cube_array"               { pushState(TYPE_SPEC); return TEXTURE_CUBE_ARRAY; }
-<YYINITIAL>  "texture_multisampled_2d"          { pushState(TYPE_SPEC); return TEXTURE_MULTISAMPLED_2D; }
-<YYINITIAL>  "texture_storage_1d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_1D; }
-<YYINITIAL>  "texture_storage_2d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_2D; }
-<YYINITIAL>  "texture_storage_2d_array"         { pushState(TYPE_SPEC); return TEXTURE_STORAGE_2D_ARRAY; }
-<YYINITIAL>  "texture_storage_3d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_3D; }
+<YYINITIAL, BIND_SPEC>  "texture_1d"                       { pushState(TYPE_SPEC); return TEXTURE_1D; }
+<YYINITIAL, BIND_SPEC>  "texture_2d"                       { pushState(TYPE_SPEC); return TEXTURE_2D; }
+<YYINITIAL, BIND_SPEC>  "texture_2d_array"                 { pushState(TYPE_SPEC); return TEXTURE_2D_ARRAY; }
+<YYINITIAL, BIND_SPEC>  "texture_3d"                       { pushState(TYPE_SPEC); return TEXTURE_3D; }
+<YYINITIAL, BIND_SPEC>  "texture_cube"                     { pushState(TYPE_SPEC); return TEXTURE_CUBE; }
+<YYINITIAL, BIND_SPEC>  "texture_cube_array"               { pushState(TYPE_SPEC); return TEXTURE_CUBE_ARRAY; }
+<YYINITIAL, BIND_SPEC>  "texture_multisampled_2d"          { pushState(TYPE_SPEC); return TEXTURE_MULTISAMPLED_2D; }
+<YYINITIAL, BIND_SPEC>  "texture_storage_1d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_1D; }
+<YYINITIAL, BIND_SPEC>  "texture_storage_2d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_2D; }
+<YYINITIAL, BIND_SPEC>  "texture_storage_2d_array"         { pushState(TYPE_SPEC); return TEXTURE_STORAGE_2D_ARRAY; }
+<YYINITIAL, BIND_SPEC>  "texture_storage_3d"               { pushState(TYPE_SPEC); return TEXTURE_STORAGE_3D; }
 
-<YYINITIAL>  "texture_depth_2d"                 { return TEXTURE_DEPTH_2D; }
-<YYINITIAL>  "texture_depth_2d_array"           { return TEXTURE_DEPTH_2D_ARRAY; }
-<YYINITIAL>  "texture_depth_cube"               { return TEXTURE_DEPTH_CUBE; }
-<YYINITIAL>  "texture_depth_cube_array"         { return TEXTURE_DEPTH_CUBE_ARRAY; }
-<YYINITIAL>  "texture_depth_multisampled_2d"    { return TEXTURE_DEPTH_MULTISAMPLED_2D; }
+<YYINITIAL, BIND_SPEC>  "texture_depth_2d"                 { return TEXTURE_DEPTH_2D; }
+<YYINITIAL, BIND_SPEC>  "texture_depth_2d_array"           { return TEXTURE_DEPTH_2D_ARRAY; }
+<YYINITIAL, BIND_SPEC>  "texture_depth_cube"               { return TEXTURE_DEPTH_CUBE; }
+<YYINITIAL, BIND_SPEC>  "texture_depth_cube_array"         { return TEXTURE_DEPTH_CUBE_ARRAY; }
+<YYINITIAL, BIND_SPEC>  "texture_depth_multisampled_2d"    { return TEXTURE_DEPTH_MULTISAMPLED_2D; }
 
 <YYINITIAL>  "type"                             { return TYPE; }
 <YYINITIAL>  "="                                { return EQUAL; }
 <TYPE_SPEC>  "="                                { popState(); return EQUAL; }
-<YYINITIAL, TYPE_SPEC>  "bool"                  { return BOOL; }
-<YYINITIAL, TYPE_SPEC>  "f32"                   { return FLOAT32; }
-<YYINITIAL, TYPE_SPEC>  "i32"                   { return INT32; }
-<YYINITIAL, TYPE_SPEC>  "u32"                   { return UINT32; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "bool"                  { return BOOL; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "f32"                   { return FLOAT32; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "i32"                   { return INT32; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "u32"                   { return UINT32; }
 
-<YYINITIAL, TYPE_SPEC>  "vec2"                  { pushState(TYPE_SPEC); return VEC2; }
-<YYINITIAL, TYPE_SPEC>  "vec3"                  { pushState(TYPE_SPEC); return VEC3; }
-<YYINITIAL, TYPE_SPEC>  "vec4"                  { pushState(TYPE_SPEC); return VEC4; }
-<YYINITIAL, TYPE_SPEC>  "ptr"                   { pushState(TYPE_SPEC); return POINTER; }
-<YYINITIAL, TYPE_SPEC>  "mat2x2"                { pushState(TYPE_SPEC); return MAT2X2; }
-<YYINITIAL, TYPE_SPEC>  "mat2x3"                { pushState(TYPE_SPEC); return MAT2X3; }
-<YYINITIAL, TYPE_SPEC>  "mat2x4"                { pushState(TYPE_SPEC); return MAT2X4; }
-<YYINITIAL, TYPE_SPEC>  "mat3x2"                { pushState(TYPE_SPEC); return MAT3X2; }
-<YYINITIAL, TYPE_SPEC>  "mat3x3"                { pushState(TYPE_SPEC); return MAT3X3; }
-<YYINITIAL, TYPE_SPEC>  "mat3x4"                { pushState(TYPE_SPEC); return MAT3X4; }
-<YYINITIAL, TYPE_SPEC>  "mat4x2"                { pushState(TYPE_SPEC); return MAT4X2; }
-<YYINITIAL, TYPE_SPEC>  "mat4x3"                { pushState(TYPE_SPEC); return MAT4X3; }
-<YYINITIAL, TYPE_SPEC>  "mat4x4"                { pushState(TYPE_SPEC); return MAT4X4; }
-<YYINITIAL, TYPE_SPEC>  "atomic"                { pushState(TYPE_SPEC); return ATOMIC; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec2"                  { pushState(TYPE_SPEC); return VEC2; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec3"                  { pushState(TYPE_SPEC); return VEC3; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec4"                  { pushState(TYPE_SPEC); return VEC4; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "ptr"                   { pushState(TYPE_SPEC); return POINTER; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x2"                { pushState(TYPE_SPEC); return MAT2X2; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x3"                { pushState(TYPE_SPEC); return MAT2X3; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x4"                { pushState(TYPE_SPEC); return MAT2X4; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x2"                { pushState(TYPE_SPEC); return MAT3X2; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x3"                { pushState(TYPE_SPEC); return MAT3X3; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x4"                { pushState(TYPE_SPEC); return MAT3X4; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x2"                { pushState(TYPE_SPEC); return MAT4X2; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x3"                { pushState(TYPE_SPEC); return MAT4X3; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x4"                { pushState(TYPE_SPEC); return MAT4X4; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "atomic"                { pushState(TYPE_SPEC); return ATOMIC; }
 <YYINITIAL>  "let"                              { return LET; }
 <YYINITIAL>  "var"                              { pushState(TYPE_SPEC); return VAR; }
 <YYINITIAL>  "const"                            { pushState(TYPE_SPEC); return CONST; }
@@ -206,6 +206,9 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL>  ">>="                              { return SHIFT_RIGHT_EQUAL; }
 <YYINITIAL>  "<<="                              { return SHIFT_LEFT_EQUAL; }
 
+<YYINITIAL> "binding_array"          { pushState(BIND_SPEC); return BINDING_ARRAY; }
+
+
 <TYPE_SPEC>  "r8unorm"                          { return R8UNORM; }
 <TYPE_SPEC>  "r8snorm"                          { return R8SNORM; }
 <TYPE_SPEC>  "r8uint"                           { return R8UINT; }
@@ -242,6 +245,6 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <TYPE_SPEC>  "rgba32sint"                       { return RGBA32SINT; }
 <TYPE_SPEC>  "rgba32float"                      { return RGBA32FLOAT; }
 
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  {IDENT}      { return IDENT; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {IDENT}      { return IDENT; }
 
 [^] { return BAD_CHARACTER; }

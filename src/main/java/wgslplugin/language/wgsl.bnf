@@ -185,6 +185,7 @@ type_decl ::=
     | mat_prefix (TYPE_LESS_THAN type_decl TYPE_GREATER_THAN)?
     | ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
     | texture_sampler_types
+    | BINDING_ARRAY TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
 
 vec_prefix ::=
       VEC2

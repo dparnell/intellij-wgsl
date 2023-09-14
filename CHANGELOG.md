@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - code fixes from @Uriopass
+- added support for `bindind_array` - #67
 
 ## [0.0.27]
 ### Added

@@ -99,6 +99,7 @@ public interface WGSLTypes {
   IElementType BANG = new WGSLTokenType("BANG");
   IElementType BGRA8UNORM = new WGSLTokenType("BGRA8UNORM");
   IElementType BGRA8UNORM_SRGB = new WGSLTokenType("BGRA8UNORM_SRGB");
+  IElementType BINDING_ARRAY = new WGSLTokenType("BINDING_ARRAY");
   IElementType BITCAST = new WGSLTokenType("BITCAST");
   IElementType BLOCK_COMMENT = new WGSLTokenType("BLOCK_COMMENT");
   IElementType BOOL = new WGSLTokenType("BOOL");
