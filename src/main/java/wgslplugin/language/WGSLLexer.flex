@@ -64,19 +64,19 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 
 %%
 
-<YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}         { return PREPROCESSOR_DECLARATION; }
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {WHITE_SPACE}    { return WHITE_SPACE; }
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {NEWLINE}        { return WHITE_SPACE; }
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {LINE_COMMENT}   { return LINE_COMMENT; }
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {BLOCK_COMMENT}  { return BLOCK_COMMENT; }
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {INT_LITERAL}    { return INT_LITERAL; }
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {UINT_LITERAL}   { return UINT_LITERAL; }
-<YYINITIAL, ATTRIBUTE>  "true"                      { return TRUE; }
-<YYINITIAL, ATTRIBUTE>  "false"                     { return FALSE; }
-<YYINITIAL, ATTRIBUTE>  {DECIMAL_FLOAT_LITERAL}     { return DECIMAL_FLOAT_LITERAL; }
+<YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}                      { return PREPROCESSOR_DECLARATION; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {WHITE_SPACE}      { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {NEWLINE}          { return WHITE_SPACE; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {LINE_COMMENT}     { return LINE_COMMENT; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {BLOCK_COMMENT}    { return BLOCK_COMMENT; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {INT_LITERAL}      { return INT_LITERAL; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {UINT_LITERAL}     { return UINT_LITERAL; }
+<YYINITIAL, ATTRIBUTE>  "true"                                   { return TRUE; }
+<YYINITIAL, ATTRIBUTE>  "false"                                  { return FALSE; }
+<YYINITIAL, ATTRIBUTE>  {DECIMAL_FLOAT_LITERAL}                  { return DECIMAL_FLOAT_LITERAL; }
 <YYINITIAL, ATTRIBUTE>  {HEX_FLOAT_LITERAL}         { return HEX_FLOAT_LITERAL; }
 <YYINITIAL>  "[["                                   { pushState(ATTRIBUTE); return ATTR_LEFT; }
-<YYINITIAL, TYPE_SPEC, ATTRIBUTE>  ","              { return COMMA; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  ","              { return COMMA; }
 <ATTRIBUTE>  "]]"                                   { popState(); return ATTR_RIGHT; }
 <YYINITIAL, ATTRIBUTE>  "("                         { return PAREN_LEFT; }
 <TYPE_SPEC>  "("                                    { popState(); return PAREN_LEFT; }

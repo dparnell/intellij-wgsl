@@ -14,6 +14,9 @@ public interface WGSLTypeDecl extends PsiElement {
   WGSLArrayTypeDecl getArrayTypeDecl();
 
   @Nullable
+  WGSLElementCountExpression getElementCountExpression();
+
+  @Nullable
   WGSLMatPrefix getMatPrefix();
 
   @Nullable

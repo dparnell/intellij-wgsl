@@ -2194,7 +2194,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | mat_prefix (TYPE_LESS_THAN type_decl TYPE_GREATER_THAN)?
   //     | ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   //     | texture_sampler_types
-  //     | BINDING_ARRAY TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+  //     | BINDING_ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
   public static boolean type_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl")) return false;
     boolean r;
@@ -2320,14 +2320,33 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // BINDING_ARRAY TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
+  // BINDING_ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
   private static boolean type_decl_11(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl_11")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, BINDING_ARRAY, TYPE_LESS_THAN);
     r = r && type_decl(b, l + 1);
+    r = r && type_decl_11_3(b, l + 1);
     r = r && consumeToken(b, TYPE_GREATER_THAN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ( COMMA element_count_expression )?
+  private static boolean type_decl_11_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_decl_11_3")) return false;
+    type_decl_11_3_0(b, l + 1);
+    return true;
+  }
+
+  // COMMA element_count_expression
+  private static boolean type_decl_11_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "type_decl_11_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && element_count_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
