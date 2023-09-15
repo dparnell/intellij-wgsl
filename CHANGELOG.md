@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.28]
 ### Added
 - code fixes from @Uriopass
 - added support for `bindind_array` - #67
