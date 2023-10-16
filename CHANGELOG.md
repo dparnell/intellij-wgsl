@@ -3,6 +3,8 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+
+## [0.0.29]
 - update for 2023.2.3
 
 ## [0.0.28]
