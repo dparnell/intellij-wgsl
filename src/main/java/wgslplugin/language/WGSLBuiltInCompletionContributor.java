@@ -116,34 +116,41 @@ public class WGSLBuiltInCompletionContributor extends CompletionContributor {
     }
 
     private LookupElement createStaticMethod(String name, List<String> arguments) {
+        LayeredIcon icon = new LayeredIcon(2);
+        icon.setIcon(AllIcons.Nodes.Method, 0);
+        icon.setIcon(AllIcons.Nodes.StaticMark, 1);
+
         return LookupElementBuilder.create(name)
-                .withIcon(new LayeredIcon(AllIcons.Nodes.Method, AllIcons.Nodes.StaticMark))
+                .withIcon(icon)
                 .withTailText("(" + String.join(", ", arguments) + ")")
                 .withInsertHandler(WITH_PARAMETERS);
     }
 
     private LookupElement createRegularMethod(String name, List<String> arguments) {
         return LookupElementBuilder.create(name)
-                .withIcon(new LayeredIcon(AllIcons.Nodes.Method))
+                .withIcon(AllIcons.Nodes.Method)
                 .withTailText("(" + String.join(", ", arguments) + ")")
                 .withInsertHandler(WITH_PARAMETERS);
     }
 
     private LookupElement createGlobalConstant(String name, String type) {
         return LookupElementBuilder.create(name)
-                .withIcon(new LayeredIcon(AllIcons.Nodes.Constant))
+                .withIcon(AllIcons.Nodes.Constant)
                 .withTailText(":" + type);
     }
 
     private LookupElement createGlobalVariable(String name, String type) {
         return LookupElementBuilder.create(name)
-                .withIcon(new LayeredIcon(AllIcons.Nodes.Variable))
+                .withIcon(AllIcons.Nodes.Variable)
                 .withTailText(":" + type);
     }
 
     private LookupElement createStruct(String name) {
+        LayeredIcon icon = new LayeredIcon(2);
+        icon.setIcon(AllIcons.Nodes.Class, 0);
+        icon.setIcon(AllIcons.Nodes.StaticMark, 1);
         return LookupElementBuilder.create(name)
-                .withIcon(new LayeredIcon(AllIcons.Nodes.Class, AllIcons.Nodes.StaticMark));
+                .withIcon(icon);
     }
 
 }
