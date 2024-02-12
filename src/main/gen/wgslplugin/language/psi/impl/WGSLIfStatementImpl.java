@@ -41,8 +41,8 @@ public class WGSLIfStatementImpl extends ASTWrapperPsiElement implements WGSLIfS
 
   @Override
   @NotNull
-  public WGSLParenExpression getParenExpression() {
-    return findNotNullChildByClass(WGSLParenExpression.class);
+  public WGSLExpression getExpression() {
+    return findNotNullChildByClass(WGSLExpression.class);
   }
 
 }

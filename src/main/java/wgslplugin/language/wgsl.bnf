@@ -301,7 +301,7 @@ assignment_statement ::=
       | UNDERSCORE EQUAL expression
 
 if_statement ::=
-     IF paren_expression compound_statement ( ELSE else_statement )?
+     IF expression compound_statement ( ELSE else_statement )?
 
 else_statement ::=
       compound_statement

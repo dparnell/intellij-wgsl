@@ -1208,14 +1208,14 @@ public class WgslParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IF paren_expression compound_statement ( ELSE else_statement )?
+  // IF expression compound_statement ( ELSE else_statement )?
   public static boolean if_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_statement")) return false;
     if (!nextTokenIs(b, IF)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, IF);
-    r = r && paren_expression(b, l + 1);
+    r = r && expression(b, l + 1);
     r = r && compound_statement(b, l + 1);
     r = r && if_statement_3(b, l + 1);
     exit_section_(b, m, IF_STATEMENT, r);

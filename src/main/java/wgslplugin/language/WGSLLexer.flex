@@ -46,6 +46,8 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %state TYPE_SPEC
 %state BIND_SPEC
 %state ATTRIBUTE
+%state PREPROCESSOR
+%state PREPROCESSOR_NESTED
 
 // note: newlines are parsed separately to allow leading whitespace on a preprocessor declaration line
 WHITE_SPACE=[^\S\r\n]+
@@ -58,13 +60,13 @@ INT_LITERAL              = -?0x[0-9a-fA-F]+|0|-?[1-9][0-9]*
 UINT_LITERAL             = 0x[0-9a-fA-F]+u|0u|[1-9][0-9]*u
 DECIMAL_FLOAT_LITERAL    = ((-?[0-9]*\.[0-9]+|-?[0-9]+\.[0-9]*)((e|E)(\+|-)?[0-9]+)?f?)|(-?[0-9]+(e|E)(\+|-)?[0-9]+f?)
 HEX_FLOAT_LITERAL        = -?0x((([0-9a-fA-F]*\.[0-9a-fA-F]+|[0-9a-fA-F]+\.[0-9a-fA-F]*)((p|P)(\+|-)?[0-9]+f?)?)|([0-9a-fA-F]+(p|P)(\+|-)?[0-9]+f?))
-PREPROCESSOR_DECLARATION = "#"[^\r\n]*
+PREPROCESSOR_DECLARATION = "#"[^\r\n\{\[]+
 
 IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 
 %%
 
-<YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}                      { return PREPROCESSOR_DECLARATION; }
+<YYINITIAL>  ^\s*{PREPROCESSOR_DECLARATION}                      { pushState(PREPROCESSOR); return PREPROCESSOR_DECLARATION; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {WHITE_SPACE}      { return WHITE_SPACE; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {NEWLINE}          { return WHITE_SPACE; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {LINE_COMMENT}     { return LINE_COMMENT; }
@@ -91,6 +93,15 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL>  "}"                                { return BRACE_RIGHT; }
 <YYINITIAL>  ";"                                { return SEMICOLON; }
 <YYINITIAL>  "@"                                { return AT; }
+
+<PREPROCESSOR, PREPROCESSOR_NESTED> "{"         { pushState(PREPROCESSOR_NESTED); return PREPROCESSOR_DECLARATION; }
+<PREPROCESSOR, PREPROCESSOR_NESTED> "}"         { popState(); return PREPROCESSOR_DECLARATION; }
+
+<PREPROCESSOR, PREPROCESSOR_NESTED> "["         { pushState(PREPROCESSOR); return PREPROCESSOR_DECLARATION; }
+<PREPROCESSOR, PREPROCESSOR_NESTED> "]"         { popState(); return PREPROCESSOR_DECLARATION; }
+<PREPROCESSOR> {NEWLINE}                        { popState(); return WHITE_SPACE; }
+<PREPROCESSOR_NESTED> {NEWLINE}                 { return WHITE_SPACE; }
+<PREPROCESSOR, PREPROCESSOR_NESTED> .+          { return PREPROCESSOR_DECLARATION; }
 
 <TYPE_SPEC>  "function"                         { return FUNCTION; }
 <TYPE_SPEC>  "private"                          { return PRIVATE; }

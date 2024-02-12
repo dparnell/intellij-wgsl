@@ -14,6 +14,6 @@ public interface WGSLIfStatement extends PsiElement {
   WGSLElseStatement getElseStatement();
 
   @NotNull
-  WGSLParenExpression getParenExpression();
+  WGSLExpression getExpression();
 
 }
