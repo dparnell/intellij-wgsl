@@ -3,6 +3,7 @@
 # wgsl plugin Changelog
 
 ## [Unreleased]
+- support for multi-line preprocessor declarations - #71
 
 ## [0.0.29]
 - update for 2023.2.3
