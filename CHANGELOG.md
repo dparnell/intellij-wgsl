@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## 0.0.32 - 2024-08-01
+
 - remove max release so hopefully it should work for all future versions - @andreypfau
 
 ## 0.0.31 - 2024-04-11
