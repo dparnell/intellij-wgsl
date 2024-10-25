@@ -39,6 +39,10 @@ public class WGSLVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitBuiltinTypeAlias(@NotNull WGSLBuiltinTypeAlias o) {
+    visitPsiElement(o);
+  }
+
   public void visitCaseBody(@NotNull WGSLCaseBody o) {
     visitPsiElement(o);
   }

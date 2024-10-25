@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- added support for builtin type aliases - #78
+- updated to latest IntelliJ platform
+
 ## 0.0.32 - 2024-08-01
 
 - remove max release so hopefully it should work for all future versions - @andreypfau

@@ -14,6 +14,9 @@ public interface WGSLTypeDecl extends PsiElement {
   WGSLArrayTypeDecl getArrayTypeDecl();
 
   @Nullable
+  WGSLBuiltinTypeAlias getBuiltinTypeAlias();
+
+  @Nullable
   WGSLElementCountExpression getElementCountExpression();
 
   @Nullable

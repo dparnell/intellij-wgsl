@@ -1,5 +1,6 @@
 {
   parserClass="wgslplugin.language.parser.WgslParser"
+  parserUtilClass="wgslplugin.language.parser.WgslParserUtil"
   // parserUtilClass="wgslplugin.language.parser.WgslParserUtil"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -186,6 +187,40 @@ type_decl ::=
     | ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
     | texture_sampler_types
     | BINDING_ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
+    | builtin_type_alias
+
+builtin_type_alias ::=
+      VEC2I
+    | VEC3I
+    | VEC4I
+    | VEC2U
+    | VEC3U
+    | VEC4U
+    | VEC2F
+    | VEC3F
+    | VEC4F
+    | VEC2H
+    | VEC3H
+    | VEC4H
+    | MAT2X2F
+    | MAT2X3F
+    | MAT2X4F
+    | MAT3X2F
+    | MAT3X3F
+    | MAT3X4F
+    | MAT4X2F
+    | MAT4X3F
+    | MAT4X4F
+    | MAT2X2H
+    | MAT2X3H
+    | MAT2X4H
+    | MAT3X2H
+    | MAT3X3H
+    | MAT3X4H
+    | MAT4X2H
+    | MAT4X3H
+    | MAT4X4H
+
 
 vec_prefix ::=
       VEC2

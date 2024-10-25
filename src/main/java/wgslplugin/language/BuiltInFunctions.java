@@ -8,6 +8,7 @@ import wgslplugin.language.psi.WGSLFunctionDecl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class BuiltInFunctions {
                     bos.write(buf, 0, L);
                     L = s.read(buf);
                 }
-                builtInFunctionsFile = WGSLElementFactory.createFile(element.getProject(), bos.toString("UTF-8"));
+                builtInFunctionsFile = WGSLElementFactory.createFile(element.getProject(), bos.toString(StandardCharsets.UTF_8));
 
                 allBuiltinFunctions = PsiTreeUtil.collectElements(builtInFunctionsFile, e -> e instanceof WGSLFunctionDecl);
                 for(PsiElement func : allBuiltinFunctions) {

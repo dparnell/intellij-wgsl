@@ -135,13 +135,47 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL, BIND_SPEC>  "texture_depth_cube_array"         { return TEXTURE_DEPTH_CUBE_ARRAY; }
 <YYINITIAL, BIND_SPEC>  "texture_depth_multisampled_2d"    { return TEXTURE_DEPTH_MULTISAMPLED_2D; }
 
-<YYINITIAL>  "type"                             { return TYPE; }
-<YYINITIAL>  "="                                { return EQUAL; }
-<TYPE_SPEC>  "="                                { popState(); return EQUAL; }
+<YYINITIAL>  "type"                                        { return TYPE; }
+<YYINITIAL>  "="                                           { return EQUAL; }
+<TYPE_SPEC>  "="                                           { popState(); return EQUAL; }
+
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "bool"                  { return BOOL; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "f32"                   { return FLOAT32; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "i32"                   { return INT32; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "u32"                   { return UINT32; }
+
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec2i"                 { return VEC2I; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec3i"                 { return VEC3I; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec4i"                 { return VEC4I; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec2u"                 { return VEC2U; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec3u"                 { return VEC3U; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec4u"                 { return VEC4U; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec2f"                 { return VEC2F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec3f"                 { return VEC3F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec4f"                 { return VEC4F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec2h"                 { return VEC2H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec3h"                 { return VEC3H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec4h"                 { return VEC4H; }
+
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x2f"                { return MAT2X2F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x3f"                { return MAT2X3F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x4f"                { return MAT2X4F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x2f"                { return MAT3X2F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x3f"                { return MAT3X3F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x4f"                { return MAT3X4F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x2f"                { return MAT4X2F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x3f"                { return MAT4X3F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x4f"                { return MAT4X4F; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x2h"                { return MAT2X2H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x3h"                { return MAT2X3H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat2x4h"                { return MAT2X4H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x2h"                { return MAT3X2H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x3h"                { return MAT3X3H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat3x4h"                { return MAT3X4H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x2h"                { return MAT4X2H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x3h"                { return MAT4X3H; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x4h"                { return MAT4X4H; }
+
 
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec2"                  { pushState(TYPE_SPEC); return VEC2; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "vec3"                  { pushState(TYPE_SPEC); return VEC3; }
@@ -157,6 +191,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x3"                { pushState(TYPE_SPEC); return MAT4X3; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "mat4x4"                { pushState(TYPE_SPEC); return MAT4X4; }
 <YYINITIAL, TYPE_SPEC, BIND_SPEC>  "atomic"                { pushState(TYPE_SPEC); return ATOMIC; }
+
 <YYINITIAL>  "let"                              { return LET; }
 <YYINITIAL>  "var"                              { pushState(TYPE_SPEC); return VAR; }
 <YYINITIAL>  "const"                            { pushState(TYPE_SPEC); return CONST; }

@@ -4,7 +4,7 @@ package wgslplugin.language.parser;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import static wgslplugin.language.psi.WGSLTypes.*;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
+import static wgslplugin.language.parser.WgslParserUtil.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.TokenSet;
@@ -347,6 +347,75 @@ public class WgslParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, BREAK);
     exit_section_(b, m, BREAK_STATEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // VEC2I
+  //     | VEC3I
+  //     | VEC4I
+  //     | VEC2U
+  //     | VEC3U
+  //     | VEC4U
+  //     | VEC2F
+  //     | VEC3F
+  //     | VEC4F
+  //     | VEC2H
+  //     | VEC3H
+  //     | VEC4H
+  //     | MAT2X2F
+  //     | MAT2X3F
+  //     | MAT2X4F
+  //     | MAT3X2F
+  //     | MAT3X3F
+  //     | MAT3X4F
+  //     | MAT4X2F
+  //     | MAT4X3F
+  //     | MAT4X4F
+  //     | MAT2X2H
+  //     | MAT2X3H
+  //     | MAT2X4H
+  //     | MAT3X2H
+  //     | MAT3X3H
+  //     | MAT3X4H
+  //     | MAT4X2H
+  //     | MAT4X3H
+  //     | MAT4X4H
+  public static boolean builtin_type_alias(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "builtin_type_alias")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, BUILTIN_TYPE_ALIAS, "<builtin type alias>");
+    r = consumeToken(b, VEC2I);
+    if (!r) r = consumeToken(b, VEC3I);
+    if (!r) r = consumeToken(b, VEC4I);
+    if (!r) r = consumeToken(b, VEC2U);
+    if (!r) r = consumeToken(b, VEC3U);
+    if (!r) r = consumeToken(b, VEC4U);
+    if (!r) r = consumeToken(b, VEC2F);
+    if (!r) r = consumeToken(b, VEC3F);
+    if (!r) r = consumeToken(b, VEC4F);
+    if (!r) r = consumeToken(b, VEC2H);
+    if (!r) r = consumeToken(b, VEC3H);
+    if (!r) r = consumeToken(b, VEC4H);
+    if (!r) r = consumeToken(b, MAT2X2F);
+    if (!r) r = consumeToken(b, MAT2X3F);
+    if (!r) r = consumeToken(b, MAT2X4F);
+    if (!r) r = consumeToken(b, MAT3X2F);
+    if (!r) r = consumeToken(b, MAT3X3F);
+    if (!r) r = consumeToken(b, MAT3X4F);
+    if (!r) r = consumeToken(b, MAT4X2F);
+    if (!r) r = consumeToken(b, MAT4X3F);
+    if (!r) r = consumeToken(b, MAT4X4F);
+    if (!r) r = consumeToken(b, MAT2X2H);
+    if (!r) r = consumeToken(b, MAT2X3H);
+    if (!r) r = consumeToken(b, MAT2X4H);
+    if (!r) r = consumeToken(b, MAT3X2H);
+    if (!r) r = consumeToken(b, MAT3X3H);
+    if (!r) r = consumeToken(b, MAT3X4H);
+    if (!r) r = consumeToken(b, MAT4X2H);
+    if (!r) r = consumeToken(b, MAT4X3H);
+    if (!r) r = consumeToken(b, MAT4X4H);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -2195,6 +2264,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | ATOMIC TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   //     | texture_sampler_types
   //     | BINDING_ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
+  //     | builtin_type_alias
   public static boolean type_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl")) return false;
     boolean r;
@@ -2211,6 +2281,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = type_decl_9(b, l + 1);
     if (!r) r = texture_sampler_types(b, l + 1);
     if (!r) r = type_decl_11(b, l + 1);
+    if (!r) r = builtin_type_alias(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

@@ -41,6 +41,12 @@ public class WGSLTypeDeclImpl extends ASTWrapperPsiElement implements WGSLTypeDe
 
   @Override
   @Nullable
+  public WGSLBuiltinTypeAlias getBuiltinTypeAlias() {
+    return findChildByClass(WGSLBuiltinTypeAlias.class);
+  }
+
+  @Override
+  @Nullable
   public WGSLElementCountExpression getElementCountExpression() {
     return findChildByClass(WGSLElementCountExpression.class);
   }

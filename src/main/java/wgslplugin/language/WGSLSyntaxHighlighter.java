@@ -6,6 +6,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
+import wgslplugin.language.psi.WGSLTokenType;
 import wgslplugin.language.psi.WGSLTypes;
 
 import java.util.Arrays;
@@ -47,7 +48,11 @@ public class WGSLSyntaxHighlighter  extends SyntaxHighlighterBase {
             , WGSLTypes.TEXTURE_DEPTH_CUBE_ARRAY , WGSLTypes.TEXTURE_DEPTH_MULTISAMPLED_2D
             , WGSLTypes.UINT32 , WGSLTypes.VEC2 , WGSLTypes.VEC3 , WGSLTypes.VEC4
             , WGSLTypes.TEXTURE_2D_ARRAY, WGSLTypes.BINDING_ARRAY
-    );
+            , WGSLTypes.VEC2I, WGSLTypes.VEC3I, WGSLTypes.VEC4I
+            , WGSLTypes.VEC2U, WGSLTypes.VEC3U, WGSLTypes.VEC4U
+            , WGSLTypes.VEC2F, WGSLTypes.VEC3F, WGSLTypes.VEC4F
+            , WGSLTypes.VEC2H, WGSLTypes.VEC3H, WGSLTypes.VEC4H
+            );
 
     private static final Set<IElementType> KEYWORD_TOKENS = tokens(
               WGSLTypes.BITCAST , WGSLTypes.BREAK

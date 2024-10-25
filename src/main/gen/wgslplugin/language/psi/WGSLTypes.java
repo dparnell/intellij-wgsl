@@ -16,6 +16,7 @@ public interface WGSLTypes {
   IElementType ATTRIBUTE_LIST = new WGSLElementType("ATTRIBUTE_LIST");
   IElementType ATTRIBUTE_NAME = new WGSLElementType("ATTRIBUTE_NAME");
   IElementType BREAK_STATEMENT = new WGSLElementType("BREAK_STATEMENT");
+  IElementType BUILTIN_TYPE_ALIAS = new WGSLElementType("BUILTIN_TYPE_ALIAS");
   IElementType CASE_BODY = new WGSLElementType("CASE_BODY");
   IElementType CASE_SELECTORS = new WGSLElementType("CASE_SELECTORS");
   IElementType COMPOUND_ASSIGNMENT_OPERATOR = new WGSLElementType("COMPOUND_ASSIGNMENT_OPERATOR");
@@ -143,14 +144,32 @@ public interface WGSLTypes {
   IElementType LINE_COMMENT = new WGSLTokenType("LINE_COMMENT");
   IElementType LOOP = new WGSLTokenType("LOOP");
   IElementType MAT2X2 = new WGSLTokenType("MAT2X2");
+  IElementType MAT2X2F = new WGSLTokenType("MAT2X2F");
+  IElementType MAT2X2H = new WGSLTokenType("MAT2X2H");
   IElementType MAT2X3 = new WGSLTokenType("MAT2X3");
+  IElementType MAT2X3F = new WGSLTokenType("MAT2X3F");
+  IElementType MAT2X3H = new WGSLTokenType("MAT2X3H");
   IElementType MAT2X4 = new WGSLTokenType("MAT2X4");
+  IElementType MAT2X4F = new WGSLTokenType("MAT2X4F");
+  IElementType MAT2X4H = new WGSLTokenType("MAT2X4H");
   IElementType MAT3X2 = new WGSLTokenType("MAT3X2");
+  IElementType MAT3X2F = new WGSLTokenType("MAT3X2F");
+  IElementType MAT3X2H = new WGSLTokenType("MAT3X2H");
   IElementType MAT3X3 = new WGSLTokenType("MAT3X3");
+  IElementType MAT3X3F = new WGSLTokenType("MAT3X3F");
+  IElementType MAT3X3H = new WGSLTokenType("MAT3X3H");
   IElementType MAT3X4 = new WGSLTokenType("MAT3X4");
+  IElementType MAT3X4F = new WGSLTokenType("MAT3X4F");
+  IElementType MAT3X4H = new WGSLTokenType("MAT3X4H");
   IElementType MAT4X2 = new WGSLTokenType("MAT4X2");
+  IElementType MAT4X2F = new WGSLTokenType("MAT4X2F");
+  IElementType MAT4X2H = new WGSLTokenType("MAT4X2H");
   IElementType MAT4X3 = new WGSLTokenType("MAT4X3");
+  IElementType MAT4X3F = new WGSLTokenType("MAT4X3F");
+  IElementType MAT4X3H = new WGSLTokenType("MAT4X3H");
   IElementType MAT4X4 = new WGSLTokenType("MAT4X4");
+  IElementType MAT4X4F = new WGSLTokenType("MAT4X4F");
+  IElementType MAT4X4H = new WGSLTokenType("MAT4X4H");
   IElementType MINUS = new WGSLTokenType("MINUS");
   IElementType MINUS_EQUAL = new WGSLTokenType("MINUS_EQUAL");
   IElementType MINUS_MINUS = new WGSLTokenType("MINUS_MINUS");
@@ -247,8 +266,20 @@ public interface WGSLTypes {
   IElementType UNIFORM = new WGSLTokenType("UNIFORM");
   IElementType VAR = new WGSLTokenType("VAR");
   IElementType VEC2 = new WGSLTokenType("VEC2");
+  IElementType VEC2F = new WGSLTokenType("VEC2F");
+  IElementType VEC2H = new WGSLTokenType("VEC2H");
+  IElementType VEC2I = new WGSLTokenType("VEC2I");
+  IElementType VEC2U = new WGSLTokenType("VEC2U");
   IElementType VEC3 = new WGSLTokenType("VEC3");
+  IElementType VEC3F = new WGSLTokenType("VEC3F");
+  IElementType VEC3H = new WGSLTokenType("VEC3H");
+  IElementType VEC3I = new WGSLTokenType("VEC3I");
+  IElementType VEC3U = new WGSLTokenType("VEC3U");
   IElementType VEC4 = new WGSLTokenType("VEC4");
+  IElementType VEC4F = new WGSLTokenType("VEC4F");
+  IElementType VEC4H = new WGSLTokenType("VEC4H");
+  IElementType VEC4I = new WGSLTokenType("VEC4I");
+  IElementType VEC4U = new WGSLTokenType("VEC4U");
   IElementType WHILE = new WGSLTokenType("WHILE");
   IElementType WORKGROUP = new WGSLTokenType("WORKGROUP");
   IElementType WRITE = new WGSLTokenType("WRITE");
@@ -281,6 +312,9 @@ public interface WGSLTypes {
       }
       else if (type == BREAK_STATEMENT) {
         return new WGSLBreakStatementImpl(node);
+      }
+      else if (type == BUILTIN_TYPE_ALIAS) {
+        return new WGSLBuiltinTypeAliasImpl(node);
       }
       else if (type == CASE_BODY) {
         return new WGSLCaseBodyImpl(node);
