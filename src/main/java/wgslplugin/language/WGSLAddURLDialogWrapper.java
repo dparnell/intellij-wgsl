@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 public class WGSLAddURLDialogWrapper extends DialogWrapper {
@@ -22,7 +23,7 @@ public class WGSLAddURLDialogWrapper extends DialogWrapper {
                 String pt = textField.getText();
                 if (StringUtil.isNotEmpty(pt)) {
                     try {
-                        if (!new URL(pt).getFile().endsWith(".wgsl")) throw new MalformedURLException();
+                        if (!URI.create(pt).toURL().getFile().endsWith(".wgsl")) throw new MalformedURLException();
                     } catch (MalformedURLException e) {
                         return new ValidationInfo("Specify correct URL with file extension", textField);
                     }

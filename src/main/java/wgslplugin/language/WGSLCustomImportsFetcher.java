@@ -7,8 +7,10 @@ import wgslplugin.language.psi.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,7 @@ public class WGSLCustomImportsFetcher {
             for (String customImport : customImports) {
                 try
                 {
-                    URL url = new URL(customImport);
+                    URL url = URI.create(customImport).toURL();
                     URLConnection urlConnection = url.openConnection();
                     InputStream inputStream = urlConnection.getInputStream();
 
@@ -50,7 +52,7 @@ public class WGSLCustomImportsFetcher {
                         bos.write(buf, 0, L);
                         L = inputStream.read(buf);
                     }
-                    PsiFile dummyFile = WGSLElementFactory.createFile(element.getProject(), bos.toString("UTF-8"));
+                    PsiFile dummyFile = WGSLElementFactory.createFile(element.getProject(), bos.toString(StandardCharsets.UTF_8));
                     dummyFiles.add(dummyFile);
 
                     PsiElement[] customFunctions = PsiTreeUtil.collectElements(dummyFile, e -> e instanceof WGSLFunctionDecl);

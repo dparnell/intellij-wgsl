@@ -83,7 +83,7 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL, ATTRIBUTE>  "("                         { return PAREN_LEFT; }
 <TYPE_SPEC>  "("                                    { popState(); return PAREN_LEFT; }
 <YYINITIAL, ATTRIBUTE>  ")"                         { return PAREN_RIGHT; }
-<YYINITIAL>  "array"                            { pushState(TYPE_SPEC); return ARRAY; }
+<YYINITIAL, TYPE_SPEC>  "array"                 { pushState(TYPE_SPEC); return ARRAY; }
 <YYINITIAL>  "<"                                { return LESS_THAN; }
 <TYPE_SPEC, BIND_SPEC>  "<"                     { return TYPE_LESS_THAN; }
 <YYINITIAL>  ">"                                { return GREATER_THAN; }

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Allow nested array types
+
 ## 0.0.33 - 2024-10-25
 
 - added support for builtin type aliases - #78
