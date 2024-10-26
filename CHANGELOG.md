@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## 0.0.34 - 2024-10-26
+
 - Allow nested array types
 
 ## 0.0.33 - 2024-10-25
