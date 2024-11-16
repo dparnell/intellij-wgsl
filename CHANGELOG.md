@@ -3,6 +3,7 @@
 # wgsl plugin Changelog
 
 ## Unreleased
+- support array literals
 
 ## 0.0.34 - 2024-10-26
 

@@ -1580,7 +1580,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // func_call_statement
   //     | variable_reference
-  //     | type_decl argument_expression_list
+  //     | (type_decl | ARRAY) argument_expression_list
   //     | const_literal
   //     | paren_expression
   //     | BITCAST TYPE_LESS_THAN type_decl TYPE_GREATER_THAN paren_expression
@@ -1598,14 +1598,23 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // type_decl argument_expression_list
+  // (type_decl | ARRAY) argument_expression_list
   private static boolean primary_expression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = type_decl(b, l + 1);
+    r = primary_expression_2_0(b, l + 1);
     r = r && argument_expression_list(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // type_decl | ARRAY
+  private static boolean primary_expression_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "primary_expression_2_0")) return false;
+    boolean r;
+    r = type_decl(b, l + 1);
+    if (!r) r = consumeToken(b, ARRAY);
     return r;
   }
 

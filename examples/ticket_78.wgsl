@@ -14,3 +14,5 @@ fn vs_main(@builtin(vertex_index) in_vertex_index: u32) -> Vertex {
 fn fs_main(in: Vertex) -> @location(0) vec4f {
 	return vec4(1.0, 0.0, 0.0, 1.0);
 }
+
+const pos = array(vec2f(0, -1), vec2f(1, -1), vec2f(0, 0), vec2f(1, 0));

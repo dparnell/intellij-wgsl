@@ -273,7 +273,7 @@ const_expression ::=
 primary_expression ::=
       func_call_statement
     | variable_reference
-    | type_decl argument_expression_list
+    | (type_decl | ARRAY) argument_expression_list
     | const_literal
     | paren_expression
     | BITCAST TYPE_LESS_THAN type_decl TYPE_GREATER_THAN paren_expression

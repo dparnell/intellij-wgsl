@@ -43,6 +43,7 @@ import static wgslplugin.language.psi.WGSLTypes.*;
 %type IElementType
 %unicode
 
+%state ARRAY_SPEC
 %state TYPE_SPEC
 %state BIND_SPEC
 %state ATTRIBUTE
@@ -76,15 +77,16 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL, ATTRIBUTE>  "true"                                   { return TRUE; }
 <YYINITIAL, ATTRIBUTE>  "false"                                  { return FALSE; }
 <YYINITIAL, ATTRIBUTE>  {DECIMAL_FLOAT_LITERAL}                  { return DECIMAL_FLOAT_LITERAL; }
-<YYINITIAL, ATTRIBUTE>  {HEX_FLOAT_LITERAL}         { return HEX_FLOAT_LITERAL; }
-<YYINITIAL>  "[["                                   { pushState(ATTRIBUTE); return ATTR_LEFT; }
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  ","              { return COMMA; }
-<ATTRIBUTE>  "]]"                                   { popState(); return ATTR_RIGHT; }
-<YYINITIAL, ATTRIBUTE>  "("                         { return PAREN_LEFT; }
-<TYPE_SPEC>  "("                                    { popState(); return PAREN_LEFT; }
-<YYINITIAL, ATTRIBUTE>  ")"                         { return PAREN_RIGHT; }
-<YYINITIAL, TYPE_SPEC>  "array"                 { pushState(TYPE_SPEC); return ARRAY; }
-<YYINITIAL>  "<"                                { return LESS_THAN; }
+<YYINITIAL, ATTRIBUTE>  {HEX_FLOAT_LITERAL}                      { return HEX_FLOAT_LITERAL; }
+<YYINITIAL>  "[["                                                { pushState(ATTRIBUTE); return ATTR_LEFT; }
+<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  ","                { return COMMA; }
+<ATTRIBUTE>  "]]"                                                { popState(); return ATTR_RIGHT; }
+<YYINITIAL, ATTRIBUTE>  "("                                      { return PAREN_LEFT; }
+<TYPE_SPEC>  "("                                                 { popState(); return PAREN_LEFT; }
+<YYINITIAL, ATTRIBUTE>  ")"                                      { return PAREN_RIGHT; }
+<YYINITIAL>  "array"                                             { pushState(ARRAY_SPEC); return ARRAY; }
+<TYPE_SPEC>  "array"                                             { pushState(TYPE_SPEC); return ARRAY; }
+<YYINITIAL>  "<"                                                 { return LESS_THAN; }
 <TYPE_SPEC, BIND_SPEC>  "<"                     { return TYPE_LESS_THAN; }
 <YYINITIAL>  ">"                                { return GREATER_THAN; }
 <TYPE_SPEC, BIND_SPEC>  ">"                     { popState(); return TYPE_GREATER_THAN; }
@@ -93,6 +95,9 @@ IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z][0-9a-zA-Z_]*)
 <YYINITIAL>  "}"                                { return BRACE_RIGHT; }
 <YYINITIAL>  ";"                                { return SEMICOLON; }
 <YYINITIAL>  "@"                                { return AT; }
+
+<ARRAY_SPEC> "(" { popState(); return PAREN_LEFT; }
+<ARRAY_SPEC> "<" { popState(); pushState(TYPE_SPEC); return TYPE_LESS_THAN; }
 
 <PREPROCESSOR, PREPROCESSOR_NESTED> "{"         { pushState(PREPROCESSOR_NESTED); return PREPROCESSOR_DECLARATION; }
 <PREPROCESSOR, PREPROCESSOR_NESTED> "}"         { popState(); return PREPROCESSOR_DECLARATION; }
