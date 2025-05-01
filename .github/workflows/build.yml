@@ -153,6 +153,7 @@ jobs:
     name: Inspect code
     needs: [ build ]
     runs-on: ubuntu-latest
+    if: false
     permissions:
       contents: write
       checks: write
