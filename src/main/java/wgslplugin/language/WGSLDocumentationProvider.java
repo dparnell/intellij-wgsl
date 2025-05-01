@@ -44,10 +44,10 @@ public class WGSLDocumentationProvider extends AbstractDocumentationProvider {
             fn = fn + header.getText() + "\n```";
             b.append(generateHTML(e, fn));
             b.append(DocumentationMarkup.CONTENT_END);
-            b.append("<hr/>");
 
             @Nullable WGSLDocs docs = func.getDocs();
             if (docs != null) {
+                b.append("<hr/>");
                 b.append(DocumentationMarkup.CONTENT_START);
                 String text = docs.getText();
                 text = text.substring(3, text.length() - 2);

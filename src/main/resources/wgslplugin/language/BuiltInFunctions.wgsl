@@ -912,3 +912,393 @@ fn textureStore(t: texture_storage_2d<F,write>, coords: vec2<i32>, value: vec4<T
 fn textureStore(t: texture_storage_2d_array<F,write>, coords: vec2<i32>, array_index: i32, value: vec4<T>) {}
 fn textureStore(t: texture_storage_3d<F,write>, coords: vec3<i32>, value: vec4<T>) {}
 
+// atomic functions
+
+/**
+Returns the atomically loaded the value pointed to by atomic_ptr. It does not modify the object.
+*/
+fn atomicLoad(atomic_ptr: ptr<AS, atomic<T>, read_write>) -> T {}
+
+/**
+Atomically stores the value v in the atomic object pointed to by atomic_ptr.
+*/
+fn atomicStore(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) {}
+
+/**
+Atomically performs an addition operation on the atomic object pointed to by atomic_ptr with the value v, and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicAdd(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Atomically performs a subtraction operation on the atomic object pointed to by atomic_ptr with the value v, and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicSub(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Atomically performs a maximum operation on the atomic object pointed to by atomic_ptr with the value v, and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicMax(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Atomically performs a minimum operation on the atomic object pointed to by atomic_ptr with the value v, and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicMin(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Atomically performs a bitwise AND operation on the atomic object pointed to by atomic_ptr with the value v, and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicAnd(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Atomically performs a bitwise OR operation on the atomic object pointed to by atomic_ptr with the value v, and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicOr(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Atomically performs a bitwise XOR operation on the atomic object pointed to by atomic_ptr with the value v, and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicXor(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Atomically stores the value v in the atomic object pointed to by atomic_ptr and returns the original value stored in the atomic object before the operation.
+*/
+fn atomicExchange(atomic_ptr: ptr<AS, atomic<T>, read_write>, v: T) -> T {}
+
+/**
+Performs the following steps atomically:
+
+1. Load the original value pointed to by atomic_ptr.
+2. Compare the original value to the value cmp using an equality operation.
+3. Store the value v only if the result of the equality comparison was true.
+
+Returns a two member structure, where the first member, old_value, is the original value of the atomic object before the operation and the second member, exchanged, is whether or not the comparison succeeded.
+*/
+fn atomicCompareExchangeWeak(
+      atomic_ptr: ptr<AS, atomic<T>, read_write>,
+      cmp: T,
+      v: T) -> __atomic_compare_exchange_result<T> {}
+
+// packing functions
+
+/**
+Converts four normalized floating point values to 8-bit signed integers, and then combines them into one u32 value.
+Component e[i] of the input is converted to an 8-bit twos complement integer value ⌊ 0.5 + 127 × min(1, max(-1, e[i])) ⌋ which is then placed in bits 8 × i through 8 × i + 7 of the result.
+*/
+fn pack4x8snorm(e: vec4<f32>) -> u32 {}
+
+/**
+Converts four normalized floating point values to 8-bit unsigned integers, and then combines them into one u32 value.
+Component e[i] of the input is converted to an 8-bit unsigned integer value ⌊ 0.5 + 255 × min(1, max(0, e[i])) ⌋ which is then placed in bits 8 × i through 8 × i + 7 of the result.
+*/
+fn pack4x8unorm(e: vec4<f32>) -> u32 {}
+
+/**
+Pack the lower 8 bits of each component of e into a u32 value and drop all the unused bits.
+Component e[i] of the input is mapped to bits 8 × i through 8 × i + 7 of the result.
+*/
+fn pack4xI8(e: vec4<i32>) -> u32 {}
+
+/**
+Pack the lower 8 bits of each component of e into a u32 value and drop all the unused bits.
+Component e[i] of the input is mapped to bits 8 × i through 8 × i + 7 of the result.
+*/
+fn pack4xU8(e: vec4<u32>) -> u32 {}
+
+/**
+Clamp each component of e in the range [-128, 127] and then pack the lower 8 bits of each component into a u32 value.
+Component e[i] of the input is mapped to bits 8 × i through 8 × i + 7 of the result.
+*/
+fn pack4xI8Clamp(e: vec4<i32>) -> u32 {}
+
+/**
+Clamp each component of e in the range of [0, 255] and then pack the lower 8 bits of each component into a u32 value.
+Component e[i] of the input is mapped to bits 8 × i through 8 × i + 7 of the result.
+*/
+fn pack4xU8Clamp(e: vec4<u32>) -> u32 {}
+
+/**
+Converts two normalized floating point values to 16-bit signed integers, and then combines them into one u32 value.
+Component e[i] of the input is converted to a 16-bit twos complement integer value ⌊ 0.5 + 32767 × min(1, max(-1, e[i])) ⌋ which is then placed in bits 16 × i through 16 × i + 15 of the result.
+*/
+fn pack2x16snorm(e: vec2<f32>) -> u32 {}
+
+/**
+Converts two normalized floating point values to 16-bit unsigned integers, and then combines them into one u32 value.
+Component e[i] of the input is converted to a 16-bit unsigned integer value ⌊ 0.5 + 65535 × min(1, max(0, e[i])) ⌋ which is then placed in bits 16 × i through 16 × i + 15 of the result.
+*/
+fn pack2x16unorm(e: vec2<f32>) -> u32 {}
+
+/**
+Converts two floating point values to half-precision floating point numbers, and then combines them into one u32 value.
+Component e[i] of the input is converted to a IEEE-754 binary16 value, which is then placed in bits 16 × i through 16 × i + 15 of the result. See § 15.7.6 Floating Point Conversion.
+If either e[0] or e[1] is outside the finite range of binary16 then:
+
+* It is a shader-creation error if e is a const-expression.
+* It is a pipeline-creation error if e is an override-expression.
+* Otherwise the result is an indeterminate value for u32.
+*/
+fn pack2x16float(e: vec2<f32>) -> u32 {}
+
+// unpacking functions
+
+/**
+Decomposes a 32-bit value into four 8-bit chunks, then reinterprets each chunk as a signed normalized floating point value.
+Component i of the result is max(v ÷ 127, -1), where v is the interpretation of bits 8×i through 8×i + 7 of e as a twos-complement signed integer.
+*/
+fn unpack4x8snorm(e: u32) -> vec4<f32> {}
+
+/**
+Decomposes a 32-bit value into four 8-bit chunks, then reinterprets each chunk as an unsigned normalized floating point value.
+Component i of the result is v ÷ 255, where v is the interpretation of bits 8×i through 8×i + 7 of e as an unsigned integer.
+*/
+fn unpack4x8unorm(e: u32) -> vec4<f32> {}
+
+/**
+e is interpreted as a vector with four 8-bit signed integer components. Unpack e into a vec4<i32> with sign extension.
+*/
+fn unpack4xI8(e: u32) -> vec4<i32> {}
+
+/**
+e is interpreted as a vector with four 8-bit unsigned integer components. Unpack e into a vec4<u32> with zero extension.
+*/
+fn unpack4xU8(e: u32) -> vec4<u32> {}
+
+/**
+Decomposes a 32-bit value into two 16-bit chunks, then reinterprets each chunk as a signed normalized floating point value.
+Component i of the result is max(v ÷ 32767, -1), where v is the interpretation of bits 16×i through 16×i + 15 of e as a twos-complement signed integer.
+*/
+fn unpack2x16snorm(e: u32) -> vec2<f32> {}
+
+/**
+	Decomposes a 32-bit value into two 16-bit chunks, then reinterprets each chunk as an unsigned normalized floating point value.
+Component i of the result is v ÷ 65535, where v is the interpretation of bits 16×i through 16×i + 15 of e as an unsigned integer.
+*/
+fn unpack2x16unorm(e: u32) -> vec2<f32> {}
+
+/**
+Decomposes a 32-bit value into two 16-bit chunks, and reinterpets each chunk as a floating point value.
+Component i of the result is the f32 representation of v, where v is the interpretation of bits 16×i through 16×i + 15 of e as an IEEE-754 binary16 value. See § 15.7.6 Floating Point Conversion.
+*/
+fn unpack2x16float(e: u32) -> vec2<f32> {}
+
+// synchronization functions
+
+/**
+Executes a control barrier synchronization function that affects memory and atomic operations in the storage address space.
+*/
+fn storageBarrier() {}
+
+/**
+Executes a control barrier synchronization function that affects memory operations in the handle address space.
+*/
+fn textureBarrier() {}
+
+/**
+Executes a control barrier synchronization function that affects memory and atomic operations in the workgroup address space.
+*/
+fn workgroupBarrier() {}
+
+/**
+Returns the value pointed to by p to all invocations in the workgroup. The return value is uniform. p must be a uniform value.
+Executes a control barrier synchronization function that affects memory and atomic operations in the workgroup address space.
+*/
+fn workgroupUniformLoad(p : ptr<workgroup, T>) -> T {}
+
+/**
+Atomically loads the value pointed to by p and returns it to all invocations in the workgroup. The return value is uniform. p must be a uniform value.
+Executes a control barrier synchronization function that affects memory and atomic operations in the workgroup address space.
+*/
+fn workgroupUniformLoad(p : ptr<workgroup, atomic<T>, read_write>) -> T {}
+
+// subgroup functions
+
+/**
+Reduction operation.
+Returns the sum of e among all active invocations in the subgroup.
+*/
+fn subgroupAdd(e : T) -> T {}
+
+/**
+Exclusive prefix scan operation.
+Returns the sum of e among all active invocations in the subgroup whose subgroup invocation IDs are less than the current invocation’s id.
+
+The value returned for the invocation with the lowest id among active invocations is T(0).
+*/
+fn subgroupExclusiveAdd(e : T) -> T {}
+
+/**
+Inclusive prefix scan operation.
+Returns the sum of e among all active invocations in the subgroup whose subgroup invocation IDs are less than or equal to the current invocation’s id.
+
+## Note
+equivalent to subgroupExclusiveAdd(x) + x.
+*/
+fn subgroupInclusiveAdd(e : T) -> T {}
+
+/**
+Returns true if e is true for all active invocations in the subgroup.
+*/
+fn subgroupAll(e : bool) -> bool {}
+
+/**
+Reduction operation.
+Returns the bitwise and (&) of e among all active invocations in the subgroup.
+*/
+fn subgroupAnd(e : T) -> T {}
+
+/**
+Returns true if e is true for any active invocations in the subgroup.
+*/
+fn subgroupAny(e : bool) -> bool {}
+
+/**
+Returns a bitmask of the active invocations in the subgroup for whom pred is true.
+* The x component of the return value contains invocations 0 through 31.
+* The y component of the return value contains invocations 32 through 63.
+* The z component of the return value contains invocations 64 through 95.
+* The w component of the return value contains invocations 96 through 127.
+
+Within each component, the IDs are in ascending order by bit position (e.g. ID 32 is at bit position 0 in the y component).
+*/
+fn subgroupBallot(pred : bool) -> vec4<u32> {}
+
+/**
+Returns the value of e from the invocation whose subgroup invocation ID matches id in the subgroup to all active invocations in the subgroup.
+id must be a const-expression in the range [0, 128).
+
+It is a dynamic error if id does not select an active invocation.
+
+Note: If a non-constant version of id is required, use subgroupShuffle instead.
+*/
+fn subgroupBroadcast(e : T, id : I) -> T {}
+
+/**
+Returns the value of e from the invocation that has the lowest subgroup invocation ID among active invocations in the subgroup to all active invocations in the subgroup.
+*/
+fn subgroupBroadcastFirst(e : T) -> T {}
+
+/**
+Returns true if the current invocation has the lowest subgroup invocation ID among active invocations in the subgroup.
+*/
+fn subgroupElect() -> bool {}
+
+/**
+Reduction operation.
+Returns the maximum value of e among all active invocations in the subgroup.
+*/
+fn subgroupMax(e : T) -> T {}
+
+/**
+Reduction operation.
+Returns the minimum value of e among all active invocations in the subgroup.
+*/
+fn subgroupMin(e : T) -> T {}
+
+/**
+Reduction operation.
+Returns the product of e among all active invocations in the subgroup.
+*/
+fn subgroupMul(e : T) -> T {}
+
+/**
+Exclusive prefix scan operation.
+Returns the product of e among all active invocations in the subgroup whose subgroup invocation IDs are less than the current invocation’s id.
+
+The value returned for the invocation with the lowest id among active invocations is T(1).
+*/
+fn subgroupExclusiveMul(e : T) -> T {}
+
+/**
+Inclusive prefix scan operation.
+Returns the product of e among all active invocations in the subgroup whose subgroup invocation IDs are less than or equal to the current invocation’s id.
+
+## Note
+equivalent to subgroupExclusiveMul(x) * x.
+*/
+fn subgroupInclusiveMul(e : T) -> T {}
+
+/**
+Reduction operation.
+Returns the bitwise or (|) of e among all active invocations in the subgroup.
+*/
+fn subgroupOr(e : T) -> T {}
+
+/**
+Returns e from the invocation whose subgroup invocation ID matches id.
+If id is outside the range [0, 128), then:
+* It is a shader-creation error if id is a const-expression.
+* It is a pipeline-creation error if id is an override-expression.
+
+An indeterminate value is returned if id does not select an active invocation.
+*/
+fn subgroupShuffle(e : T, id : I) -> T {}
+
+/**
+Returns e from the invocation whose subgroup invocation ID matches subgroup_invocation_id + delta for the current invocation.
+If delta is greater than 127, then:
+* It is a shader-creation error if delta is a const-expression.
+* It is a pipeline-creation error if delta is an override-expression.
+
+A subgroup_uniformity diagnostic is triggered if delta is not a uniform value. An indeterminate value is returned if subgroup_invocation_id + delta does not select an active invocation or if delta is a not a uniform value within the subgroup.
+*/
+fn subgroupShuffleDown(e : T, delta : u32) -> T {}
+
+/**
+Returns e from the invocation whose subgroup invocation ID matches subgroup_invocation_id - delta for the current invocation.
+If delta is greater than 127, then:
+* It is a shader-creation error if delta is a const-expression.
+* It is a pipeline-creation error if delta is an override-expression.
+
+A subgroup_uniformity diagnostic is triggered if delta is not a uniform value. An indeterminate value is returned if subgroup_invocation_id - delta does not select an active invocation or if delta is not a uniform value within the subgroup.
+*/
+fn subgroupShuffleUp(e : T, delta : u32) -> T {}
+
+/**
+Returns e from the invocation whose subgroup invocation ID matches subgroup_invocation_id ^ mask for the current invocation.
+If mask is greater than 127, then:
+* It is a shader-creation error if mask is a const-expression.
+* It is a pipeline-creation error if mask is an override-expression.
+
+A subgroup_uniformity diagnostic is triggered if mask is not a uniform value. An indeterminate value is returned if mask does not select an active invocation or if mask is not a uniform value within the subgroup.
+*/
+fn subgroupShuffleXor(e : T,  mask : u32) -> T {}
+
+/**
+Reduction operation.
+Returns the bitwise xor (^) of e among all active invocations in the subgroup.
+*/
+fn subgroupXor(e : T) -> T {}
+
+// quad functions
+
+/**
+Returns the value of e from the invocation whose quad invocation ID matches id in the quad to all active invocations in the quad.
+id must be a const-expression in the range [0, 4).
+
+An indeterminate value is returned if id does not select an active invocation.
+
+## Note
+Unlike subgroupBroadcast, there is currently no non-constant alternative.
+*/
+fn quadBroadcast(e : T, id : I) -> T {}
+
+/**
+Returns the value of e from the invocation in the quad with the opposite coordinates. That is:
+* IDs 0 and 3 swap.
+* IDs 1 and 2 swap.
+*/
+fn quadSwapDiagonal(e : T) -> T {}
+
+/**
+Returns the value of e from invocation in the quad sharing the same X dimension. That is:
+* IDs 0 and 1 swap.
+* IDs 2 and 3 swap.
+*/
+fn quadSwapX(e : T) -> T {}
+
+/**
+Returns the value of e from invocation in the quad sharing the same Y dimension. That is:
+* IDs 0 and 2 swap.
+* IDs 1 and 3 swap.
+*/
+fn quadSwapY(e : T) -> T {}

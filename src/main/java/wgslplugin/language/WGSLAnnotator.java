@@ -20,55 +20,23 @@ import java.util.stream.Collectors;
 
 public class WGSLAnnotator implements Annotator {
 
-    public static final Set<String> BUILT_IN_FUNCTION_NAMES = names(
-            // logical builtins
-              "all", "any", "select"
-            // array builtins
-            , "arrayLength"
-            // float builtins
-            , "abs", "acos", "asin", "atan", "atan2", "ceil", "clamp", "cos", "cosh", "cross"
-            , "distance", "exp", "exp2", "faceForward", "floor", "fma", "fract", "frexp"
-            , "frexp", "inverseSqrt", "ldexp", "length", "log", "log2", "max", "min", "mix"
-            , "modf", "normalize", "pow", "quantizeToF16", "reflect", "refract", "round"
-            , "saturate", "sign", "sin", "sinh", "smoothstep", "sqrt", "step", "tan", "tanh", "trunc"
-            // integer builtins
-            , "countOneBits", "reverseBits"
-            // matrix builtins
-            , "determinant", "transpose"
-            // vector builtins
-            , "dot"
-            // texture builtins
-            , "textureDimensions", "textureLoad", "textureNumLayers", "textureNumLevels", "textureNumSamples"
-            , "textureSample", "textureSampleBias", "textureSampleCompare", "textureSampleCompareLevel"
-            , "textureSampleGrad", "textureSampleLevel", "textureStore"
-            // atomic builtins
-            , "atomicLoad", "atomicStore"
-            , "atomicAdd", "atomicSub", "atomicMax", "atomicMin", "atomicAnd", "atomicOr", "atomicXor"
-            , "atomicExchange", "atomicCompareExchangeWeak"
-            // data packing builtins
-            , "pack4x8snorm", "pack4x8unorm", "pack2x16snorm", "pack2x16unorm", "pack2x16float"
-            , "unpack4x8snorm", "unpack4x8unorm", "unpack2x16snorm", "unpack2x16unorm", "unpack2x16float"
-            // synchronization builtins
-            , "storageBarrier", "workgroupBarrier"
-    );
-
-    public static final Set<String> FRAGMENT_SHADER_ONLY_BUILTINS = names(
+    public static final Set<String> FRAGMENT_SHADER_ONLY_BUILTINS = Set.of(
             "dpdx", "dpdxCoarse", "dpdxFine", "dpdy", "dpdyCoarse", "dpdyFine", "fwidth", "fwidthCoarse", "fwidthFine"
     );
 
-    public static final Set<String> ATTRIBUTE_NAMES = names(
+    public static final Set<String> ATTRIBUTE_NAMES = Set.of(
             "align", "binding", "builtin", "const", "group", "id", "interpolate", "invariant", "location", "size", "workgroup_size"
     );
 
-    public static final Set<String> DEPRECATED_ATTRIBUTE_NAMES = names(
+    public static final Set<String> DEPRECATED_ATTRIBUTE_NAMES = Set.of(
             "stage"
     );
 
-    public static final Set<String> STAGE_NAMES = names(
+    public static final Set<String> STAGE_NAMES = Set.of(
             "compute", "fragment", "vertex"
     );
 
-    public static final Set<String> RESERVED_KEYWORDS = names(
+    public static final Set<String> RESERVED_KEYWORDS = Set.of(
         "AppendStructuredBuffer", "BlendState", "Buffer", "ByteAddressBuffer", "CompileShader", "ComputeShader", "ConsumeStructuredBuffer", "DepthStencilState", 
         "DepthStencilView", "DomainShader", "GeometryShader", "Hullshader", "InputPatch", "LineStream", "NULL", "OutputPatch", "PixelShader", "PointStream", 
         "RWBuffer", "RWByteAddressBuffer", "RWStructuredBuffer", "RWTexture1D", "RWTexture1DArray", "RWTexture2D", "RWTexture2DArray", "RWTexture3D", 
@@ -109,10 +77,6 @@ public class WGSLAnnotator implements Annotator {
         "volatile", "wchar_t", "wgsl", "where", "while", "with", "workgroup", "writeonly", "yield"
     );
 
-    private static Set<String> names(String ... names) {
-        return Arrays.stream(names).collect(Collectors.toSet());
-    }
-
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
 
@@ -127,35 +91,39 @@ public class WGSLAnnotator implements Annotator {
             var fragment_shader = false;
 
             @Nullable ASTNode call_name = element.getNode().findChildByType(WGSLTypes.FUNC_CALL_NAME);
-            @Nullable ASTNode name = call_name.findChildByType(WGSLTypes.IDENT);
+            if(call_name != null) {
+                @Nullable ASTNode name = call_name.findChildByType(WGSLTypes.IDENT);
 
-            // Get the parent all the way to the function declaration
-            var parent = element.getParent();
-            while (parent != null && !(parent instanceof WGSLFunctionDecl)) {
-                parent = parent.getParent();
-            }
-
-            // If we have a parent that was a function declaration we get the attribute list and
-            // check if it contains the attribute 'stage(fragment)'
-            if (parent != null) {
-                var attributes = ((WGSLFunctionDecl) parent).getAttributeList();
-                if(attributes != null) {
-                    for (var i : attributes.getAttributeList()) {
-                        String txt = i.getText();
-                        fragment_shader |= (txt.equals("fragment") || txt.equals("stage(fragment)"));
-                    }
+                // Get the parent all the way to the function declaration
+                var parent = element.getParent();
+                while (parent != null && !(parent instanceof WGSLFunctionDecl)) {
+                    parent = parent.getParent();
                 }
-            }
 
-            if(name != null) {
-                String txt = name.getText();
-                if (BUILT_IN_FUNCTION_NAMES.contains(txt)) {
-                    holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(name).textAttributes(WGSLColours.BUILTIN_FUNCTION.attributes()).create();
-                } else if (FRAGMENT_SHADER_ONLY_BUILTINS.contains(txt)) {
-                    if (fragment_shader) {
+                if (name != null) {
+                    String txt = name.getText();
+
+                    if (FRAGMENT_SHADER_ONLY_BUILTINS.contains(txt)) {
+                        // If we have a parent that was a function declaration we get the attribute list and
+                        // check if it contains the attribute 'stage(fragment)'
+                        if (parent != null) {
+                            var attributes = ((WGSLFunctionDecl) parent).getAttributeList();
+                            if (attributes != null) {
+                                for (var i : attributes.getAttributeList()) {
+                                    String t = i.getText();
+                                    fragment_shader |= (t.equals("fragment") || t.equals("stage(fragment)"));
+                                }
+                            }
+                        }
+
+                        if (fragment_shader) {
+                            holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(name).textAttributes(WGSLColours.BUILTIN_FUNCTION.attributes()).create();
+                        } else {
+                            holder.newAnnotation(HighlightSeverity.ERROR, "This built-in is only allowed in fragment shader functions").range(name).create();
+                        }
+                    } else if (BuiltInFunctions.INSTANCE.get(name.getPsi()) != null) {
                         holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(name).textAttributes(WGSLColours.BUILTIN_FUNCTION.attributes()).create();
                     } else {
-                        holder.newAnnotation(HighlightSeverity.ERROR, "This built-in is only allowed in fragment shader functions").range(name).create();
                     }
                 }
             }

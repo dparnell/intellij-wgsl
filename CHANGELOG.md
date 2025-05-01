@@ -4,6 +4,8 @@
 
 ## Unreleased
 - support array literals
+- fix for #82 - added missing built-in functions
+- fixed display of built-in function documentation 
 
 ## 0.0.34 - 2024-10-26
 

@@ -98,13 +98,14 @@ storage_class ::=
     | UNIFORM
     | STORAGE
     | PUSH_CONSTANT
+    | GENERIC_PLACEHOLDER
 
 texture_sampler_types ::=
       sampler_type
     | depth_texture_type
     | sampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
     | multisampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
-    | storage_texture_type TYPE_LESS_THAN texel_format COMMA access_mode TYPE_GREATER_THAN
+    | storage_texture_type TYPE_LESS_THAN (texel_format | GENERIC_PLACEHOLDER) COMMA (access_mode | GENERIC_PLACEHOLDER) TYPE_GREATER_THAN
 
 sampler_type ::=
       SAMPLER
@@ -175,7 +176,7 @@ type_alias_decl ::=
       TYPE IDENT EQUAL type_decl
 
 type_decl ::=
-      IDENT
+      IDENT ((LESS_THAN | TYPE_LESS_THAN) type_decl (GREATER_THAN | TYPE_GREATER_THAN))?
     | BOOL
     | FLOAT32
     | INT32
@@ -188,6 +189,7 @@ type_decl ::=
     | texture_sampler_types
     | BINDING_ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
     | builtin_type_alias
+    | GENERIC_PLACEHOLDER
 
 builtin_type_alias ::=
       VEC2I
