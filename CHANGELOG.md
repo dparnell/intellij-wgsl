@@ -3,6 +3,9 @@
 # wgsl plugin Changelog
 
 ## Unreleased
+
+## 0.0.35 - 2024-11-16
+
 - support array literals
 - fix for #82 - added missing built-in functions
 - fixed display of built-in function documentation 
