@@ -4,11 +4,15 @@
 
 ## Unreleased
 
+- update base platform version
+
+## 0.0.36 - 2025-05-01
+- fix for #82 - added missing built-in functions
+- fixed display of built-in function documentation
+
 ## 0.0.35 - 2024-11-16
 
 - support array literals
-- fix for #82 - added missing built-in functions
-- fixed display of built-in function documentation 
 
 ## 0.0.34 - 2024-10-26
 
