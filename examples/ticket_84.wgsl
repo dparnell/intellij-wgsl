@@ -1,0 +1,1 @@
+const EXPOSURES: f32 = 1.0;

@@ -64,7 +64,6 @@ HEX_FLOAT_LITERAL        = -?0x((([0-9a-fA-F]*\.[0-9a-fA-F]+|[0-9a-fA-F]+\.[0-9a
 PREPROCESSOR_DECLARATION = "#"[^\r\n\{\[]+
 
 IDENT = ([a-zA-Z_][0-9a-zA-Z_][0-9a-zA-Z_]*)|([a-zA-Z_][0-9a-zA-Z_]*)
-GENERIC_PLACEHOLDER = [A-Z]+
 
 %%
 
@@ -297,8 +296,6 @@ GENERIC_PLACEHOLDER = [A-Z]+
 <TYPE_SPEC>  "rgba32uint"                       { return RGBA32UINT; }
 <TYPE_SPEC>  "rgba32sint"                       { return RGBA32SINT; }
 <TYPE_SPEC>  "rgba32float"                      { return RGBA32FLOAT; }
-
-<YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {GENERIC_PLACEHOLDER}    { return GENERIC_PLACEHOLDER; }
 
 <YYINITIAL, TYPE_SPEC, BIND_SPEC, ATTRIBUTE>  {IDENT}      { return IDENT; }
 

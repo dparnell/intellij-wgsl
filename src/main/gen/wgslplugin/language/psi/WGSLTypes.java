@@ -131,7 +131,6 @@ public interface WGSLTypes {
   IElementType FOR = new WGSLTokenType("FOR");
   IElementType FORWARD_SLASH = new WGSLTokenType("FORWARD_SLASH");
   IElementType FUNCTION = new WGSLTokenType("FUNCTION");
-  IElementType GENERIC_PLACEHOLDER = new WGSLTokenType("GENERIC_PLACEHOLDER");
   IElementType GREATER_THAN = new WGSLTokenType("GREATER_THAN");
   IElementType GREATER_THAN_EQUAL = new WGSLTokenType("GREATER_THAN_EQUAL");
   IElementType HEX_FLOAT_LITERAL = new WGSLTokenType("HEX_FLOAT_LITERAL");

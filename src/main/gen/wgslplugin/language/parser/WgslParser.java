@@ -1867,7 +1867,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | UNIFORM
   //     | STORAGE
   //     | PUSH_CONSTANT
-  //     | GENERIC_PLACEHOLDER
+  //     | IDENT
   public static boolean storage_class(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "storage_class")) return false;
     boolean r;
@@ -1878,7 +1878,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, UNIFORM);
     if (!r) r = consumeToken(b, STORAGE);
     if (!r) r = consumeToken(b, PUSH_CONSTANT);
-    if (!r) r = consumeToken(b, GENERIC_PLACEHOLDER);
+    if (!r) r = consumeToken(b, IDENT);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -2160,7 +2160,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | depth_texture_type
   //     | sampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
   //     | multisampled_texture_type TYPE_LESS_THAN type_decl TYPE_GREATER_THAN
-  //     | storage_texture_type TYPE_LESS_THAN (texel_format | GENERIC_PLACEHOLDER) COMMA (access_mode | GENERIC_PLACEHOLDER) TYPE_GREATER_THAN
+  //     | storage_texture_type TYPE_LESS_THAN (texel_format | IDENT) COMMA (access_mode | IDENT) TYPE_GREATER_THAN
   public static boolean texture_sampler_types(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types")) return false;
     boolean r;
@@ -2200,7 +2200,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // storage_texture_type TYPE_LESS_THAN (texel_format | GENERIC_PLACEHOLDER) COMMA (access_mode | GENERIC_PLACEHOLDER) TYPE_GREATER_THAN
+  // storage_texture_type TYPE_LESS_THAN (texel_format | IDENT) COMMA (access_mode | IDENT) TYPE_GREATER_THAN
   private static boolean texture_sampler_types_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types_4")) return false;
     boolean r;
@@ -2215,21 +2215,21 @@ public class WgslParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // texel_format | GENERIC_PLACEHOLDER
+  // texel_format | IDENT
   private static boolean texture_sampler_types_4_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types_4_2")) return false;
     boolean r;
     r = texel_format(b, l + 1);
-    if (!r) r = consumeToken(b, GENERIC_PLACEHOLDER);
+    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 
-  // access_mode | GENERIC_PLACEHOLDER
+  // access_mode | IDENT
   private static boolean texture_sampler_types_4_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "texture_sampler_types_4_4")) return false;
     boolean r;
     r = access_mode(b, l + 1);
-    if (!r) r = consumeToken(b, GENERIC_PLACEHOLDER);
+    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 
@@ -2294,7 +2294,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
   //     | texture_sampler_types
   //     | BINDING_ARRAY TYPE_LESS_THAN type_decl ( COMMA element_count_expression )? TYPE_GREATER_THAN
   //     | builtin_type_alias
-  //     | GENERIC_PLACEHOLDER
+  //     | IDENT
   public static boolean type_decl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "type_decl")) return false;
     boolean r;
@@ -2312,7 +2312,7 @@ public class WgslParser implements PsiParser, LightPsiParser {
     if (!r) r = texture_sampler_types(b, l + 1);
     if (!r) r = type_decl_11(b, l + 1);
     if (!r) r = builtin_type_alias(b, l + 1);
-    if (!r) r = consumeToken(b, GENERIC_PLACEHOLDER);
+    if (!r) r = consumeToken(b, IDENT);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
