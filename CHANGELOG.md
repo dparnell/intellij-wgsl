@@ -4,10 +4,13 @@
 
 ## Unreleased
 
+## 0.0.37 - 2025-08-12
+
 - update base platform version
-- fix for #84 - fixed highlighting of `const` with uppercase only name 
+- fix for #84 - fixed highlighting of `const` with uppercase only name
 
 ## 0.0.36 - 2025-05-01
+
 - fix for #82 - added missing built-in functions
 - fixed display of built-in function documentation
 
